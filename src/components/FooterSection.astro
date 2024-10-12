@@ -36,30 +36,30 @@ const navigation = stringsNavigation;
                 ))
             }
         </div>
-    </div>
-    <div class="mt-9 grid gap-y-2 sm:mt-12 sm:flex sm:items-center sm:justify-between sm:gap-y-0">
-        <div class="flex items-center justify-between">
-            <p class="text-sm text-neutral-400">
-                &copy;<span id="current-year"></span> GeekEando. Crafted by
-                <a
-                    class="rounded-lg font-medium underline underline-offset-2 outline-none transition duration-300 hover:decoration-dashed focus:outline-none focus-visible:ring ring-zinc-200 hover:text-neutral-300"
-                    href="htt://draexx.geekeando.net">Draexx
-                </a>.
-            </p>
-        </div>
-        <div>
-            {
-                navigation.socialLinks.map((social) => (
+        <div class="mt-9 grid gap-y-2 sm:mt-12 sm:flex sm:items-center sm:justify-between sm:gap-y-0">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-neutral-400">
+                    &copy;<span id="current-year"></span> GeekEando. Crafted by
                     <a
-                        href={social.url}
-                        class="inline-flex h-10 w-10 items-center justify-center gap-x-2 rounded-lg border border-transparent text-sm font-bold text-neutral-700 outline-none focus:outline-none focus-visible:ring focus-visible:ring-zinc-500 ring-zinc-200 hover:bg-neutral-50/10"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <Icon name={social.name}/>
-                    </a>
-                ))
-            }
+                        class="rounded-lg font-medium underline underline-offset-2 outline-none transition duration-300 hover:decoration-dashed focus:outline-none focus-visible:ring ring-zinc-200 hover:text-neutral-300"
+                        href="htt://draexx.geekeando.net">Draexx
+                    </a>.
+                </p>
+            </div>
+            <div>
+                {
+                    navigation.socialLinks.map((social) => (
+                        <a
+                            href={social.url}
+                            class="inline-flex h-10 w-10 items-center justify-center gap-x-2 rounded-lg border border-transparent text-sm font-bold text-neutral-700 outline-none focus:outline-none focus-visible:ring focus-visible:ring-zinc-500 ring-zinc-200 hover:bg-neutral-50/10"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Icon name={social.name}/>
+                        </a>
+                    ))
+                }
+            </div>
         </div>
     </div>
 </footer>

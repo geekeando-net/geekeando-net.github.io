@@ -1,11 +1,11 @@
 ---
-import '@styles/global.css'
+//import '@styles/global.css'
 import NavHeader from '@components/NavHeader.astro'
 import FooterSection from '@components/FooterSection.astro'
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scrollbar-hide lenis lenis-smooth scroll-pt-16">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -22,5 +22,15 @@ import FooterSection from '@components/FooterSection.astro'
 			</main>
 		</div>
 		<FooterSection />
+		<style>
+			/* CSS rules for the page scrollbar */
+			.scrollbar-hide::-webkit-scrollbar {
+				display: none;
+			}
+			.scrollbar-hide {
+				-ms-overflow-style: none;
+				scrollbar-width: none;
+			}
+		</style>
 	</body>
 </html>
