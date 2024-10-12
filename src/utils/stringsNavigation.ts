@@ -13,19 +13,19 @@ const footerLinks = [
     {
         section: 'Projects',
         links:[
-            { name: 'Project 1', url: '/project1' },
-            { name: 'Project 2', url: '/project2' },
-            { name: 'Project 3', url: '/project3' },
-            { name: 'Project 4', url: '/project4' },
+            { name: 'Arduino', url: '/arduino' },
+            { name: 'Paper Craft', url: '/papercraft' },
+            { name: '3D Print', url: '/print3d' },
+            { name: 'Music', url: '/music' },
         ],
     },
     {
-        section: 'Services',
+        section: 'Information',
         links:[
             { name: 'About Us', url: '/about' },
             { name: 'Blog', url: '/blog' },
-            { name: 'Service 3', url: '/service3' },
-            { name: 'Service 4', url: '/service4' },
+            { name: 'FAQ', url: '/faq' },
+            { name: 'Contact Us', url: '/contact' },
         ],
     }
     ];
