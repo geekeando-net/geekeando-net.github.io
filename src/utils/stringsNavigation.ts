@@ -29,13 +29,14 @@ const footerLinks = [
         ],
     }
     ];
-const socialLinks = {
-        facebook: "https://www.facebook.com/",
-        x: "https://twitter.com/draexx",
-        github: "https://github.com/draexx",
-        instagram: "https://www.google.com/draexx",
-        dev: "https://dev.to/draexx",
-    };
+const socialLinks = [
+        {name: 'facebook', url: 'https://www.facebook.com/'},
+        {name: 'x', url: 'https://twitter.com/draexx'},
+        {name: 'github', url: 'https://github.com/draexx'},
+        {name: 'instagram', url: 'https://www.instagram.com/draexx'},
+        {name: 'dev', url: 'https://dev.to/draexx'},
+        {name: 'linkedIn', url: 'https://linkedin.com/draexx'},
+    ];
 export default {
     navBarLinks,
     socialLinks,
