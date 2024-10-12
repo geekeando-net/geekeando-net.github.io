@@ -1,0 +1,42 @@
+---
+const { url, name } = Astro.props;
+
+interface LinkProps {
+  url: string;
+  name: string;
+}
+---
+
+<a
+    id={url === '/' ? 'home' : url.replace('/', '')}
+    href={url}
+    data-astro-prefetch
+    class="rounded-lg text-base font-medium text-neutral-400 outline-none ring-zinc-200 hover:text-neutral-500 focus-visible:ring focus:outline-none md:py-3 md:text-sm 2xl:text-base"
+>
+{name}
+</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let url = window.location.pathname;
+        let urlSegment = url.split('/');
+        let navId;
+        if (url === '/') {
+            navId = 'home';
+        } else {
+            navId = url.replace('/', '');
+        }
+        let nav = document.getElementById(navId);
+
+        if (nav) {
+            nav.classList.remove(
+                'text-neutral-400',
+                'hover:text-neutral-500',
+            );
+            nav.classList.add(
+                'text-orange-400',
+            );
+            nav.setAttribute('aria-current', 'page');
+        }
+    });
+</script>

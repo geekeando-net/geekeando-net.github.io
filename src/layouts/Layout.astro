@@ -1,0 +1,26 @@
+---
+import '@styles/global.css'
+import NavHeader from '@components/NavHeader.astro'
+import FooterSection from '@components/FooterSection.astro'
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>GeekEando</title>
+	</head>
+	<body class="bg-neutral-800 selection:bg-yellow-400 selection:text-neutral-700">
+		<div class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+			<NavHeader />
+			<main class="p-8">
+				<slot />
+			</main>
+		</div>
+		<FooterSection />
+	</body>
+</html>

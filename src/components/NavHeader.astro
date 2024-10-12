@@ -1,0 +1,28 @@
+---
+import Link from "@components/ui/Link.astro";
+import stringsNavigation from "@utils/stringsNavigation";
+import BrandLogo from "@components/BrandLogo.astro";
+
+const navigation = stringsNavigation;
+const homeUrl = "/";
+---
+
+<header class="sticky inset-x-0 top-4 z-50 flex w-full flex-wrap text-sm md:flex-nowrap md:justify-start">
+    <nav class="relative mx-2 w-full rounded-[36px] border px-4 py-3 backdrop-blur-md border-neutral-700/40 bg-neutral-800/80 md:flex md:items-center md:justify-between md:px-6 md:py-0 lg:px-8 xl:mx-auto" aria-label="Global">
+        <div class="flex items-center justify-between">
+            <a
+                class="flex-none rounded-lg text-xl font-bold outline-none ring-zinc-200 focus-visible:ring focus:outline-none"
+                href={homeUrl}
+                aria-label="Muestra Logo"
+            >
+            <BrandLogo class="h-auto w-24" />
+            </a>
+        </div>
+        <div class="mt-5 flex flex-col gap-x-0 gap-y-4 md:mt-0 md:flex-row md:justify-end md:gap-x-4 lg:gap-x-7 md:gap-y-0 md:ps-7">
+            {navigation.navBarLinks.map((nav) => (
+                <Link url={nav.url} name={nav.name} />
+            ))}
+            <span class="hidden"></span>
+        </div>
+    </nav>
+</header>
