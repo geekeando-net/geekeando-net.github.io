@@ -1,0 +1,120 @@
+---
+import Layout from "../layouts/Layout.astro"
+
+const title: string = "Contactanos";
+const subTitle: string = "¿Tienes alguna pregunta o quieres hablar de un proyecto?. Completa el formulario a continuacion o utiliza la informacion de contacto para comunicarte con nosotros";
+const formTitle: string = "LLene el siguiente formulario";
+const formSubTitle: string = "Le responderemos en 1-2 días laborables.";
+---
+
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+            <div class="text-center">
+                <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-200 md:text-4xl md:leading-tight">
+                    { title }
+                </h1>
+                <p class="mt-1 text-pretty text-neutral-400">
+                    { subTitle }
+                </p>
+            </div>
+        </div>
+        <div class="mt-12 grid items-center gap-6 lg:grid-cols-2 lg:gap-16">
+            <div class="flex flex-col rounded-xl p-4 sm:p-6 lg:p-8">
+                <h2 class="mb-8 text-xl font-bold text-neutral-300">
+                    { formTitle }
+                </h2>
+                <form>
+                    <div class="grid gap-4">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                                <label for="hs-firstname-contacts"
+                                    class="sr-only">
+                                    Nombre
+                                </label>
+                                <input
+                                    type="text"
+                                    name="hs-firstname-contacts"
+                                    id="hs-firstname-contacts"
+                                    class="block w-full rounded-lg border bg-neutral-50 px-4 py-3 text-sm focus:border-neutral-200 focus:outline-none focus:ring-neutral-400 disabled:pointer-events-none disabled:opacity-50 border-neutral-600 bg-neutral-700/30 text-neutral-300 placeholder:text-neutral-400 focus:ring-1"
+                                    placeholder="Nombre"
+                                />
+                            </div>
+                            <div>
+                                <label for="hs-lastname-contacts" class="sr-only">
+                                    Apellido
+                                </label>
+                                <input
+                                    type="text"
+                                    name="hs-lastname-contacts"
+                                    id="hs-lastname-contacts"
+                                    class="block w-full rounded-lg border bg-neutral-50 px-4 py-3 text-sm focus:border-neutral-200 focus:outline-none focus:ring-neutral-400 disabled:pointer-events-none disabled:opacity-50 border-neutral-600 bg-neutral-700/30 text-neutral-300 placeholder:text-neutral-400 focus:ring-1"
+                                    placeholder="Apellido"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <!-- Label for the email input field, visually hidden but accessible to screen readers -->
+                            <label for="hs-email-contacts" class="sr-only">
+                                Email
+                            </label>
+                            <!-- Email input field -->
+                            <input
+                                type="email"
+                                name="hs-email-contacts"
+                                id="hs-email-contacts"
+                                autocomplete="email"
+                                class="block w-full rounded-lg border bg-neutral-50 px-4 py-3 text-sm focus:border-neutral-200 focus:outline-none focus:ring-neutral-400 disabled:pointer-events-none disabled:opacity-50 border-neutral-600 bg-neutral-700/30 text-neutral-300 placeholder:text-neutral-400 focus:ring-1"
+                                placeholder="Email"
+                            />
+                        </div>
+                        <div>
+                            <label for="hs-phone-number" class="sr-only">
+                                Telefono
+                            </label>
+                            <input
+                                type="tel"
+                                name="hs-phone-number"
+                                id="hs-phone-number"
+                                class="block w-full rounded-lg border bg-neutral-50 px-4 py-3 text-sm focus:border-neutral-200 focus:outline-none focus:ring-neutral-400 disabled:pointer-events-none disabled:opacity-50 border-neutral-600 bg-neutral-700/30 text-neutral-300 placeholder:text-neutral-400 focus:ring-1"
+                                placeholder="Telefono"
+                            />
+                        </div>
+                        <div>
+                            <label for="hs-about-contacts" class="sr-only">
+                                Mensaje
+                            </label>
+                            <textarea
+                                id="hs-about-contacts"
+                                name="hs-about-contacts"
+                                rows="4"
+                                class="block w-full rounded-lg border bg-neutral-50 px-4 py-3 text-sm focus:border-neutral-200 focus:outline-none focus:ring-neutral-400 disabled:pointer-events-none disabled:opacity-50 border-neutral-600 bg-neutral-700/30 text-neutral-300 placeholder:text-neutral-400 focus:ring-1"
+                                placeholder="Detalle"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid">
+                        <button
+                            type="submit"
+                            class="inline-flex w-full items-center justify-center gap-x-2 rounded-lg px-4 py-3 text-sm font-bold text-neutral-700 focus-visible:ring outline-none transition duration-300 border border-transparent bg-yellow-400 focus:outline-none hover:bg-yellow-500 2xl:text-base disabled:pointer-events-none disabled:opacity-50 ring-zinc-200">
+                            Enviar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
+
+                <div class="mt-8 text-center">
+                    <h2 class="text-2xl font-bold">Informacion de Contacto</h2>
+                    <p class="mt-2">Direccion: Aqui alla , Sucre, Bolivia</p>
+                    <p class="mt-2">Telefono: 591 111111111</p>
+                    <p class="mt-2">Correo Electronico: draexx@geekeando.net</p>
+                    <div>
+                        <a href="https://facebook.com" class="text-blue-600 hover:underline">Facebook</a>
+                        <a href="https://twitter.com" class="text-blue-600 hover:underline">Twitter</a>
+                        <a href="https://instagram.com" class="text-blue-600 hover:underline">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
