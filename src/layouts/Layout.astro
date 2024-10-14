@@ -11,7 +11,7 @@ import FooterSection from '@components/FooterSection.astro'
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+		<!-- <meta name="generator" content={Astro.generator} /> -->
 		<title>GeekEando</title>
 	</head>
 	<body class="bg-neutral-800 selection:bg-yellow-400 selection:text-neutral-700">
@@ -32,5 +32,6 @@ import FooterSection from '@components/FooterSection.astro'
 				scrollbar-width: none;
 			}
 		</style>
+		<script>import "preline/dist/preline.js";</script>
 	</body>
 </html>
