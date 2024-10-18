@@ -30,11 +30,12 @@ const starCount = 4;
     <div class="flex w-full">
         <div class="top-12 overflow-hidden">
             <Image
-                src={ heroImage.src }
+                src={ heroImage }
                 alt="Hero"
                 class="h-full w-full scale-110 object-cover object-center"
-                inferSize
+                draggable={"false"}
                 loading={"eager"}
+                format={"jpg"}
             />
         </div>
     </div>
