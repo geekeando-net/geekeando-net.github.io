@@ -2,8 +2,8 @@ const navBarLinks = [
     { name: 'Home', url: '/' },
     { name: 'Project', url: '/project' },
     { name: 'Blog', url: '/blog' },
+    { name: 'Gallery', url: '/gallery' },
     { name: 'About', url: '/about' },
-    // { name: 'Services', url: '/services' },
     // { name: 'Portfolio', url: '/portfolio' },
     // { name: 'FAQ', url: '/faq' },
     // { name: 'Support', url: '/support' },
@@ -14,7 +14,7 @@ const footerLinks = [
         section: 'Projects',
         links:[
             { name: 'Arduino', url: '/arduino' },
-            { name: 'Paper Craft', url: '/papercraft' },
+            { name: 'Paper Craft', url: '/paper-craft' },
             { name: '3D Print', url: '/print3d' },
             { name: 'Music', url: '/music' },
         ],
