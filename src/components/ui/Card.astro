@@ -1,15 +1,21 @@
 ---
-const { title, text1, text2, text3 } = Astro.props;
+import Icon from "@components/ui/Icon.astro"
+
+const { icon, title, text1, text2, text3, link, svg } = Astro.props;
 
 interface CardProps {
+	icon: string;
 	title: string;
 	text1: string;
 	text2: string;
 	text3: string;
+	link: string;
+	svg: string;
 }
 ---
 
 <div class="flex gap-x-7 py-6">
+	{ icon && <Icon name={ icon } />}
 	<div class="grow">
 		<h3 class="font-bold text-neutral-300">
 			{ title }
@@ -29,5 +35,12 @@ interface CardProps {
 				set:html = { text3 }
 			/>
 		</p>
+		{ link && (
+			<a
+				class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
+				href={ link.href }>
+					{ link.text } <Fragment set:html={svg} />
+			</a>
+		)}
 	</div>
 </div>

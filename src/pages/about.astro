@@ -2,9 +2,9 @@
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
 import Card from "@/components/ui/Card.astro";
-import stringsAbout from "@/utils/stringsAbout";
+import stringsAbout from "@/utils/stringsCards";
 
-const about = stringsAbout;
+const about = stringsAbout.stringsAbout;
 const title: string = "Acerca de Nosotros";
 const subTitle: string = "";
 ---
@@ -18,13 +18,14 @@ const subTitle: string = "";
             />
             <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
                 {
-                    about.stringsAbout.map((item, index) => (
+                    about.map((item, index) => (
                         <Card
-                            title={ item.title }
-                            text1={ item.text1 }
-                            text2={ item.text2 }
-                            text3={ item.text3 }
-                            key={ index }
+                            icon = { '' }
+                            title = { item.title }
+                            text1 = { item.text1 }
+                            text2 = { item.text2 }
+                            text3 = { item.text3 }
+                            key = { index }
                         />
                     ))
                 }

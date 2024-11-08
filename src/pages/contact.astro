@@ -1,8 +1,10 @@
 ---
 import Layout from "@layouts/Layout.astro"
 import TitleSection from "@/components/ui/TitleSection.astro";
-import Icon from "@components/ui/Icon.astro"
-import stringsNavigation from "@/utils/stringsNavigation";
+import Card from "@/components/ui/Card.astro";
+// import Icon from "@components/ui/Icon.astro"
+// import stringsNavigation from "@/utils/stringsNavigation";
+import stringsCards from "@/utils/stringsCards";
 
 const title: string = "Contactanos";
 const subTitle: string = "¿Tienes alguna pregunta o quieres hablar de un proyecto?. Completa el formulario a continuacion o utiliza la informacion de contacto para comunicarte con nosotros";
@@ -13,10 +15,10 @@ class="h-4 w-4 flex-shrink-0 transition ease-in-out group-hover:translate-x-1"
 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /> </svg>`;
 
-const { links } = stringsNavigation.footerLinks[1];
-const faqLink = links.find(link => link.name === 'FAQ');
-const urlFAQ = faqLink ? faqLink.url : null;
-
+// const { links } = stringsNavigation.footerLinks[1];
+// const faqLink = links.find(link => link.name === 'FAQ');
+// const urlFAQ = faqLink ? faqLink.url : null;
+const stringsContact = stringsCards.stringsContact;
 ---
 
 <Layout>
@@ -115,78 +117,20 @@ const urlFAQ = faqLink ? faqLink.url : null;
                 </form>
             </div>
             <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
-                <div class="flex gap-x-7 py-6">
-                    <Icon name="question" />
-                    <div class="grow">
-                        <h3 class="font-bold text-neutral-300">
-                            Base de Conocimiento
-                        </h3>
-                        <p class="mt-1 text-sm text-neutral-400">
-                            Consulte todos los artículos de nuestra base de conocimientos.
-                        </p>
-                        <p class="mt-1 text-sm italic text-neutral-500">
-
-                        </p>
-                        <a class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
-                        href="#">
-                            Visitar guías y tutoriales <Fragment set:html={arrowSVG} />
-                        </a>
-                    </div>
-                </div>
-                <div class="flex gap-x-7 py-6">
-                    <Icon name="chatBubble" />
-                    <div class="grow">
-                        <h3 class="font-bold text-neutral-300">
-                            FAQ
-                        </h3>
-                        <p class="mt-1 text-sm text-neutral-400">
-                            Explore nuestras preguntas frecuentes para obtener respuestas rápidas y claras a las dudas más comunes.
-                        </p>
-                        <p class="mt-1 text-sm italic text-neutral-500">
-
-                        </p>
-                        <a class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
-                        href={ urlFAQ }>
-                            Visitar FAQ <Fragment set:html={arrowSVG} />
-                        </a>
-                    </div>
-                </div>
-                <div class="flex gap-x-7 py-6">
-                    <Icon name="mapPin" />
-                    <div class="grow">
-                        <h3 class="font-bold text-neutral-300">
-                            Visita Nuestras Oficinas
-                        </h3>
-                        <p class="mt-1 text-sm text-neutral-400">
-                            GeekEando.
-                        </p>
-                        <p class="mt-1 text-sm italic text-neutral-500">
-                            Av. Siempre Viva 742, Springfield
-                        </p>
-                        <a class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
-                        href="">
-                            
-                        </a>
-                    </div>
-                </div>
-                <div class="flex gap-x-7 py-6">
-                    <Icon name="envelopeOpen" />
-                    <div class="grow">
-                        <h3 class="font-bold text-neutral-300">
-                            Contactenos por correo electrónico
-                        </h3>
-                        <p class="mt-1 text-sm text-neutral-400">
-                            ¿Prefiere la palabra escrita? Envíanos un correo electrónico.
-                        </p>
-                        <p class="mt-1 text-sm italic text-neutral-500">
-                            
-                        </p>
-                        <a class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
-                        href="mailto:draexx@geekeando.net">
-                        draexx@geekeando.net <Fragment set:html={arrowSVG} />
-                        </a>
-                    </div>
-                </div>
+                {
+                    stringsContact.map((item, index) => (
+                        <Card
+                            icon = { item.icon }
+                            title = { item.title }
+                            text1 = { item.text1 }
+                            text2 = { item.text2 }
+                            text3 = { item.text3 }
+                            link = { item.link }
+                            svg = { arrowSVG }
+                            key = { index }
+                        />
+                    ))
+                }
             </div>
         </div>
     </section>

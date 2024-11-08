@@ -25,6 +25,41 @@ const stringsAbout = [
     },
 ];
 
+const stringsContact = [
+    {
+        icon: 'question',
+        title: 'Base de Conocimiento',
+        text1: 'Consulte todos los artículos de nuestra base de conocimientos.',
+        text2: '',
+        text3: '',
+        link: {href:'#', text:'Visitar guías y tutoriales'},
+    },
+    {
+        icon: 'chatBubble',
+        title: 'FAQ',
+        text1: 'Explore nuestras preguntas frecuentes para obtener respuestas rápidas y claras a las dudas más comunes.',
+        text2: '',
+        text3: '',
+        link: {href:'faq', text:'Visitar FAQ'},
+    },
+    {
+        icon: 'mapPin',
+        title: 'Visita Nuestras Oficinas',
+        text1: 'GeekEando.',
+        text2: '<i>Av. Siempre Viva 742, Springfield</i>',
+        text3: '',
+    },
+    {
+        icon: 'envelopeOpen',
+        title: 'Contactenos por correo electrónico',
+        text1: '¿Prefiere la palabra escrita? Envíanos un correo electrónico.',
+        text2: '',
+        text3: '',
+        link: {href:'mailto:draexx@geekeando.net', text:'draexx@geekeando.net'},
+    },
+];
+
 export default {
     stringsAbout,
+    stringsContact,
 };
