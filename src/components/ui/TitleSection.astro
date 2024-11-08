@@ -1,0 +1,18 @@
+---
+const { title, subTitle } = Astro.props;
+
+interface TitleSectionProps {
+    title: string;
+    subTitle: string;
+}
+
+---
+
+<div class="text-center">
+    <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-200 md:text-4xl md:leading-tight">
+        { title }
+    </h1>
+    <p class="mt-1 text-pretty text-neutral-400">
+        { subTitle }
+    </p>
+</div>

@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+
+const title: string = "Galeria";
+const subTitle: string = "";
+
+---
+
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+            <TitleSection
+                title={ title }
+                subTitle={ subTitle }
+            />
+        </div>
+    </section>
+</Layout>

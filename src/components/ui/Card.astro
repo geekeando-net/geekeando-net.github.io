@@ -1,0 +1,33 @@
+---
+const { title, text1, text2, text3 } = Astro.props;
+
+interface CardProps {
+	title: string;
+	text1: string;
+	text2: string;
+	text3: string;
+}
+---
+
+<div class="flex gap-x-7 py-6">
+	<div class="grow">
+		<h3 class="font-bold text-neutral-300">
+			{ title }
+		</h3>
+		<p class="mt-1 text-sm text-neutral-400">
+			<Fragment
+				set:html = { text1 }
+			/>
+		</p>
+		<p class="mt-1 text-sm text-neutral-400">
+			<Fragment
+				set:html = { text2 }
+			/>
+		</p>
+		<p class="mt-1 text-sm text-neutral-400">
+			<Fragment
+				set:html = { text3 }
+			/>
+		</p>
+	</div>
+</div>
