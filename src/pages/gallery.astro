@@ -22,7 +22,7 @@ const subTitle: string = "";
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
-                <div class="swiper-wrapper lg:max-w-5xl xl:max-w-6xl">
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl">
                 <!-- Los slides -->
                     <div class="swiper-slide">
                         <!-- <Image src="/images/image1.jpg" alt="" width={800} height={600} /> -->
@@ -69,7 +69,7 @@ const subTitle: string = "";
     }
     .swiper-button-next,
     .swiper-button-prev {
-        background-color: white;
+        /* background-color: white; */
         width: 60px;
         height: 60px;
         border-radius: 10px;
@@ -95,8 +95,20 @@ const subTitle: string = "";
     const swiper = new Swiper(".swiper", {
         modules: [Navigation], // definir los módulos a usar
         loop: true,            // definir si los slides estarán en bucle
-        slidesPerView: 2,      // agregar número de slides para la pantalla
+        slidesPerView: "auto",      // agregar número de slides para la pantalla
         spaceBetween: 40,      // separación entre slides en px
+        breakpoints: {
+            // Cuando la pantalla es >= 768px
+            768: {
+            slidesPerView: 2,
+            spaceBetween: 30
+            },
+            // Cuando la pantalla es >= 1024px
+            1024: {
+            slidesPerView: 3,
+            spaceBetween: 40
+            }
+        },
         navigation: {          // definir botones next y prev para el módulo Navigation
             prevEl: ".swiper-button-prev",
             nextEl: ".swiper-button-next",
