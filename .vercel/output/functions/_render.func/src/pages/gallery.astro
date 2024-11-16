@@ -4,11 +4,9 @@ import TitleSection from "@/components/ui/TitleSection.astro";
 import { Image } from "astro:assets";
 import 'swiper/css';
 import "swiper/css/navigation";
-import stringsImages from "@/utils/imagesGallery";
-// Datos de la página
+
 const title: string = "Galeria";
 const subTitle: string = "";
-const imagesGallery = stringsImages;
 ---
 
 <Layout>
@@ -23,15 +21,28 @@ const imagesGallery = stringsImages;
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
-                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center">
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl">
                 <!-- Los slides -->
-                    {
-                        imagesGallery.stringsGallery.map((image, index) => (
-                            <div class="swiper-slide">
-                                <img src={image.src} alt={image.alt} />
-                            </div>
-                        ))
-                    }
+                    <div class="swiper-slide">
+                        <!-- <Image src="/images/image1.jpg" alt="" width={800} height={600} /> -->
+                        <img src="/images/image1.jpg" alt="" />
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- <Image src="/images/image2.jpg" alt="" width={800} height={600} /> -->
+                        <img src="/images/image2.jpg" alt="" />
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- <Image src="/images/image3.jpg" alt="" width={800} height={600} /> -->
+                        <img src="/images/image3.jpg" alt="" />
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- <Image src="/images/image4.jpg" alt="" width={800} height={600} /> -->
+                        <img src="/images/image4.jpg" alt="" />
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- <Image src="/images/image5.jpg" alt="" width={800} height={600} /> -->
+                        <img src="/images/image5.jpg" alt="" />
+                    </div>
                 </div>
                 <!-- Si necesitamos botones de navegación -->
                 <div class="swiper-button-prev"></div>
