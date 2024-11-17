@@ -8,7 +8,7 @@ import stringsImages from "@/utils/imagesGallery";
 // Datos de la página
 const title: string = "Galeria";
 const subTitle: string = "";
-const imagesGallery = stringsImages;
+const imagesGallery = stringsImages.stringsGallery;
 ---
 
 <Layout>
@@ -23,46 +23,29 @@ const imagesGallery = stringsImages;
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
-                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center">
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center" id="my-slider">
                 <!-- Los slides -->
                     {
-                        imagesGallery.stringsGallery.map((image, index) => (
-                            <div class="swiper-slide">
-                                <img src={image.src} alt={image.alt} />
-                            </div>
+                        imagesGallery.map((image, index) => (
+                        <a
+                            class="swiper-slide overflow-hidden rounded-lg"
+                            href={image.src}
+                            target="_blank"
+                            data-cropped="true"
+                        >
+                            <img src={image.src} alt={image.alt} class="object-cover w-full h-full"/>
+                        </a>
                         ))
                     }
                 </div>
                 <!-- Si necesitamos botones de navegación -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev hidden max-sm:w-14 max-sm:h-14 rounded-xl"></div>
+                <div class="swiper-button-next hidden max-sm:w-14 max-sm:h-14 rounded-xl"></div>
             </div>
         </div>
     </section>
 </Layout>
 <style>
-    .swiper {
-        /* width: 600px;
-        height: 300px; */
-    }
-    .swiper-slide {
-        /* height: 600px; */
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    .swiper-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .swiper-button-next,
-    .swiper-button-prev {
-        /* background-color: white; */
-        width: 60px;
-        height: 60px;
-        border-radius: 10px;
-        text-decoration: none;
-    }
     /* .swiper-button-prev {
         transform: rotate(180deg); /* rotar arrow-next.svg para reutilizar el mismo icono*/
    /* } */
@@ -77,6 +60,8 @@ const imagesGallery = stringsImages;
 
     // Módulo Navigation de Swiper y estilos
     import { Navigation } from "swiper/modules";
+    import PhotoSwipeLightbox from 'photoswipe/lightbox';
+    import 'photoswipe/style.css';
 
 
     // Configurar Swiper
@@ -102,4 +87,10 @@ const imagesGallery = stringsImages;
             nextEl: ".swiper-button-next",
         }
     });
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#my-slider',
+        children: 'a',
+        pswpModule: () => import('photoswipe')
+    });
+    lightbox.init();
 </script>
