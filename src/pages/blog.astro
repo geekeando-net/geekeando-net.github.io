@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import TitleSection from "@/components/ui/TitleSection.astro"
+
+const allPosts = await Astro.glob('@posts/*.md');
+const title: string = "Blog";
+const subTitle: string = "";
+---
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+            <TitleSection
+                title={ title }
+                subTitle={ subTitle }
+            />
+        </div>
+        <div class="mt-12 grid items-center gap-6 lg:grid-cols-2 lg:gap-16">
+            <ul>
+                {allPosts.map((post) => (
+                <li><a href={post.url} >{post.frontmatter.title}</a></li>
+                ))}
+            </ul>
+        </div>
+    </section>
+</Layout>
