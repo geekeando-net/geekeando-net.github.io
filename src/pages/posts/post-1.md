@@ -24,3 +24,4 @@ tags: ["blog", "astro", "test","segundo"]
 ## Próximos pasos
 
 Terminaré el tutorial de Astro, y luego seguiré añadiendo más publicaciones. Mira este espacio para más por venir.
+Es para pruebas
