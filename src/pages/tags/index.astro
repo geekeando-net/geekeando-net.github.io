@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const allPosts = await Astro.glob('@posts/*.md');
+const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+const title: string = "Blog";
+const subTitle: string = "";
+---
+
+<Layout>
+    <div>
+        {tags.map((tag) => (
+            <a href={`/tags/${tag}`} class="border-dotted m-1 rounded-lg px-4 py-2 text-lg">{tag}</a>
+        ))}
+    </div>
+</Layout>

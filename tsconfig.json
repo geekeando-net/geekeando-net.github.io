@@ -10,6 +10,7 @@
       "@styles/*": ["src/styles/*"],
       "@layouts/*": ["src/layouts/*"],
       "@images/*": ["src/images/*"],
+      "@posts/*": ["src/pages/posts/*"],
     }
   }
 }
