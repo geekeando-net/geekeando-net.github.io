@@ -16,7 +16,7 @@ export default defineConfig({
       webAnalytics: {
           enabled:true,
       },
-      runtime: 'nodejs18.x'
+      runtime: 'nodejs20.x'
     }
   ),
 });
