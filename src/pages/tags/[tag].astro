@@ -1,9 +1,9 @@
 ---
 import Layout from "@/layouts/Layout.astro"
-
+export const prerender = true;
 export async function getStaticPaths() {
-    const allPosts = await Astro.glob('../posts/*.md');
-
+    const allPosts = await Astro.glob("@posts/*.md");
+    console.log(allPosts);
     const uniqueTags: string[] = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
 
     return uniqueTags.map((tag: string) => {
@@ -20,8 +20,12 @@ const { posts } = Astro.props;
 <Layout>
     <p>Posts etiquetados con {tag}</p>
     <ul>
-        {posts.map((post) => (
+        {
+        posts && Array.isArray(posts) ?(
+        posts.map((post) => (
             <li><a href={post.url}>{post.frontmatter.title}</a></li>
-        ))}
+        ))
+        ):(<li>No hay posts</li>)
+        }
     </ul>
 </Layout>
