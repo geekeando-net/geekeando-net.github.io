@@ -5,8 +5,8 @@ import { Image } from "astro:assets";
 import 'swiper/css';
 import "swiper/css/navigation";
 const allImages = await Astro.glob("../../public/images/gallery/*.*");
-allImages.forEach(image => console.log(image));
-console.log(allImages.length);
+// allImages.forEach(image => console.log(image));
+// console.log(allImages.length);
 // Datos de la página
 const title: string = "Galeria";
 const subTitle: string = "";
@@ -29,7 +29,7 @@ function getFileNameFromPath(path, separator = '/') {
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
-                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center" id="my-slider">
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center">
                 <!-- Los slides -->
                     {
                         allImages.map((image, index) => (
