@@ -22,10 +22,10 @@ export async function getStaticPaths() {
         [key: string]: any;
     }>("@posts/*.md");
     // allPosts.forEach(element => console.log(element));
-    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post: BlogPost) => post.frontmatter.tags || []))];
+    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => post.frontmatter.tags || []))];
 
-    return uniqueTags.map((tag: string) => {
-        const filteredPosts: BlogPost[] = allPosts.filter((post: BlogPost) => post.frontmatter.tags?.includes(tag));
+    return uniqueTags.map((tag) => {
+        const filteredPosts = allPosts.filter((post) => post.frontmatter.tags?.includes(tag));
         return {
             params: { tag },
             props: { posts: filteredPosts },
