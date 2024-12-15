@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro"
 
-interface BlogPost {
+interface MarkdownPost {
     frontmatter: {
         title: string;
         tags: string[];
@@ -16,16 +16,12 @@ interface BlogPost {
 
 export const prerender = true;
 export async function getStaticPaths() {
-    const allPosts = await Astro.glob<{
-        title: string;
-        tags: string[];
-        [key: string]: any;
-    }>("@posts/*.md");
+    const allPosts = await Astro.glob<MarkdownPost>("@posts/*.md");
     // allPosts.forEach(element => console.log(element));
-    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => post.frontmatter.tags || []))];
+    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => (post.frontmatter.tags || []) as string[]))];
 
     return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post) => post.frontmatter.tags?.includes(tag));
+        const filteredPosts = allPosts.filter((post): post is MarkdownPost => post.frontmatter.tags?.includes(tag) || false);
         return {
             params: { tag },
             props: { posts: filteredPosts },
@@ -33,7 +29,7 @@ export async function getStaticPaths() {
     });
 }
 const { tag } = Astro.params;
-const { posts } = Astro.props as { posts: BlogPost[]};
+const { posts } = Astro.props as { posts: MarkdownPost[]};
 ---
 <Layout>
     <p>Posts etiquetados con {tag}</p>
