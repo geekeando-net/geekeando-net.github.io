@@ -1,12 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro"
 import type { MarkdownInstance } from 'astro';
+
+interface Frontmatter {
+    title: string;
+    tags: string[];
+    [key: string]: any;
+}
 interface MarkdownPost {
-    frontmatter: {
-        title: string;
-        tags: string[];
-        [key: string]: any;
-    };
+    frontmatter: Frontmatter;
     url: string;
     file: string;
     rawContent(): string;
