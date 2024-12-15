@@ -14,14 +14,27 @@ interface MarkdownPost {
     Content: any;
 }
 
+interface Params {
+    tag: string;
+}
+
+interface Props {
+    posts: MarkdownPost[];
+}
+
+interface StaticPath {
+    params: Params;
+    props: Props;
+}
+
 export const prerender = true;
-export async function getStaticPaths() {
-    const allPosts = await Astro.glob<MarkdownPost>("@posts/*.md");
+export async function getStaticPaths(): Promise<StaticPath[]> {
+    const allPosts: MarkdownPost[] = await Astro.glob<MarkdownPost>("@posts/*.md");
     // allPosts.forEach(element => console.log(element));
     const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => (post.frontmatter.tags || []) as string[]))];
 
     return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post): post is MarkdownPost => post.frontmatter.tags?.includes(tag) || false);
+        const filteredPosts: MarkdownPost[] = allPosts.filter((post): post is MarkdownPost => post.frontmatter.tags?.includes(tag) || false);
         return {
             params: { tag },
             props: { posts: filteredPosts },
