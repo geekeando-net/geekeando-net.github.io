@@ -23,27 +23,30 @@ interface MarkdownPost {
     Content: any;
 }
 
+interface Params {
+    tag: string;
+}
 interface Props {
-    posts: MarkdownInstance<MarkdownPost>[];
+    postsFilter: MarkdownInstance<MarkdownPost>[];
 }
 
 interface StaticPath {
     params: { tag: string };
-    props: { posts: MarkdownPost[] };
 }
 
 export const prerender = true;
-export async function getStaticPaths(): Promise<StaticPath[]> {
-    // Importar todos los archivos .md en la carpeta @posts
-    const allPostFiles = import.meta.glob<MarkdownPost>("@posts/*.md", { eager: true });
+export async function getStaticPaths() {
+    const allPostFiles = import.meta.glob<MarkdownInstance<Frontmatter>>("@posts/*.md", { eager: true });
 
     // Convertir a un array de objetos
-    const allPosts: MarkdownPost[] = Object.values(allPostFiles);
-    console.log(allPosts.map((post) => post.frontmatter));
+    const allPosts = Object.values(allPostFiles);
+    // console.log(allPosts.map((post) => post.frontmatter));
     // Procesar los posts
-    const uniqueTags: string[] = [
-        ...new Set(allPosts.flatMap((post) => post.frontmatter.tags || []).filter(Boolean)),
-    ];
+    const uniqueTags = Array.from(
+        new Set(
+            allPosts.flatMap((post) => post.frontmatter.tags || []).filter(Boolean)
+        )
+    );
 
     return uniqueTags.map((tag) => {
         const filteredPosts = allPosts.filter((post) =>
@@ -51,22 +54,28 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
         );
         return {
             params: { tag },
-            props: { posts: filteredPosts },
+            props: { postsFilter: filteredPosts },
         };
     });
 }
 const { tag } = Astro.params;
-const { posts } = Astro.props as { posts: MarkdownInstance<MarkdownPost>[]};
+const { postsFilter } = Astro.props as Props;
+// console.log(postsFilter.map((post) => post));
+postsFilter.forEach((post, index) => {
+        console.log(`Post #${index}:`, JSON.stringify(post.frontmatter, null, 2));
+});
 ---
 <Layout>
     <p>Posts etiquetados con {tag}</p>
     <ul>
         {
-            posts.length > 0 ? (
-                posts.map((post) => (
+            postsFilter.length > 0 ? (
+            postsFilter.map((post) => (
                     <li>
                         <a href={post.url}>
-                            {post.frontmatter?.title ?? "Sin Titulo"}
+                            {
+                                (post.frontmatter as Frontmatter)?.title || "Sin Titulo"
+                            }
                         </a>
                     </li>
                 ))
