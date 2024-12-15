@@ -12,8 +12,9 @@ const title: string = "Galeria";
 const subTitle: string = "";
 
 // Función para extraer el nombre del archivo desde la URL
-function getFileNameFromPath(path, separator = '/') {
-    return path.split(separator).pop().split('?')[0];
+function getFileNameFromPath(path: string, separator = '/') {
+    const fileName = path.split(separator).pop();
+    return fileName ? fileName.split('?')[0] : '';
 }
 ---
 

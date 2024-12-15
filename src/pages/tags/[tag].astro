@@ -2,7 +2,8 @@
 import Layout from "@/layouts/Layout.astro"
 export const prerender = true;
 export async function getStaticPaths() {
-    const allPosts = await Astro.glob("@posts/*.md");
+    const allPosts: Post[] = await Astro.glob("@posts/*.md");
+    // allPosts.forEach(element => console.log(element));
     const uniqueTags: string[] = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
 
     return uniqueTags.map((tag: string) => {
@@ -15,6 +16,15 @@ export async function getStaticPaths() {
 }
 const { tag } = Astro.params;
 const { posts } = Astro.props;
+interface Post {
+    frontmatter: { tags: string[] };
+    file: string;
+    url: string;
+    rawContent: string;
+    compiledContent: string;
+    getHeadings: () => any[];
+    Content: () => any;
+}
 ---
 <Layout>
     <p>Posts etiquetados con {tag}</p>
