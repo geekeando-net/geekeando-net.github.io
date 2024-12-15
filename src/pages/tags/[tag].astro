@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro"
-
+import type { MarkdownInstance } from 'astro';
 interface MarkdownPost {
     frontmatter: {
         title: string;
@@ -19,7 +19,7 @@ interface Params {
 }
 
 interface Props {
-    posts: MarkdownPost[];
+    posts: MarkdownInstance<MarkdownPost>[];
 }
 
 interface StaticPath {
@@ -29,12 +29,12 @@ interface StaticPath {
 
 export const prerender = true;
 export async function getStaticPaths(): Promise<StaticPath[]> {
-    const allPosts: MarkdownPost[] = await Astro.glob<MarkdownPost>("@posts/*.md");
+    const allPosts: MarkdownInstance<MarkdownPost>[] = await Astro.glob<MarkdownPost>("@posts/*.md");
     // allPosts.forEach(element => console.log(element));
-    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => (post.frontmatter.tags || []) as string[]))];
+    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => post.frontmatter.tags))];
 
     return uniqueTags.map((tag) => {
-        const filteredPosts: MarkdownPost[] = allPosts.filter((post): post is MarkdownPost => post.frontmatter.tags?.includes(tag) || false);
+        const filteredPosts: MarkdownInstance<MarkdownPost>[] = allPosts.filter((post) => post.frontmatter.tags.includes(tag));
         return {
             params: { tag },
             props: { posts: filteredPosts },
@@ -42,7 +42,7 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
     });
 }
 const { tag } = Astro.params;
-const { posts } = Astro.props as { posts: MarkdownPost[]};
+const { posts } = Astro.props as { posts: MarkdownInstance<MarkdownPost>[]};
 ---
 <Layout>
     <p>Posts etiquetados con {tag}</p>
