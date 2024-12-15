@@ -66,8 +66,8 @@ function getFileNameFromPath(path, separator = '/') {
 
     // Módulo Navigation de Swiper y estilos
     import { Navigation } from "swiper/modules";
-    import PhotoSwipeLightbox from 'photoswipe/lightbox';
-    import 'photoswipe/style.css';
+    // import PhotoSwipeLightbox from 'photoswipe/lightbox';
+    // import 'photoswipe/style.css';
 
 
     // Configurar Swiper
@@ -93,10 +93,10 @@ function getFileNameFromPath(path, separator = '/') {
             nextEl: ".swiper-button-next",
         }
     });
-    const lightbox = new PhotoSwipeLightbox({
-        gallery: '#my-slider',
-        children: 'a',
-        pswpModule: () => import('photoswipe')
-    });
-    lightbox.init();
+    // const lightbox = new PhotoSwipeLightbox({
+    //     gallery: '#my-slider',
+    //     children: 'a',
+    //     pswpModule: () => import('photoswipe')
+    // });
+    // lightbox.init();
 </script>
