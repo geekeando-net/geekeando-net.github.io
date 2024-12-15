@@ -3,9 +3,16 @@ import Layout from "@/layouts/Layout.astro"
 import type { MarkdownInstance } from 'astro';
 
 interface Frontmatter {
-    title: string;
-    tags: string[];
-    [key: string]: any;
+    layout?: string;
+    title?: string;
+    pubDate?: string;
+    description?: string;
+    author?: string;
+    image?: {
+        url?: string;
+        alt?: string;
+    };
+    tags?: string[];
 }
 interface MarkdownPost {
     frontmatter: Frontmatter;
@@ -25,18 +32,27 @@ interface Props {
 }
 
 interface StaticPath {
-    params: Params;
-    props: Props;
+    params: { tag: string };
+    props: { posts: MarkdownPost[] };
 }
 
 export const prerender = true;
 export async function getStaticPaths(): Promise<StaticPath[]> {
-    const allPosts: MarkdownInstance<MarkdownPost>[] = await Astro.glob<MarkdownPost>("@posts/*.md");
-    // allPosts.forEach(element => console.log(element));
-    const uniqueTags: string[] = [...new Set(allPosts.flatMap((post) => post.frontmatter.tags))];
+    // Importar todos los archivos .md en la carpeta @posts
+    const allPostFiles = import.meta.glob<MarkdownPost>("@posts/*.md", { eager: true });
+
+    // Convertir a un array de objetos
+    const allPosts: MarkdownPost[] = Object.values(allPostFiles);
+    console.log(allPosts.map((post) => post.frontmatter));
+    // Procesar los posts
+    const uniqueTags: string[] = [
+        ...new Set(allPosts.flatMap((post) => post.frontmatter.tags || []).filter(Boolean)),
+    ];
 
     return uniqueTags.map((tag) => {
-        const filteredPosts: MarkdownInstance<MarkdownPost>[] = allPosts.filter((post) => post.frontmatter.tags.includes(tag));
+        const filteredPosts = allPosts.filter((post) =>
+            post.frontmatter.tags?.includes(tag)
+        );
         return {
             params: { tag },
             props: { posts: filteredPosts },
@@ -52,7 +68,11 @@ const { posts } = Astro.props as { posts: MarkdownInstance<MarkdownPost>[]};
         {
             posts.length > 0 ? (
                 posts.map((post) => (
-                    <li><a href={post.url}>{post.frontmatter.title}</a></li>
+                    <li>
+                        <a href={post.url}>
+                            {post.frontmatter?.title ?? "Sin Titulo"}
+                        </a>
+                    </li>
                 ))
             ) : (
                 <li>No hay posts</li>
