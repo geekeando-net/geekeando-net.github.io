@@ -4,11 +4,17 @@ import TitleSection from "@/components/ui/TitleSection.astro";
 import { Image } from "astro:assets";
 import 'swiper/css';
 import "swiper/css/navigation";
-import stringsImages from "@/utils/imagesGallery";
+const allImages = await Astro.glob("../../public/images/gallery/*.*");
+allImages.forEach(image => console.log(image));
+console.log(allImages.length);
 // Datos de la página
 const title: string = "Galeria";
 const subTitle: string = "";
-const imagesGallery = stringsImages.stringsGallery;
+
+// Función para extraer el nombre del archivo desde la URL
+function getFileNameFromPath(path, separator = '/') {
+    return path.split(separator).pop().split('?')[0];
+}
 ---
 
 <Layout>
@@ -26,14 +32,14 @@ const imagesGallery = stringsImages.stringsGallery;
                 <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center" id="my-slider">
                 <!-- Los slides -->
                     {
-                        imagesGallery.map((image, index) => (
+                        allImages.map((image, index) => (
                         <a
                             class="swiper-slide overflow-hidden rounded-lg"
-                            href={image.src}
+                            href={getFileNameFromPath(image.default.src,"public")}
                             target="_blank"
                             data-cropped="true"
                         >
-                            <img src={image.src} alt={image.alt} class="object-cover w-full h-full"/>
+                            <img src={getFileNameFromPath(image.default.src,"public")} alt={getFileNameFromPath(image.default.src)} class="object-cover w-full h-full"/>
                         </a>
                         ))
                     }

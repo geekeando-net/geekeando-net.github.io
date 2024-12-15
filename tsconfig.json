@@ -11,6 +11,7 @@
       "@layouts/*": ["src/layouts/*"],
       "@images/*": ["src/images/*"],
       "@posts/*": ["src/pages/posts/*"],
+      "@gallery/*":["public/images/gallery/*"],
     }
   }
 }
