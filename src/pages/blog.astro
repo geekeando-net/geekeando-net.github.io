@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro"
 import TitleSection from "@/components/ui/TitleSection.astro"
 import SinglePost from "@/components/ui/SinglePost.astro"
-const allPostsFIle = await import.meta.glob('@posts/*.md',{ eager: true });
+const allPostsFIle = import.meta.glob('@posts/*.md',{ eager: true });
 const allPosts = Object.values(allPostsFIle);
 
 // allPosts.forEach((post) => {

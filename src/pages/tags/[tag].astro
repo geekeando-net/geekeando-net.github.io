@@ -84,6 +84,7 @@ const urlPath = "/";
                                 text = { (post.frontmatter as Frontmatter)?.description }
                                 link = { {href:post.url,text:"Continuar Leyendo"} }
                                 svg = { arrowSVG }
+                                image = { (post.frontmatter as Frontmatter)?.image }
                                 key = { index }
                             />
                         ))

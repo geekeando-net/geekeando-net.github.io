@@ -3,7 +3,7 @@
     .content-markdown {
         font-family: 'Arial', sans-serif;
         line-height: 1.8;
-        color: #ddd;
+        color: rgb(163 163 163);
     }
 
     .content-markdown h1, .content-markdown h2, .content-markdown h3, .content-markdown h4, .content-markdown h5, .content-markdown h6 {
@@ -14,7 +14,7 @@
 
     .content-markdown p {
         margin: 1rem 0;
-        color: #bdc3c7;
+        /* color: #bdc3c7; */
     }
 
     .content-markdown a {

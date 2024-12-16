@@ -9,7 +9,7 @@ En este tutorial, nos sumergiremos en el arte de diseñar nubes de etiquetas uti
 author: 'Draexx'
 image:
     url: '../src/pages/posts/images/nube-de-tags.jpg'
-    alt: 'logo astro'
+    alt: 'nube-de-tags'
 tags: ["html", "css", "webdev", "tutorial"]
 ---
 
