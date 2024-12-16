@@ -1,5 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro"
+import TitleSection from "@/components/ui/TitleSection.astro"
+import SinglePost from "@/components/ui/SinglePost.astro";
 import type { MarkdownInstance } from 'astro';
 
 interface Frontmatter {
@@ -23,15 +25,8 @@ interface MarkdownPost {
     Content: any;
 }
 
-interface Params {
-    tag: string;
-}
 interface Props {
     postsFilter: MarkdownInstance<MarkdownPost>[];
-}
-
-interface StaticPath {
-    params: { tag: string };
 }
 
 export const prerender = true;
@@ -40,7 +35,10 @@ export async function getStaticPaths() {
 
     // Convertir a un array de objetos
     const allPosts = Object.values(allPostFiles);
-    // console.log(allPosts.map((post) => post.frontmatter));
+    // console.log(allPosts.map((post) => post.Content));
+    // allPosts.forEach((post) => {
+    //     console.log(JSON.stringify(post, null, 2));
+    // });
     // Procesar los posts
     const uniqueTags = Array.from(
         new Set(
@@ -60,28 +58,45 @@ export async function getStaticPaths() {
 }
 const { tag } = Astro.params;
 const { postsFilter } = Astro.props as Props;
-// console.log(postsFilter.map((post) => post));
-postsFilter.forEach((post, index) => {
-        console.log(`Post #${index}:`, JSON.stringify(post.frontmatter, null, 2));
-});
+
+const title: string = `Posts etiquetados con  "${tag}"`;
+const subTitle: string = "";
+const arrowSVG: string = `<svg
+class="h-4 w-4 flex-shrink-0 transition ease-in-out group-hover:translate-x-1"
+fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /> </svg>`;
+const urlPath = "/";
 ---
 <Layout>
-    <p>Posts etiquetados con {tag}</p>
-    <ul>
-        {
-            postsFilter.length > 0 ? (
-            postsFilter.map((post) => (
-                    <li>
-                        <a href={post.url}>
-                            {
-                                (post.frontmatter as Frontmatter)?.title || "Sin Titulo"
-                            }
-                        </a>
-                    </li>
-                ))
-            ) : (
-                <li>No hay posts</li>
-            )
-        }
-    </ul>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+            <TitleSection
+                title={ title }
+                subTitle={ subTitle }
+            />
+            <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
+                {
+                    postsFilter.length > 0 ? (
+                        postsFilter.map((post,index) => (
+                            <SinglePost
+                                icon = { '' }
+                                title = { (post.frontmatter as Frontmatter)?.title || "Sin Titulo" }
+                                text = { (post.frontmatter as Frontmatter)?.description }
+                                link = { {href:post.url,text:"Continuar Leyendo"} }
+                                svg = { arrowSVG }
+                                key = { index }
+                            />
+                        ))
+                    ) : (
+                    <SinglePost
+                        icon = { '' }
+                        title = { 'No hay posts' }
+                        text = { '' }
+                        link = { {href:`window.location.href='${urlPath}'`,text:"Go back!"} }
+                    />
+                    )
+                }
+            </div>
+        </div>
+    </section>
 </Layout>

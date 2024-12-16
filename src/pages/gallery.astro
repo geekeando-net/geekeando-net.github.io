@@ -1,13 +1,10 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import { Image } from "astro:assets";
 import 'swiper/css';
 import "swiper/css/navigation";
 const allImages = await Astro.glob("../../public/images/gallery/*.*");
-// allImages.forEach(image => console.log(image));
-// console.log(allImages.length);
-// Datos de la página
+
 const title: string = "Galeria";
 const subTitle: string = "";
 
@@ -34,14 +31,18 @@ function getFileNameFromPath(path: string, separator = '/') {
                 <!-- Los slides -->
                     {
                         allImages.map((image, index) => (
-                        <a
-                            class="swiper-slide overflow-hidden rounded-lg"
-                            href={getFileNameFromPath(image.default.src,"public")}
-                            target="_blank"
-                            data-cropped="true"
-                        >
-                            <img src={getFileNameFromPath(image.default.src,"public")} alt={getFileNameFromPath(image.default.src)} class="object-cover w-full h-full"/>
-                        </a>
+                            <a
+                                class="swiper-slide overflow-hidden rounded-lg"
+                                href={getFileNameFromPath(image.default.src,"public")}
+                                target="_blank"
+                                data-cropped="true"
+                            >
+                                <img
+                                    src={getFileNameFromPath(image.default.src,"public")}
+                                    alt={getFileNameFromPath(image.default.src)}
+                                    class="object-cover w-full h-full"
+                                />
+                            </a>
                         ))
                     }
                 </div>

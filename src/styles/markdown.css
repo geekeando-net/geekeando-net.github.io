@@ -1,0 +1,29 @@
+@tailwind components;
+@layer components {
+    .content-markdown {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.8;
+        color: #ddd;
+    }
+
+    .content-markdown h1, .content-markdown h2, .content-markdown h3, .content-markdown h4, .content-markdown h5, .content-markdown h6 {
+        font-weight: bold;
+        margin-top: 1.5rem;
+        color: #f39c12;
+    }
+
+    .content-markdown p {
+        margin: 1rem 0;
+        color: #bdc3c7;
+    }
+
+    .content-markdown a {
+        color: #1abc9c;
+        text-decoration: underline;
+    }
+
+    .content-markdown ul, .content-markdown ol {
+        padding-left: 1.5rem;
+        margin: 1rem 0;
+    }
+}

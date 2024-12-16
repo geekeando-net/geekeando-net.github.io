@@ -1,0 +1,33 @@
+---
+import Icon from "@components/ui/Icon.astro"
+
+const { icon, title, text, link, svg, image } = Astro.props;
+---
+
+<div class="flex gap-x-7 py-6 items-start">
+	{ icon && <Icon name={ icon } />}
+    <div class="grid lg:grid-cols-2 gap-4 w-full">
+        <div class="grow">
+            <h3 class="font-bold text-neutral-300">
+                { title }
+            </h3>
+            <p class="mt-1 text-sm text-neutral-400">
+                <Fragment
+                    set:html = { text }
+                />
+            </p>
+            { link && (
+                <a
+                    class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
+                    href={ link.href }>
+                        { link.text } <Fragment set:html={svg} />
+                </a>
+            )}
+        </div>
+        { image && (
+            <div class="shrink-0 flex align-center justify-center">
+                <img class="w-40 lg:w-96 h-auto object-cover" src={ image.url } alt={ image.alt } />
+            </div>
+        )}
+	</div>
+</div>

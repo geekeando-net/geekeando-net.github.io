@@ -1,19 +1,21 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import TitleSection from '@/components/ui/TitleSection.astro';
-const { frontmatter } = Astro.props;
-
+import '@styles/markdown.css';
+const { frontmatter, rawContent, compiledContent } = Astro.props;
+const contentHtml = await compiledContent();
+// console.log(Astro.props);
 ---
 <Layout>
     <article class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <header class="text-neutral-200">
-            <h1 class="text-balance text-xl font-bold tracking-tight text-neutral-200 md:text-2xl md:leading-tight">
+            <h2 class="text-center text-balance text-xl font-bold tracking-tight text-neutral-200 md:text-2xl md:leading-tight">
                 {frontmatter.title}
-            </h1>
-            <p><em>{frontmatter.description}</em></p>
+            </h2>
+            <p class="py-3"><em>{frontmatter.description}</em></p>
             <p>Publicado el: {frontmatter.pubDate.toString().slice(0,10)}</p>
-            <p>Escrito por:{frontmatter.author}</p>
-            <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+            <p>Escrito por: {frontmatter.author}</p>
+            <img class="w-auto py-3 center" src={frontmatter.image.url} width="350" alt={frontmatter.image.alt} />
             <div class="flex flex-wrap">
                 {frontmatter.tags.map((tag: string) => (
                     <p class="border-dotted	m-1 rounded-lg px-4 py-2 text-lg"><a href={`/tags/${tag}`}>{tag}</a></p>
@@ -22,8 +24,7 @@ const { frontmatter } = Astro.props;
         </header>
         <hr/>
         <br/>
-        <section class="text-neutral-200">
-            <slot />
+        <section id="content-post" class="content-markdown" set:html={contentHtml}>
         </section>
     </article>
 </Layout>

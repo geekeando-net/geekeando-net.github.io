@@ -18,4 +18,9 @@ export default defineConfig({
       },
     }
   ),
+  markdown: {
+    syntaxHighlight: 'shiki', // prism o highlight.js
+    remarkPlugins: [], // Agrega aquí plugins adicionales si los necesitas
+    rehypePlugins: [], // Si quieres manipular HTML generado
+  },
 });
