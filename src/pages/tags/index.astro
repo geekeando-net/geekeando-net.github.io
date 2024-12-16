@@ -1,16 +1,116 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-
+import TitleSection from "@/components/ui/TitleSection.astro";
 const allPosts = await Astro.glob('@posts/*.md');
-const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
-const title: string = "Blog";
+const allTags = allPosts.map((post) => post.frontmatter.tags).flat();
+const tagCounts = allTags.reduce((acc, tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+}, {});
+const tags = Object.keys(tagCounts);
+const title: string = "Nube de Etiquetas";
 const subTitle: string = "";
 ---
 
 <Layout>
-    <div>
-        {tags.map((tag) => (
-            <a href={`/tags/${tag}`} class="border-dotted m-1 rounded-lg px-4 py-2 text-lg">{tag}</a>
-        ))}
-    </div>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+            <TitleSection
+                title={ title }
+                subTitle={ subTitle }
+            />
+            <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
+                <ul class="cloud" role="navigation" aria-label="Webdev tag cloud">
+                    {tags.map((tag) => (
+                        <li>
+                            {/* <a data-weight="4" href="/tags/http">HTTP</a> */}
+                            <a data-weight={tagCounts[tag]} href={`/tags/${tag}`} >{tag} {tagCounts[tag]}</a>
+                        </li>
+                    ))}
+                    <li><a data-weight="4" href="/tags/http">HTTP</a></li>
+                    <li><a data-weight="2" href="/tags/ember">Ember</a></li>
+                    <li><a data-weight="5" href="/tags/sass">Sass</a></li>
+                    <li><a data-weight="8" href="/tags/html">HTML</a></li>
+                    <li><a data-weight="6" href="/tags/flexbox">FlexBox</a></li>
+                    <li><a data-weight="4" href="/tags/api">API</a></li>
+                    <li><a data-weight="5" href="/tags/vuejs">VueJS</a></li>
+                    <li><a data-weight="6" href="/tags/grid">Grid</a></li>
+                    <li><a data-weight="3" href="/tags/rest">Rest</a></li>
+                    <li><a data-weight="9" href="/tags/javascript">JavaScript</a></li>
+                    <li><a data-weight="3" href="/tags/animation">Animation</a></li>
+                    <li><a data-weight="7" href="/tags/react">React</a></li>
+                    <li><a data-weight="8" href="/tags/css">CSS</a></li>
+                    <li><a data-weight="1" href="/tags/cache">Cache</a></li>
+                    <li><a data-weight="3" href="/tags/less">Less</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 </Layout>
+<style>
+    .cloud {
+        list-style: none;
+        padding-left: 0;
+        display: flex;
+        flex-wrap: wrap;
+        /* align-items: center; */
+        justify-content: center;
+        /* line-height: 2.5rem; */
+    }
+
+    .cloud li {
+        margin: 0 0.5rem;
+    }
+
+    .cloud a {
+        --size: 4;
+        --color: #f39c12;
+        color: var(--color);
+        font-size: calc(var(--size) * 1rem);
+        display: block;
+        padding: 0.125rem 0.25rem;
+        text-decoration: none;
+        position: relative;
+        opacity: calc((15 - (9 - var(--size))) / 15);
+    }
+
+    .cloud[data-show-value] a::after {
+        content: " (" attr(data-weight) ")";
+        font-size: 1rem;
+    }
+    .cloud a:focus {
+        outline: 1px dashed;
+    }
+    .cloud a[data-weight="1"] { --size: 1; }
+    .cloud a[data-weight="2"] { --size: 2; }
+    .cloud a[data-weight="3"] { --size: 3; }
+    .cloud a[data-weight="4"] { --size: 4; }
+    .cloud a[data-weight="5"] { --size: 5; }
+    .cloud a[data-weight="6"] { --size: 6; }
+    .cloud a[data-weight="7"] { --size: 7; }
+    .cloud a[data-weight="8"] { --size: 8; }
+    .cloud a[data-weight="9"] { --size: 9; }
+
+    .cloud li:nth-child(2n+1) a { --color: #2ecc71; }
+    .cloud li:nth-child(3n+1) a { --color: #2980b9; }
+    .cloud li:nth-child(4n+1) a { --color: #9b59b6; }
+    .cloud li:nth-child(5n+1) a { --color: #e74c3c; }
+
+    .cloud a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 0;
+        height: 100%;
+        background: var(--color);
+        transform: translate(-50%, 0);
+        opacity: 0.15;
+        transition: width 0.25s;
+    }
+
+    .cloud a:focus::before,
+    .cloud a:hover::before {
+    width: 100%;
+    }
+</style>

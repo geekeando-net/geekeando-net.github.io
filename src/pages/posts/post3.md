@@ -1,7 +1,7 @@
 ---
-layout: ../../layouts/PostLayout.astro
+layout: '../../layouts/PostLayout.astro'
 title: 'Cuarto post'
-pubDate: 2024-11-18
+pubDate: '2024-11-18'
 description: 'primera descripcion'
 author: 'Draexx'
 image:

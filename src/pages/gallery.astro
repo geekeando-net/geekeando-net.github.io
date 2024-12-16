@@ -1,14 +1,18 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import { Image } from "astro:assets";
 import 'swiper/css';
 import "swiper/css/navigation";
-import stringsImages from "@/utils/imagesGallery";
-// Datos de la página
+const allImages = await Astro.glob("../../public/images/gallery/*.*");
+
 const title: string = "Galeria";
 const subTitle: string = "";
-const imagesGallery = stringsImages.stringsGallery;
+
+// Función para extraer el nombre del archivo desde la URL
+function getFileNameFromPath(path: string, separator = '/') {
+    const fileName = path.split(separator).pop();
+    return fileName ? fileName.split('?')[0] : '';
+}
 ---
 
 <Layout>
@@ -23,18 +27,22 @@ const imagesGallery = stringsImages.stringsGallery;
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
-                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center" id="my-slider">
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center">
                 <!-- Los slides -->
                     {
-                        imagesGallery.map((image, index) => (
-                        <a
-                            class="swiper-slide overflow-hidden rounded-lg"
-                            href={image.src}
-                            target="_blank"
-                            data-cropped="true"
-                        >
-                            <img src={image.src} alt={image.alt} class="object-cover w-full h-full"/>
-                        </a>
+                        allImages.map((image, index) => (
+                            <a
+                                class="swiper-slide overflow-hidden rounded-lg"
+                                href={getFileNameFromPath(image.default.src,"public")}
+                                target="_blank"
+                                data-cropped="true"
+                            >
+                                <img
+                                    src={getFileNameFromPath(image.default.src,"public")}
+                                    alt={getFileNameFromPath(image.default.src)}
+                                    class="object-cover w-full h-full"
+                                />
+                            </a>
                         ))
                     }
                 </div>
@@ -60,8 +68,8 @@ const imagesGallery = stringsImages.stringsGallery;
 
     // Módulo Navigation de Swiper y estilos
     import { Navigation } from "swiper/modules";
-    import PhotoSwipeLightbox from 'photoswipe/lightbox';
-    import 'photoswipe/style.css';
+    // import PhotoSwipeLightbox from 'photoswipe/lightbox';
+    // import 'photoswipe/style.css';
 
 
     // Configurar Swiper
@@ -87,10 +95,10 @@ const imagesGallery = stringsImages.stringsGallery;
             nextEl: ".swiper-button-next",
         }
     });
-    const lightbox = new PhotoSwipeLightbox({
-        gallery: '#my-slider',
-        children: 'a',
-        pswpModule: () => import('photoswipe')
-    });
-    lightbox.init();
+    // const lightbox = new PhotoSwipeLightbox({
+    //     gallery: '#my-slider',
+    //     children: 'a',
+    //     pswpModule: () => import('photoswipe')
+    // });
+    // lightbox.init();
 </script>

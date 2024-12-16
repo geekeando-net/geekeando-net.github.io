@@ -1,13 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 
 import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
   prefetch: true,
-  output: 'server',
+  output: 'static',
   integrations: [
     tailwind(),
   ],
@@ -18,4 +18,9 @@ export default defineConfig({
       },
     }
   ),
+  markdown: {
+    syntaxHighlight: 'shiki', // prism o highlight.js
+    remarkPlugins: [], // Agrega aquí plugins adicionales si los necesitas
+    rehypePlugins: [], // Si quieres manipular HTML generado
+  },
 });
