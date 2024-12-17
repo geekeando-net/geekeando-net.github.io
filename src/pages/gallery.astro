@@ -3,16 +3,12 @@ import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
 import 'swiper/css';
 import "swiper/css/navigation";
-const allImages = await Astro.glob("../../public/images/gallery/*.*");
-
+import 'photoswipe/style.css';
+const allImagesFile = import.meta.glob("@images/gallery/*.*",{eager: true});
+const allImages = Object.values(allImagesFile) as any[];
 const title: string = "Galeria";
 const subTitle: string = "";
 
-// Función para extraer el nombre del archivo desde la URL
-function getFileNameFromPath(path: string, separator = '/') {
-    const fileName = path.split(separator).pop();
-    return fileName ? fileName.split('?')[0] : '';
-}
 ---
 
 <Layout>
@@ -23,7 +19,7 @@ function getFileNameFromPath(path: string, separator = '/') {
                 subTitle={ subTitle }
             />
         </div>
-        <div class="mt-12 grid items-center gap-6 lg:grid-cols-2 lg:gap-16">
+        <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
@@ -33,14 +29,15 @@ function getFileNameFromPath(path: string, separator = '/') {
                         allImages.map((image) => (
                             <a
                                 class="swiper-slide overflow-hidden rounded-lg"
-                                href={getFileNameFromPath(image.default.src,"public")}
+                                href={image.default.src}
+                                data-pswp-width={image.default.width/2} data-pswp-height={image.default.height/2}
                                 target="_blank"
                                 data-cropped="true"
                             >
                                 <img
-                                    src={getFileNameFromPath(image.default.src,"public")}
-                                    alt={getFileNameFromPath(image.default.src)}
-                                    class="object-cover w-full h-full"
+                                    src={image.default.src}
+                                    alt={image.default.src}
+                                    class="object-cover w-full h-full rounded-lg"
                                 />
                             </a>
                         ))
@@ -69,12 +66,13 @@ function getFileNameFromPath(path: string, separator = '/') {
     // Módulo Navigation de Swiper y estilos
     import { Navigation } from "swiper/modules";
     import PhotoSwipeLightbox from 'photoswipe/lightbox';
-    import 'photoswipe/style.css';
+ 
 
 
     // Configurar Swiper
     const swiper = new Swiper(".swiper", {
         modules: [Navigation], // definir los módulos a usar
+        effect: "flip",        // definir efecto de transición
         loop: true,            // definir si los slides estarán en bucle
         slidesPerView: "auto",      // agregar número de slides para la pantalla
         spaceBetween: 40,      // separación entre slides en px
@@ -98,6 +96,9 @@ function getFileNameFromPath(path: string, separator = '/') {
     const lightbox = new PhotoSwipeLightbox({
         gallery: '#my-slider',
         children: 'a',
+        showHideAnimationType: 'zoom',
+        showAnimationDuration: 1000,
+        hideAnimationDuration: 1000,
         pswpModule: () => import('photoswipe')
     });
     lightbox.init();

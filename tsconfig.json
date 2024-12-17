@@ -8,11 +8,11 @@
       "astro/*": ["./src/astro/*"],
       "@utils/*": ["src/utils/*"],
       "@components/*": ["src/components/*"],
-      "@styles/*": ["src/assets/styles/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@images/*": ["src/assets/images/*"],
       "@posts/*": ["src/pages/posts/*"],
-      "@gallery/*":["public/images/gallery/*"],
+      "@styles/*": ["src/assets/styles/*"],
+      "@images/*": ["src/assets/images/*"],
+      "@gallery/*":["src/assets/images/gallery/*"],
     }
   }
 }
