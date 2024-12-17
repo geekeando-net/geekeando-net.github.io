@@ -66,8 +66,6 @@ const subTitle: string = "";
     // Módulo Navigation de Swiper y estilos
     import { Navigation } from "swiper/modules";
     import PhotoSwipeLightbox from 'photoswipe/lightbox';
- 
-
 
     // Configurar Swiper
     const swiper = new Swiper(".swiper", {
@@ -75,7 +73,10 @@ const subTitle: string = "";
         effect: "flip",        // definir efecto de transición
         loop: true,            // definir si los slides estarán en bucle
         slidesPerView: "auto",      // agregar número de slides para la pantalla
-        spaceBetween: 40,      // separación entre slides en px
+        spaceBetween: 40,
+        autoplay: {
+            delay: 5000,
+        },    // separación entre slides en px
         breakpoints: {
             // Cuando la pantalla es >= 768px
             768: {
