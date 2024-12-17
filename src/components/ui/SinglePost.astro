@@ -54,20 +54,3 @@ if (image?.url) {
         )}
 	</div>
 </div>
-<script>
-	const imgs = document.getElementsByTagName("img")
-	for (const img of imgs) {
-		let element = img as HTMLElement
-		let totalOffsetTop = 0
-		while (element) {
-			totalOffsetTop += element.offsetTop
-			element = element.offsetParent as HTMLElement
-		}
-		console.log(img.alt)
-		console.log("img.offsetTop: ", img.offsetTop)
-		console.log("totalOffsetTop: ", totalOffsetTop)
-		console.log("getBoundingClientRect: ", img.getBoundingClientRect().top)
-		console.log("getBoundingClientRect and scrollY: ", img.getBoundingClientRect().top + window.scrollY)
-		console.log("")
-	}
-</script>

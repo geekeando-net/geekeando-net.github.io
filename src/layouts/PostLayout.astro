@@ -1,14 +1,40 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import TitlePost from '@/components/ui/TitlePost.astro';
+import CustomImage from '@/components/ui/CustomImage.astro';
 import '@styles/markdown.css';
-const { frontmatter, compiledContent } = Astro.props;
-const contentHtml = await compiledContent();
+const { frontmatter } = Astro.props;
+const images = import.meta.glob('../assets/images/posts/*.{jpg,png,webp}');
+let imageLocalUrl = null;
+if (frontmatter.image?.url) {
+    // Obtener solo el nombre del archivo desde image.url
+    const imageFileName = frontmatter.image.url.split('/').pop(); // e.g., "how-to-backup-and-restore-postgresql.png"
+
+    // Buscar la ruta en las claves de images
+    const imageKey = Object.keys(images).find((key) => key.endsWith(imageFileName));
+
+    if (imageKey) {
+        try {
+            const module = await images[imageKey](); // Cargar la imagen
+            imageLocalUrl = (module as { default: string }).default; // URL de la imagen
+        } catch (e) {
+            console.error(`Error cargando la imagen: ${imageKey}`, e);
+        }
+    } else {
+        console.error(`No se encontró la imagen: ${imageFileName}`);
+    }
+}
+
+// console.log(JSON.stringify(imageLocalUrl));
 ---
 <Layout>
     <article class="mx-auto max-w-[85rem] px-4 py-0 sm:px-6 lg:px-8 lg:py-14">
         <header class="text-neutral-200">
-            <img class="w-auto py-3 center" src={frontmatter.image.url} width="350" alt={frontmatter.image.alt} />
+            { imageLocalUrl && (
+                <div class="flex justify-center object-cover">
+                    <CustomImage src={imageLocalUrl} alt={frontmatter.image.alt ?? ''} class="object-cover"/>
+                </div>
+            )}
             <div class="flex flex-col lg:flex-row lg:justify-between">
                 <p>Escrito por: {frontmatter.author}</p>
                 <p class="">Publicado el: {frontmatter.pubDate.toString().slice(0,10)}</p>
@@ -32,10 +58,8 @@ const contentHtml = await compiledContent();
         </header>
         <hr/>
         <br/>
-        <section id="content-post" class="content-markdown" set:html={contentHtml}>
+        <section id="content-post" class="content-markdown">
+            <slot />
         </section>
     </article>
 </Layout>
-<style>
-
-</style>
