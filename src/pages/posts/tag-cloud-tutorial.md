@@ -8,7 +8,7 @@ En este tutorial, nos sumergiremos en el arte de diseñar nubes de etiquetas uti
 '
 author: 'Draexx'
 image:
-    url: '../src/pages/posts/images/nube-de-tags.jpg'
+    url: '../src/pages/posts/images/nube-de-tags.png'
     alt: 'nube-de-tags'
 tags: ["html", "css", "webdev", "tutorial"]
 ---

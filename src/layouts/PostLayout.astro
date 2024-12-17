@@ -7,21 +7,28 @@ const { frontmatter, compiledContent } = Astro.props;
 const contentHtml = await compiledContent();
 ---
 <Layout>
-    <article class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <article class="mx-auto max-w-[85rem] px-4 py-0 sm:px-6 lg:px-8 lg:py-14">
         <header class="text-neutral-200">
-            <TitlePost
-                title={frontmatter.title}
-                subTitle={frontmatter.description}
-            />
-            <p>Publicado el: {frontmatter.pubDate.toString().slice(0,10)}</p>
-            <p>Escrito por: {frontmatter.author}</p>
             <img class="w-auto py-3 center" src={frontmatter.image.url} width="350" alt={frontmatter.image.alt} />
+            <div class="flex flex-col lg:flex-row lg:justify-between">
+                <p>Escrito por: {frontmatter.author}</p>
+                <p class="">Publicado el: {frontmatter.pubDate.toString().slice(0,10)}</p>
+            </div>
+            <TitlePost
+            title={frontmatter.title}
+            subTitle={frontmatter.description}
+            />
             <div class="flex flex-wrap">
-                {frontmatter.tags.map((tag: string) => (
-                    <p class="border-dotted	m-1 rounded-lg px-4 py-2 text-lg">
-                        <a href={`/tags/${tag}`}>{tag}</a>
-                    </p>
-                ))}
+                <ul class="flex flex-wrap justify-center pl-0 list-none">
+                    {frontmatter.tags.map((tag: string) => (
+                        <li class="my-0 mx-2">
+                            <a class="block no-underline relative after:text-base focus:outline-dashed focus:outline-1 before:absolute before:bg-orange-400" href={`/tags/${tag}`}>{tag}</a>
+                        </li>
+                        // <p class="border-dotted	m-1 rounded-lg px-4 py-2 text-lg">
+                            // <a href={`/tags/${tag}`}>{tag}</a>
+                        // </p>
+                    ))}
+                </ul>
             </div>
         </header>
         <hr/>
@@ -30,3 +37,6 @@ const contentHtml = await compiledContent();
         </section>
     </article>
 </Layout>
+<style>
+
+</style>
