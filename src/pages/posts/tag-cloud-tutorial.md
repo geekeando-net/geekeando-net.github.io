@@ -8,7 +8,7 @@ En este tutorial, nos sumergiremos en el arte de diseñar nubes de etiquetas uti
 '
 author: 'Draexx'
 image:
-    url: '../src/pages/posts/images/nube-de-tags.png'
+    url: '../src/assets/images/posts/tag-cloud-tutorial.png'
     alt: 'nube-de-tags'
 tags: ["html", "css", "webdev", "tutorial"]
 ---
@@ -32,7 +32,7 @@ Las nubes de etiquetas son una forma visualmente interesante de mostrar conjunto
 
 Una nube de etiquetas es una representación visual de datos donde el tamaño y el color de las etiquetas pueden indicar su importancia o frecuencia. En nuestro caso, jugaremos con tamaños y colores para crear un diseño atractivo.
 
-![Ejemplo de Nube de Etiquetas](../../pages/posts/images/cloud-tags.png)
+![Ejemplo de Nube de Etiquetas](../../assets/images/posts/cloud-tags.png)
 
 ## Requisitos Previos
 

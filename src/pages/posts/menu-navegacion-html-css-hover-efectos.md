@@ -5,7 +5,7 @@ pubDate: '2024-12-17'
 description: 'En el ecosistema digital actual, la navegación de un sitio web es mucho más que una simple lista de enlaces. Es la puerta de entrada a la experiencia del usuario, el mapa que guía a los visitantes a través del contenido y la personalidad visual de tu marca. Los menús de navegación modernos no son solo funcionales, son una declaración de diseño, interactividad y usabilidad.'
 author: 'Draexx'
 image:
-    url: '../src/pages/posts/images/how-to-dropdown-menu.png'
+    url: '../src/assets/images/posts/menu-navegacion-html-css-hover-efectos.png'
     alt: 'ldropdown menu'
 tags: ["diseñoweb", "desarrollo", "webdesign","frontend","css","html","menunavegacion"]
 ---
@@ -14,7 +14,7 @@ tags: ["diseñoweb", "desarrollo", "webdesign","frontend","css","html","menunave
 
 En este tutorial, exploraremos cómo crear un menú de navegación sofisticado utilizando HTML5, CSS3 y Font Awesome para iconos. Nuestro menú tiene características únicas como efectos de hover, iconos descriptivos y un diseño responsive.
 
-![Ejemplo de Menú de Navegación](../../pages/posts/images/menu-despegable.png)
+![Ejemplo de Menú de Navegación](../../assets/images/posts/menu-despegable.png)
 
 ## Características Principales
 

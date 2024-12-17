@@ -27,10 +27,10 @@ function getFileNameFromPath(path: string, separator = '/') {
             <!-- Contenedor principal de Swiper -->
             <div class="swiper w-auto">
                 <!-- Wrapper adicional requerido -->
-                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center">
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center" id="my-slider">
                 <!-- Los slides -->
                     {
-                        allImages.map((image, index) => (
+                        allImages.map((image) => (
                             <a
                                 class="swiper-slide overflow-hidden rounded-lg"
                                 href={getFileNameFromPath(image.default.src,"public")}
@@ -68,8 +68,8 @@ function getFileNameFromPath(path: string, separator = '/') {
 
     // Módulo Navigation de Swiper y estilos
     import { Navigation } from "swiper/modules";
-    // import PhotoSwipeLightbox from 'photoswipe/lightbox';
-    // import 'photoswipe/style.css';
+    import PhotoSwipeLightbox from 'photoswipe/lightbox';
+    import 'photoswipe/style.css';
 
 
     // Configurar Swiper
@@ -95,10 +95,10 @@ function getFileNameFromPath(path: string, separator = '/') {
             nextEl: ".swiper-button-next",
         }
     });
-    // const lightbox = new PhotoSwipeLightbox({
-    //     gallery: '#my-slider',
-    //     children: 'a',
-    //     pswpModule: () => import('photoswipe')
-    // });
-    // lightbox.init();
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#my-slider',
+        children: 'a',
+        pswpModule: () => import('photoswipe')
+    });
+    lightbox.init();
 </script>

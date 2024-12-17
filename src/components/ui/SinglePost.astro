@@ -1,12 +1,35 @@
 ---
 import Icon from "@components/ui/Icon.astro"
-
+import CustomImage from "@components/ui/CustomImage.astro";
 const { icon, title, text, link, svg, image } = Astro.props;
+// Importa dinámicamente todas las imágenes
+const images = import.meta.glob('../../assets/images/posts/*.{jpg,png,webp}');
+// Verifica si la clave de la imagen existe y obtén la URL invocando la función
+let imageLocalUrl = null;
+
+if (image?.url) {
+    // Obtener solo el nombre del archivo desde image.url
+    const imageFileName = image.url.split('/').pop(); // e.g., "how-to-backup-and-restore-postgresql.png"
+
+    // Buscar la ruta en las claves de images
+    const imageKey = Object.keys(images).find((key) => key.endsWith(imageFileName));
+
+    if (imageKey) {
+        try {
+            const module = await images[imageKey](); // Cargar la imagen
+            imageLocalUrl = (module as { default: string }).default; // URL de la imagen
+        } catch (e) {
+            console.error(`Error cargando la imagen: ${imageKey}`, e);
+        }
+    } else {
+        console.error(`No se encontró la imagen: ${imageFileName}`);
+    }
+}
 ---
 
 <div class="flex gap-x-7 py-6 items-start">
 	{ icon && <Icon name={ icon } />}
-    <div class="grid lg:grid-cols-2 gap-4 w-full">
+    <div class="flex flex-col lg:flex-row gap-4 w-full">
         <div class="grow">
             <h3 class="font-bold text-neutral-300">
                 { title }
@@ -24,10 +47,27 @@ const { icon, title, text, link, svg, image } = Astro.props;
                 </a>
             )}
         </div>
-        { image && (
-            <div class="shrink-0 flex align-center justify-center">
-                <img class="w-40 lg:w-96 h-auto object-cover" src={ image.url } alt={ image.alt } />
+        { imageLocalUrl && (
+            <div class="shrink-0 flex align-center justify-center w-40 lg:w-96 h-auto ">
+                <CustomImage class="object-cover" src={imageLocalUrl} alt={image.alt ?? ''} />
             </div>
         )}
 	</div>
 </div>
+<script>
+	const imgs = document.getElementsByTagName("img")
+	for (const img of imgs) {
+		let element = img as HTMLElement
+		let totalOffsetTop = 0
+		while (element) {
+			totalOffsetTop += element.offsetTop
+			element = element.offsetParent as HTMLElement
+		}
+		console.log(img.alt)
+		console.log("img.offsetTop: ", img.offsetTop)
+		console.log("totalOffsetTop: ", totalOffsetTop)
+		console.log("getBoundingClientRect: ", img.getBoundingClientRect().top)
+		console.log("getBoundingClientRect and scrollY: ", img.getBoundingClientRect().top + window.scrollY)
+		console.log("")
+	}
+</script>

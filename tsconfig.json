@@ -8,9 +8,9 @@
       "astro/*": ["./src/astro/*"],
       "@utils/*": ["src/utils/*"],
       "@components/*": ["src/components/*"],
-      "@styles/*": ["src/styles/*"],
+      "@styles/*": ["src/assets/styles/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@images/*": ["src/images/*"],
+      "@images/*": ["src/assets/images/*"],
       "@posts/*": ["src/pages/posts/*"],
       "@gallery/*":["public/images/gallery/*"],
     }

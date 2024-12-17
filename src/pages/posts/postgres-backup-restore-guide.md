@@ -5,7 +5,7 @@ pubDate: '2024-12-16'
 description: 'Una guía completa y práctica sobre cómo realizar copias de seguridad y restaurar bases de datos en PostgreSQL. Este artículo cubre los métodos más comunes y esenciales para proteger y recuperar datos, incluyendo técnicas usando pg_dump, pg_dumpall, pg_restore y psql. Ideal para desarrolladores y administradores de bases de datos que buscan comprender las estrategias de respaldo de datos en entornos PostgreSQL.'
 author: 'Draexx'
 image:
-    url: '../src/pages/posts/images/how-to-backup-and-restore-postgresql.png'
+    url: '../src/assets/images/posts/postgres-backup-restore-guide.png'
     alt: 'postgres-backup'
 tags: ["PostgreSQL", "backup", "restore","DataBase", "tutorial"]
 ---
