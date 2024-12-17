@@ -6,7 +6,7 @@ description: 'En el ecosistema digital actual, la navegación de un sitio web es
 author: 'Draexx'
 image:
     url: '../src/pages/posts/images/how-to-dropdown-menu.png'
-    alt: 'logo astro'
+    alt: 'ldropdown menu'
 tags: ["diseñoweb", "desarrollo", "webdesign","frontend","css","html","menunavegacion"]
 ---
 
