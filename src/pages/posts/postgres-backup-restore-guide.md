@@ -7,7 +7,7 @@ author: 'Draexx'
 image:
     url: '../src/assets/images/posts/postgres-backup-restore-guide.png'
     alt: 'postgres-backup'
-tags: ["PostgreSQL", "backup", "restore","DataBase", "tutorial"]
+tags: ["PostgreSQL", "backup", "restore","DataBase"]
 ---
 
 # Cómo hacer copias de seguridad y restaurar una base de datos PostgreSQL

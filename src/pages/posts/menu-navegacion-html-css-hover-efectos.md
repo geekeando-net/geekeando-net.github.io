@@ -7,7 +7,7 @@ author: 'Draexx'
 image:
     url: '../src/assets/images/posts/menu-navegacion-html-css-hover-efectos.png'
     alt: 'ldropdown menu'
-tags: ["diseñoweb", "desarrollo", "webdesign","frontend","css","html","menunavegacion"]
+tags: [ "desarrollo", "WebDesign","frontend","CSS","HTML"]
 ---
 
 ## Introducción

@@ -10,7 +10,7 @@ author: 'Draexx'
 image:
     url: '../src/assets/images/posts/tag-cloud-tutorial.png'
     alt: 'nube-de-tags'
-tags: ["html", "css", "webdev", "tutorial"]
+tags: ["HTML", "CSS", "WebDesign", "frontend"]
 ---
 
 # Creando Nubes de Etiquetas Atractivas con HTML y CSS
