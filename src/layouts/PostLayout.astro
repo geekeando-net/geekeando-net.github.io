@@ -63,3 +63,14 @@ if (frontmatter.image?.url) {
         </section>
     </article>
 </Layout>
+<script>
+    const codeBlocks = document.querySelectorAll('pre[data-language]');
+
+    codeBlocks.forEach(block => {
+        const language = block.getAttribute('data-language');
+        const languageHeader = document.createElement('div');
+        languageHeader.classList.add('language-header');
+        languageHeader.textContent = `${language}`;
+        block.parentNode?.insertBefore(languageHeader, block);
+    });
+</script>

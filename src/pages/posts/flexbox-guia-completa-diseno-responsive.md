@@ -8,7 +8,7 @@ author: 'Draexx'
 image:
     url: '../src/assets/images/posts/flexbox-guia-completa-diseno-responsive.png'
     alt: 'flexbox-guia-completa-diseno-responsive'
-tags: ["FlexBox", "CSS","frontend","desarrollo", "responsive", "WebDesign"]
+tags: ["FlexBox", "CSS","frontend","desarrollo", "responsive", "WebDesign","Responsive Design"]
 ---
 
 ## Introducción
