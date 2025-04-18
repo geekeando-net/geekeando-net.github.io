@@ -19,6 +19,9 @@ export default defineConfig({
       },
     }
   ),
+  build: {
+    serverEntry: '.vercel/output/functions/_render.func/dist/server/entry.mjs',
+  },
   markdown: {
     syntaxHighlight: 'shiki', // prism o highlight.js
     remarkPlugins: [], // Agrega aquí plugins adicionales si los necesitas
