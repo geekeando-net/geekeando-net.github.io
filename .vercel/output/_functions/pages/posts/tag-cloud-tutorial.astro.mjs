@@ -1,4 +1,4 @@
-import { _ as __vite_glob_0_4 } from '../../chunks/tag-cloud-tutorial_DDv57bkz.mjs';
+import { _ as __vite_glob_0_4 } from '../../chunks/tag-cloud-tutorial_DPxt1TDm.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const page = () => __vite_glob_0_4;

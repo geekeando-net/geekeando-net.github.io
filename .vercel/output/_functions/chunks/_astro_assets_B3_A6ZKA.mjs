@@ -1,8 +1,8 @@
-import { i as isRemotePath, j as joinPaths } from './path_CVKLlyuj.mjs';
-import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, i as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, j as UnsupportedImageConversion, k as NoImageMetadata, l as FailedToFetchRemoteImageDimensions, n as ExpectedImageOptions, o as ExpectedNotESMImage, p as InvalidImageService, t as toStyleString, c as createAstro, a as createComponent, q as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, d as addAttribute, s as spreadAttributes } from './astro/server_DbQ_YTb6.mjs';
+import { j as joinPaths, i as isRemotePath } from './path_BuZodYwm.mjs';
+import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, j as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, k as UnsupportedImageConversion, t as toStyleString, l as NoImageMetadata, n as FailedToFetchRemoteImageDimensions, o as ExpectedImageOptions, p as ExpectedNotESMImage, q as InvalidImageService, c as createAstro, a as createComponent, v as ImageMissingAlt, m as maybeRenderHead, d as addAttribute, s as spreadAttributes, b as renderTemplate, w as ExperimentalFontsNotEnabled, x as FontFamilyNotFound, u as unescapeHTML } from './astro/server_BysZ_O6H.mjs';
 import * as mime from 'mrmime';
-/* empty css                           */
 import 'clsx';
+import 'kleur/colors';
 
 const VALID_SUPPORTED_FORMATS = [
   "jpeg",
@@ -111,10 +111,14 @@ const getSizesAttribute = ({
     return void 0;
   }
   switch (layout) {
+    // If screen is wider than the max size then image width is the max size,
+    // otherwise it's the width of the screen
     case `responsive`:
       return `(min-width: ${width}px) ${width}px, 100vw`;
+    // Image is always the same width, whatever the size of the screen
     case `fixed`:
       return `${width}px`;
+    // Image is always the width of the screen
     case `full-width`:
       return `100vw`;
     case "none":
@@ -123,18 +127,8 @@ const getSizesAttribute = ({
   }
 };
 
-function isESMImportedImage(src) {
-  return typeof src === "object" || typeof src === "function" && "src" in src;
-}
-function isRemoteImage(src) {
-  return typeof src === "string";
-}
-async function resolveSrc(src) {
-  return typeof src === "object" && "then" in src ? (await src).default ?? await src : src;
-}
-
 function matchPattern(url, remotePattern) {
-  return matchProtocol(url, remotePattern.protocol) && matchHostname(url, remotePattern.hostname, true) && matchPort(url, remotePattern.port) && matchPathname(url, remotePattern.pathname);
+  return matchProtocol(url, remotePattern.protocol) && matchHostname(url, remotePattern.hostname, true) && matchPort(url, remotePattern.port) && matchPathname(url, remotePattern.pathname, true);
 }
 function matchPort(url, port) {
   return !port || port === url.port;
@@ -142,7 +136,7 @@ function matchPort(url, port) {
 function matchProtocol(url, protocol) {
   return !protocol || protocol === url.protocol.slice(0, -1);
 }
-function matchHostname(url, hostname, allowWildcard) {
+function matchHostname(url, hostname, allowWildcard = false) {
   if (!hostname) {
     return true;
   } else if (!allowWildcard || !hostname.startsWith("*")) {
@@ -157,10 +151,10 @@ function matchHostname(url, hostname, allowWildcard) {
   }
   return false;
 }
-function matchPathname(url, pathname, allowWildcard) {
+function matchPathname(url, pathname, allowWildcard = false) {
   if (!pathname) {
     return true;
-  } else if (!pathname.endsWith("*")) {
+  } else if (!allowWildcard || !pathname.endsWith("*")) {
     return pathname === url.pathname;
   } else if (pathname.endsWith("/**")) {
     const slicedPathname = pathname.slice(0, -2);
@@ -173,12 +167,28 @@ function matchPathname(url, pathname, allowWildcard) {
   return false;
 }
 function isRemoteAllowed(src, {
-  domains = [],
-  remotePatterns = []
+  domains,
+  remotePatterns
 }) {
-  if (!isRemotePath(src)) return false;
+  if (!URL.canParse(src)) {
+    return false;
+  }
   const url = new URL(src);
   return domains.some((domain) => matchHostname(url, domain)) || remotePatterns.some((remotePattern) => matchPattern(url, remotePattern));
+}
+
+function isESMImportedImage(src) {
+  return typeof src === "object" || typeof src === "function" && "src" in src;
+}
+function isRemoteImage(src) {
+  return typeof src === "string";
+}
+async function resolveSrc(src) {
+  if (typeof src === "object" && "then" in src) {
+    const resource = await src;
+    return resource.default ?? resource;
+  }
+  return src;
 }
 
 function isLocalService(service) {
@@ -196,7 +206,6 @@ function parseQuality(quality) {
 }
 const sortNumeric = (a, b) => a - b;
 const baseService = {
-  propertiesToHash: DEFAULT_HASH_PROPS,
   validateOptions(options) {
     if (!options.src || !isRemoteImage(options.src) && !isESMImportedImage(options.src)) {
       throw new AstroError({
@@ -405,6 +414,16 @@ function getTargetDimensions(options) {
 
 function isImageMetadata(src) {
   return src.fsPath && !("fsPath" in src);
+}
+
+const cssFitValues = ["fill", "contain", "cover", "scale-down"];
+function addCSSVarsToStyle(vars, styles) {
+  const cssVars = Object.entries(vars).filter(([_, value]) => value !== void 0 && value !== false).map(([key, value]) => `--${key}: ${value};`).join(" ");
+  if (!styles) {
+    return cssVars;
+  }
+  const style = typeof styles === "string" ? styles : toStyleString(styles);
+  return `${cssVars} ${style}`;
 }
 
 const decoder = new TextDecoder();
@@ -1176,28 +1195,29 @@ function lookup(input) {
 }
 
 async function imageMetadata(data, src) {
+  let result;
   try {
-    const result = lookup(data);
-    if (!result.height || !result.width || !result.type) {
-      throw new AstroError({
-        ...NoImageMetadata,
-        message: NoImageMetadata.message(src)
-      });
-    }
-    const { width, height, type, orientation } = result;
-    const isPortrait = (orientation || 0) >= 5;
-    return {
-      width: isPortrait ? height : width,
-      height: isPortrait ? width : height,
-      format: type,
-      orientation
-    };
+    result = lookup(data);
   } catch {
     throw new AstroError({
       ...NoImageMetadata,
       message: NoImageMetadata.message(src)
     });
   }
+  if (!result.height || !result.width || !result.type) {
+    throw new AstroError({
+      ...NoImageMetadata,
+      message: NoImageMetadata.message(src)
+    });
+  }
+  const { width, height, type, orientation } = result;
+  const isPortrait = (orientation || 0) >= 5;
+  return {
+    width: isPortrait ? height : width,
+    height: isPortrait ? width : height,
+    format: type,
+    orientation
+  };
 }
 
 async function inferRemoteSize(url) {
@@ -1241,7 +1261,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp_CVj5O3Au.mjs'
+      './sharp_CVtCc96d.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1332,6 +1352,18 @@ async function getImage$1(options, imageConfig) {
     }
     delete resolvedOptions.priority;
     delete resolvedOptions.densities;
+    if (layout !== "none") {
+      resolvedOptions.style = addCSSVarsToStyle(
+        {
+          w: String(resolvedOptions.width),
+          h: String(resolvedOptions.height),
+          fit: cssFitValues.includes(resolvedOptions.fit ?? "") && resolvedOptions.fit,
+          pos: resolvedOptions.position
+        },
+        resolvedOptions.style
+      );
+      resolvedOptions["data-astro-image"] = layout;
+    }
   }
   const validatedOptions = service.validateOptions ? await service.validateOptions(resolvedOptions, imageConfig) : resolvedOptions;
   const srcSetTransforms = service.getSrcSet ? await service.getSrcSet(validatedOptions, imageConfig) : [];
@@ -1375,38 +1407,9 @@ async function getImage$1(options, imageConfig) {
   };
 }
 
-function addCSSVarsToStyle(vars, styles) {
-  const cssVars = Object.entries(vars).filter(([_, value]) => value !== void 0 && value !== false).map(([key, value]) => `--${key}: ${value};`).join(" ");
-  if (!styles) {
-    return cssVars;
-  }
-  const style = typeof styles === "string" ? styles : toStyleString(styles);
-  return `${cssVars} ${style}`;
-}
-const cssFitValues = ["fill", "contain", "cover", "scale-down"];
-function applyResponsiveAttributes({
-  layout,
-  image,
-  props,
-  additionalAttributes
-}) {
-  const attributes = { ...additionalAttributes, ...image.attributes };
-  attributes.style = addCSSVarsToStyle(
-    {
-      w: image.attributes.width ?? props.width ?? image.options.width,
-      h: image.attributes.height ?? props.height ?? image.options.height,
-      fit: cssFitValues.includes(props.fit ?? "") && props.fit,
-      pos: props.position
-    },
-    attributes.style
-  );
-  attributes["data-astro-image"] = layout;
-  return attributes;
-}
-
-const $$Astro$1 = createAstro("https://www.geekeando.net");
+const $$Astro$2 = createAstro("https://www.geekeando.net");
 const $$Image = createComponent(async ($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
   Astro2.self = $$Image;
   const props = Astro2.props;
   if (props.alt === void 0 || props.alt === null) {
@@ -1430,18 +1433,13 @@ const $$Image = createComponent(async ($$result, $$props, $$slots) => {
   if (image.srcSet.values.length > 0) {
     additionalAttributes.srcset = image.srcSet.attribute;
   }
-  const { class: className, ...attributes } = useResponsive ? applyResponsiveAttributes({
-    layout,
-    image,
-    props,
-    additionalAttributes
-  }) : { ...additionalAttributes, ...image.attributes };
+  const { class: className, ...attributes } = { ...additionalAttributes, ...image.attributes };
   return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}>`;
 }, "/Users/draexx/Proyecto/geekeando-main/node_modules/astro/components/Image.astro", void 0);
 
-const $$Astro = createAstro("https://www.geekeando.net");
+const $$Astro$1 = createAstro("https://www.geekeando.net");
 const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$Picture;
   const defaultFormats = ["webp"];
   const defaultFallbackFormat = "png";
@@ -1500,19 +1498,35 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   if (fallbackImage.srcSet.values.length > 0) {
     imgAdditionalAttributes.srcset = fallbackImage.srcSet.attribute;
   }
-  const { class: className, ...attributes } = useResponsive ? applyResponsiveAttributes({
-    layout,
-    image: fallbackImage,
-    props,
-    additionalAttributes: imgAdditionalAttributes
-  }) : { ...imgAdditionalAttributes, ...fallbackImage.attributes };
+  const { class: className, ...attributes } = {
+    ...imgAdditionalAttributes,
+    ...fallbackImage.attributes
+  };
   return renderTemplate`${maybeRenderHead()}<picture${spreadAttributes(pictureAttributes)}> ${Object.entries(optimizedImages).map(([_, image]) => {
     const srcsetAttribute = props.densities || !props.densities && !props.widths && !useResponsive ? `${image.src}${image.srcSet.values.length > 0 ? ", " + image.srcSet.attribute : ""}` : image.srcSet.attribute;
     return renderTemplate`<source${addAttribute(srcsetAttribute, "srcset")}${addAttribute(mime.lookup(image.options.format ?? image.src) ?? `image/${image.options.format}`, "type")}${spreadAttributes(sourceAdditionalAttributes)}>`;
   })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}> </picture>`;
 }, "/Users/draexx/Proyecto/geekeando-main/node_modules/astro/components/Picture.astro", void 0);
 
+const $$Astro = createAstro("https://www.geekeando.net");
+const $$Font = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$Font;
+  const { fontsData } = await import('virtual:astro:assets/fonts/internal').catch(() => {
+    throw new AstroError(ExperimentalFontsNotEnabled);
+  });
+  const { cssVariable, preload = false } = Astro2.props;
+  const data = fontsData.get(cssVariable);
+  if (!data) {
+    throw new AstroError({
+      ...FontFamilyNotFound,
+      message: FontFamilyNotFound.message(cssVariable)
+    });
+  }
+  return renderTemplate`${preload && data.preloadData.map(({ url, type }) => renderTemplate`<link rel="preload"${addAttribute(url, "href")} as="font"${addAttribute(`font/${type}`, "type")} crossorigin>`)}<style>${unescapeHTML(data.css)}</style>`;
+}, "/Users/draexx/Proyecto/geekeando-main/node_modules/astro/components/Font.astro", void 0);
+
 const imageConfig = {"endpoint":{"route":"/_image"},"service":{"entrypoint":"astro/assets/services/sharp","config":{}},"domains":[],"remotePatterns":[],"experimentalResponsiveImages":false};
-					const getImage = async (options) => await getImage$1(options, imageConfig);
+							const getImage = async (options) => await getImage$1(options, imageConfig);
 
 export { $$Image as $, getConfiguredImageService as a, baseService as b, isRemoteAllowed as c, getImage as g, imageConfig as i, parseQuality as p };

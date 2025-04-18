@@ -1,31 +1,44 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import Card from "@/components/ui/Card.astro";
+import Card from "@/components/ui/AboutCard.astro";
 import stringsAbout from "@/utils/stringsCards";
 
 const about = stringsAbout.stringsAbout;
 const title: string = "Acerca de Nosotros";
-const subTitle: string = "";
+const subTitle: string = "Tu universo geek al alcance de un clic";
 ---
 
 <Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div class="mx-auto max-w-4xl text-center">
             <TitleSection
                 title={ title }
                 subTitle={ subTitle }
+                accentColor="purple" // Cambio de color para diferenciar sección
             />
-            <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
+            <div class="mt-8 rounded-xl bg-gradient-to-r from-purple-900/30 to-neutral-900/50 p-8 border border-purple-800/30">
+                <p class="text-lg text-neutral-300">
+                    Somos una comunidad apasionada que te invita a sumergirte en el fascinante mundo geek. 
+                    En Geekeando, encontrarás todo lo que necesitas para alimentar tu curiosidad y conectar 
+                    con otros amantes de la cultura pop.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-10">
+        <div class="mx-auto max-w-4xl">
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {
                     about.map((item, index) => (
                         <Card
-                            icon = { '' }
+                            icon={item.icon || '📌'} 
                             title = { item.title }
                             text1 = { item.text1 }
                             text2 = { item.text2 }
                             text3 = { item.text3 }
                             key = { index }
+                            accentColor = "purple"
                         />
                     ))
                 }
