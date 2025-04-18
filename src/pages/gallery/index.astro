@@ -1,0 +1,142 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import 'swiper/css';
+import "swiper/css/navigation";
+import 'photoswipe/style.css';
+const allImagesFile = import.meta.glob("@images/gallery/**/*.*", { eager: true });
+const allImages = Object.values(allImagesFile) as any[];
+const title = "Galería Geek";
+const subTitle = "Explora nuestro universo visual";
+const allCategories = Array.from(new Set(
+    Object.keys(allImagesFile)
+        .map(path => path.split('/gallery/')[1]?.split('/')[0])
+        .filter((folder) => folder && !folder.includes('.'))
+));
+---
+
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div class="mx-auto max-w-4xl text-center mb-12">
+            <TitleSection
+                title={ title }
+                subTitle={ subTitle }
+            />
+            <!-- Filtros de categoría -->
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <button class="filter-btn active"><a href="/gallery">General</a></button>
+                {
+                    allCategories.map((cat) => (
+                        <button class="filter-btn">
+                            <a href={`/gallery/${cat}`}>
+                                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                            </a>
+                        </button>
+                    ))
+                }
+            </div>
+        </div>
+        <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
+            <!-- Contenedor principal de Swiper -->
+            <div class="swiper w-auto">
+                <!-- Wrapper adicional requerido -->
+                <div class="swiper-wrapper w-auto lg:max-w-5xl xl:max-w-6xl xl:content-center" id="my-slider">
+                <!-- Los slides -->
+                    {
+                        allImages.map((image, index) => (
+                        <div class="swiper-slide group">
+                            <a
+                                class="swiper-slide overflow-hidden rounded-xl shadow-lg shadow-neutral-950/50"
+                                href={image.default.src}
+                                data-pswp-width={image.default.width}
+                                data-pswp-height={image.default.height}
+                                data-cropped="true"
+                                target="_blank"
+                            >
+                                <img
+                                    src={image.default.src}
+                                    alt={`Wallpaper ${index + 1} de la galería Geekeando`}
+                                    class="w-full h-64 sm:h-80 md:h-96 object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 via-neutral-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                                    <span class="text-neutral-100">Categoría: {image.default.src.split('/').slice(-2, -1)[0].charAt(0).toUpperCase() + image.default.src.split('/').slice(-2, -1)[0].slice(1)}</span>
+                                    <span class="text-neutral-100 font-mono">Nombre: {image.default.src.split('/').pop().split('?')[0].split('.')[0].replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}</span>
+                                    <span class="text-neutral-100">Ancho: {image.default.width}px</span>
+                                    <span class="text-neutral-100">Alto: {image.default.height}px</span>
+                                </div>
+                            </a>
+                        </div>
+                        ))
+                    }
+                </div>
+                <!-- Si necesitamos botones de navegación -->
+                <div class="swiper-button-prev swiper-nav-btn"></div>
+                <div class="swiper-button-next swiper-nav-btn"></div>
+            </div>
+        </div>
+    </section>
+</Layout>
+<style>
+    /* .swiper-button-prev {
+        transform: rotate(180deg); /* rotar arrow-next.svg para reutilizar el mismo icono*/
+   /* } */
+    .swiper-nav-btn {
+        @apply hidden sm:flex items-center justify-center w-12 h-12 rounded-full bg-neutral-900/80 border border-neutral-700 text-neutral-100 hover:bg-amber-500 hover:text-neutral-900 transition-colors;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        @apply text-xl font-bold;
+    }
+    .filter-btn {
+        @apply px-4 py-2 rounded-full text-sm font-medium bg-neutral-800 text-neutral-300 hover:bg-purple-500/20 hover:text-amber-400 transition-colors;
+    }
+    
+    .filter-btn.active {
+        @apply bg-amber-500 text-neutral-900 font-bold;
+    }
+</style>
+<script>
+    // Core de Swiper y estilos
+    import Swiper from 'swiper';
+
+    // Módulo Navigation de Swiper y estilos
+    import { Navigation } from "swiper/modules";
+    import PhotoSwipeLightbox from 'photoswipe/lightbox';
+
+    // Configurar Swiper
+    const swiper = new Swiper(".swiper", {
+        modules: [Navigation], // definir los módulos a usar
+        effect: "flip",        // definir efecto de transición
+        loop: true,            // definir si los slides estarán en bucle
+        slidesPerView: "auto",      // agregar número de slides para la pantalla
+        spaceBetween: 40,
+        autoplay: {
+            delay: 5000,
+        },    // separación entre slides en px
+        breakpoints: {
+            // Cuando la pantalla es >= 768px
+            768: {
+            slidesPerView: 2,
+            spaceBetween: 30
+            },
+            // Cuando la pantalla es >= 1024px
+            1024: {
+            slidesPerView: 3,
+            spaceBetween: 40
+            }
+        },
+        navigation: {          // definir botones next y prev para el módulo Navigation
+            prevEl: ".swiper-button-prev",
+            nextEl: ".swiper-button-next",
+        }
+    });
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#my-slider',
+        children: 'a',
+        showHideAnimationType: 'zoom',
+        showAnimationDuration: 1000,
+        hideAnimationDuration: 1000,
+        pswpModule: () => import('photoswipe')
+    });
+    lightbox.init();
+</script>

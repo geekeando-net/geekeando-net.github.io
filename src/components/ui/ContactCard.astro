@@ -1,0 +1,47 @@
+
+---
+import { Icon } from 'astro-icon/components';
+interface ContactCardProps {
+    icon: string;
+    title: string;
+    items: string[];
+    link?: { href: string; text: string };
+}
+
+const { icon, title, items = [], link } = Astro.props as ContactCardProps;
+---
+
+<div class="rounded-xl border border-neutral-800 bg-neutral-900/30 p-6 transition-all duration-300 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10">
+    <div class="flex items-start gap-4">
+        <!-- Icono -->
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+            {icon.startsWith('mdi:') ? (
+                <Icon name={icon} class="h-6 w-6" />
+            ) : (
+                <span class="text-xl">{icon}</span>
+            )}
+        </div>
+        <!-- Contenido -->
+        <div class="flex-1">
+            <h3 class="text-lg font-bold text-neutral-200">{title}</h3>
+            <ul class="mt-2 space-y-1.5">
+                {items.map((item, i) => (
+                    <li data-key={i} class="text-neutral-400">
+                        <Fragment
+                            set:html = { item }
+                        />
+                    </li>
+                ))}
+            </ul>
+            {link && (
+                <a
+                    href={link.href}
+                    class="mt-3 inline-flex items-center text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors"
+                >
+                    {link.text}
+                    <Icon name="mdi:arrow-right" class="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </a>
+            )}
+        </div>
+    </div>
+</div>

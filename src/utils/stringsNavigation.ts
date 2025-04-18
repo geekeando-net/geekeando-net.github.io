@@ -1,7 +1,7 @@
 const navBarLinks = [
     { name: 'Home', url: '/' },
     { name: 'Project', url: '/project' },
-    { name: 'Blog', url: '/blog' },
+    { name: 'Blog', url: '/blogs' },
     { name: 'Gallery', url: '/gallery' },
     { name: 'About', url: '/about' },
     // { name: 'Portfolio', url: '/portfolio' },

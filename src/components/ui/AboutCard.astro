@@ -1,0 +1,102 @@
+---
+import Icon from "@components/ui/Icon.astro";
+
+const {
+    icon = '📌',
+    title,
+    text1,
+    text2,
+    text3,
+    link,
+    svg,
+    cardClass = '',
+    accentColor = 'amber'
+} = Astro.props as {
+    icon?: string;
+    title: string;
+    text1?: string;
+    text2?: string;
+    text3?: string;
+    link?: { href: string; text: string };
+    svg?: string;
+    cardClass?: string;
+    accentColor?: keyof typeof colorVariants;
+};
+
+// Paleta de colores para iconos/bordes
+const colorVariants = {
+    amber: 'text-amber-400 border-amber-400/20',
+    purple: 'text-purple-400 border-purple-400/20',
+    blue: 'text-blue-400 border-blue-400/20',
+    green: 'text-emerald-400 border-emerald-400/20'
+};
+---
+
+<div class={`group relative flex flex-col rounded-xl border p-6 transition-all duration-300 hover:shadow-lg ${colorVariants[accentColor]} ${cardClass}`}>
+    <!-- Icono con efecto flotante -->
+    {icon && (
+        <div class={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg border bg-gradient-to-br from-neutral-900/50 to-neutral-900/80 text-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md ${colorVariants[accentColor]}`}>
+            {icon.startsWith('mdi:') ? (
+                <Icon name={icon} class="h-6 w-6" />
+            ) : (
+                <span>{icon}</span>
+            )}
+        </div>
+    )}
+    <!-- Contenido -->
+    <div class="flex-grow">
+        <!-- Título con efecto gradiente -->
+        <h3 class={`mb-3 text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${accentColor === 'amber' ? 'from-amber-400 to-amber-600' : accentColor === 'purple' ? 'from-purple-400 to-pink-500' : 'from-blue-400 to-cyan-500'}`}>
+            {title}
+        </h3>
+        <!-- Textos con animación de aparición -->
+        <div class="space-y-3">
+            {text1 && (
+                <p class="text-neutral-300 transition-all duration-300 group-hover:text-neutral-100">
+                    <Fragment
+				        set:html = { text1 }
+			        />
+                </p>
+            )}
+            {text2 && (
+                <p class="text-neutral-400 transition-all duration-300 group-hover:text-neutral-300">
+                    <Fragment
+				        set:html = { text2 }
+			        />
+                </p>
+            )}
+            {text3 && (
+                <p class="text-neutral-500 transition-all duration-300 group-hover:text-neutral-400">
+                    <Fragment
+				        set:html = { text3 }
+			        />
+                </p>
+            )}
+        </div>
+    </div>
+    
+    <!-- Enlace/Botón -->
+    {link && (
+        <div class="mt-6">
+            <a
+                href={link.href}
+                class={`inline-flex items-center gap-x-1 text-sm font-medium transition-all duration-300 ${accentColor === 'amber' ? 'text-amber-400 hover:text-amber-300' : 'text-purple-400 hover:text-purple-300'}`}
+                aria-label={`${link.text} sobre ${title}`}
+            >
+                {link.text}
+                {svg ? (
+                    <Fragment set:html={svg} />
+                ) : (
+                    <Icon name="mdi:arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                )}
+            </a>
+        </div>
+    )}
+</div>
+
+<style>
+    /* Efecto de borde sutil al hacer hover */
+    .group:hover {
+        box-shadow: 0 0 0 1px currentColor;
+    }
+</style>

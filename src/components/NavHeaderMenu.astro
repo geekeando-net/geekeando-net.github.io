@@ -1,0 +1,127 @@
+---
+import Link from "@components/ui/LinkMenu.astro";
+import stringsNavigation from "@utils/stringsNavigation";
+import BrandLogo from "@components/BrandLogo.astro";
+import { Icon } from 'astro-icon/components';
+
+const navigation = stringsNavigation;
+const homeUrl = "/";
+
+// Configuración de temas (opcional)
+const themeSwitcher = true;
+---
+
+<header class="sticky inset-x-0 top-0 z-50 w-full backdrop-blur-md transition-all duration-300">
+    <nav class="relative mx-auto flex max-w-[85rem] items-center justify-between px-4 py-3 sm:px-6 lg:px-8" aria-label="Global">
+        <!-- Logo -->
+        <div class="flex items-center gap-x-4">
+            <a href={homeUrl} class="flex items-center gap-x-2 outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg">
+                <BrandLogo class="h-auto w-28 text-amber-400" />
+                <span class="sr-only">Geekeando</span>
+            </a>
+        </div>
+
+        <!-- Menú desktop -->
+        <div class="hidden md:flex md:items-center md:gap-x-8">
+            <div class="flex gap-x-1 rounded-full text-neutral-400 bg-neutral-800/80 p-1 shadow-inner shadow-neutral-950/50 border border-neutral-700/40">
+                {navigation.navBarLinks.map((nav) => (
+                    <Link
+                        url={nav.url}
+                        name={nav.name}
+                        class="px-4 py-2 text-sm font-medium rounded-full transition-all hover:bg-neutral-700/50 hover:text-amber-400"
+                        activeClass="bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400"
+                    />
+                ))}
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="flex items-center gap-x-3">
+                {themeSwitcher && (
+                    <button class="p-2 rounded-full hover:bg-neutral-700/50 transition-colors text-neutral-400 hover:text-amber-400">
+                        <Icon name="mdi:theme-light-dark" class="h-5 w-5" />
+                        <span class="sr-only">Toggle theme</span>
+                    </button>
+                )}
+                <a href="/contacto" class="group inline-flex items-center gap-x-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-bold text-neutral-900 hover:shadow-lg hover:shadow-amber-500/20 transition-all">
+                    Contacto
+                    <Icon name="mdi:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
+            </div>
+        </div>
+
+        <!-- Menú móvil - Botón toggle -->
+        <div class="flex md:hidden">
+            <button
+                type="button"
+                class="hs-collapse-toggle flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition-all hover:bg-neutral-700/50 focus:outline-none focus:ring-2 focus:ring-amber-400 text-neutral-400 hover:text-amber-400"
+                data-hs-collapse="#navbar-collapse"
+                aria-controls="navbar-collapse"
+                aria-label="Toggle navigation"
+            >
+                <Icon name="mdi:menu" class="h-6 w-6 hs-collapse-open:hidden" />
+                <Icon name="mdi:close" class="hidden h-6 w-6 hs-collapse-open:block" />
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menú móvil - Contenido colapsable -->
+    <div
+        id="navbar-collapse"
+        class="hs-collapse hidden mx-4 mt-2 rounded-xl border border-neutral-700/40 bg-neutral-800/80 shadow-lg shadow-neutral-950/50 backdrop-blur-md transition-all duration-300 md:hidden"
+    >
+        <div class="flex flex-col gap-y-2 p-4">
+            {navigation.navBarLinks.map((nav) => (
+                <Link
+                    url={nav.url}
+                    name={nav.name}
+                    class="px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-neutral-700/50 hover:text-amber-400"
+                    activeClass="bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400"
+                />
+            ))}
+            <div class="mt-2 pt-3 border-t border-neutral-700/40 flex flex-col gap-3">
+                {themeSwitcher && (
+                    <button class="flex items-center gap-x-2 px-4 py-3 rounded-lg text-sm font-medium text-neutral-400 hover:bg-neutral-700/50 hover:text-amber-400 transition-colors">
+                        <Icon name="mdi:theme-light-dark" class="h-5 w-5" />
+                        Cambiar tema
+                    </button>
+                )}
+                <a href="/contacto" class="flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-bold text-neutral-900 hover:shadow-lg hover:shadow-amber-500/20 transition-all">
+                    Contacto
+                    <Icon name="mdi:arrow-right" class="h-4 w-4" />
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style is:global>
+    /* Efecto de borde inferior al hacer scroll */
+    header.scrolled {
+        @apply border-b border-neutral-800/50 bg-neutral-900/90;
+    }
+    /* Transición suave para el header */
+    header {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+</style>
+
+<script is:inline>
+    // Efecto de scroll para el header
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        // Inicializar colapso para móvil
+        document.querySelectorAll('.hs-collapse-toggle').forEach(el => {
+            el.addEventListener('click', () => {
+                const target = document.querySelector(el.getAttribute('data-hs-collapse'));
+                target.classList.toggle('hidden');
+            });
+        });
+    });
+</script>

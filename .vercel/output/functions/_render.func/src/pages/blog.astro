@@ -1,0 +1,47 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import TitleSection from "@/components/ui/TitleSection.astro"
+import SinglePost from "@/components/ui/SinglePost.astro"
+const allPostsFile = import.meta.glob('@posts/*.md',{ eager: true });
+// const allPosts = Object.values(allPostsFile);
+
+const allPosts = Object.entries(allPostsFile).map(([filePath, post]) => {
+    const flatPost = Object.assign({}, post);
+    const slug = filePath.replace('/src/pages/posts/', '').replace('.md', '');
+    const url = `/posts/${slug}`;
+    return {
+        ...flatPost, // Incluye el contenido del módulo
+        url: url, // Convierte el nombre del archivo en una URL
+    };
+});
+
+const title: string = "Blog";
+const subTitle: string = "";
+const arrowSVG: string = `<svg
+class="h-4 w-4 flex-shrink-0 transition ease-in-out group-hover:translate-x-1"
+fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /> </svg>`;
+---
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-2xl lg:max-w-5xl">
+            <TitleSection
+                title={ title }
+                subTitle={ subTitle }
+            />
+        </div>
+        <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
+                {allPosts.map((post, index) => (
+                    <SinglePost
+                        icon = { '' }
+                        title = { (post.frontmatter as Frontmatter)?.title || "Sin Titulo" }
+                        text = { (post.frontmatter as Frontmatter)?.description }
+                        link = { {href:post.url,text:"Continuar Leyendo"} }
+                        svg = { arrowSVG }
+                        image = { (post.frontmatter as Frontmatter)?.image }
+                        key = { index }
+                    />
+                ))}
+        </div>
+    </section>
+</Layout>

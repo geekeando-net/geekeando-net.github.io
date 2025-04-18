@@ -1,0 +1,37 @@
+---
+import { Icon } from 'astro-icon/components';
+const { variant = 'standard', fields = [] } = Astro.props;
+---
+
+<form class="space-y-5">
+    {fields.includes('name') && (
+        <div>
+            <label class="mb-2 block text-sm font-medium text-neutral-300">Nombre completo *</label>
+            <input type="text" class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-3 text-neutral-200 placeholder-neutral-500 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30" required>
+        </div>
+    )}
+    
+    {fields.includes('project_type') && variant === 'priority' && (
+        <div>
+            <label class="mb-2 block text-sm font-medium text-neutral-300">Tipo de proyecto *</label>
+            <select class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-3 text-neutral-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30">
+                <option value="">Seleccionar...</option>
+                <option>Desarrollo Web</option>
+                <option>Diseño Gráfico</option>
+                <option>Marketing Digital</option>
+                <option>Consultoría</option>
+            </select>
+        </div>
+    )}
+    
+    <!-- Más campos según variant... -->
+    
+    <button type="submit" class={`w-full rounded-lg py-3 px-4 font-bold transition-all ${variant === 'priority' ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 hover:shadow-lg hover:shadow-amber-500/20' : 'bg-neutral-800 text-neutral-200 hover:bg-neutral-700'}`}>
+        {variant === 'priority' ? (
+            <span class="flex items-center justify-center gap-2">
+                <Icon name="mdi:send-clock" class="h-5 w-5" />
+                Enviar solicitud urgente
+            </span>
+        ) : 'Enviar mensaje'}
+    </button>
+</form>

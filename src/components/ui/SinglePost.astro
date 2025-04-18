@@ -1,19 +1,13 @@
 ---
 import Icon from "@components/ui/Icon.astro"
 import CustomImage from "@components/ui/CustomImage.astro";
-const { icon, title, text, link, svg, image } = Astro.props;
-// Importa dinámicamente todas las imágenes
-const images = import.meta.glob('../../assets/images/posts/*.{jpg,png,webp}');
-// Verifica si la clave de la imagen existe y obtén la URL invocando la función
+const { icon, title, text, link, svg, image, tags, pubDate, author } = Astro.props;
+const images = import.meta.glob('../../assets/images/posts/*.{jpg,png,webp,avif}');
 let imageLocalUrl = null;
 
 if (image?.url) {
-    // Obtener solo el nombre del archivo desde image.url
     const imageFileName = image.url.split('/').pop(); // e.g., "how-to-backup-and-restore-postgresql.png"
-
-    // Buscar la ruta en las claves de images
     const imageKey = Object.keys(images).find((key) => key.endsWith(imageFileName));
-
     if (imageKey) {
         try {
             const module = await images[imageKey](); // Cargar la imagen
@@ -21,36 +15,60 @@ if (image?.url) {
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
         }
-    } else {
-        console.error(`No se encontró la imagen: ${imageFileName}`);
     }
 }
 ---
-
-<div class="flex gap-x-7 py-6 items-start">
-	{ icon && <Icon name={ icon } />}
+<article class="group py-6 hover:bg-neutral-900/30 transition-all duration-300 rounded-xl px-4">
     <div class="flex flex-col lg:flex-row gap-4 w-full">
-        <div class="grow">
-            <h3 class="font-bold text-neutral-300">
+        { imageLocalUrl && (
+            <div class="lg:w-1/3 overflow-hidden rounded-lg border border-neutral-800 shadow-lg shadow-neutral-950/50">
+                <CustomImage
+                    src={imageLocalUrl}
+                    alt={image.alt || title}
+                    class="w-full h-48 lg:h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                    loading="lazy"
+                    widths={[400, 600, 800]}
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    format="webp"
+                />
+            </div>
+            )}
+        <div class="lg:w-2/3 space-y-3">
+            { tags.map ((tag: string) => (
+                <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/10 text-amber-400">
+                    <a href={`/tags/${tag}`} class="no-underline text-amber-400 hover:text-amber-300 transition-colors">
+                        {tag}
+                    </a>
+                </span>
+            ))}
+            <h3 class="text-xl font-bold text-neutral-100 group-hover:text-amber-400 transition-colors">
                 { title }
             </h3>
-            <p class="mt-1 text-sm text-justify text-neutral-400">
+            <div class="text-neutral-400 line-clamp-3">
                 <Fragment
                     set:html = { text }
                 />
-            </p>
+            </div>
             { link && (
                 <a
-                    class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
-                    href={ link.href }>
-                        { link.text } <Fragment set:html={svg} />
+                    href={link.href}
+                    class="mt-3 inline-flex items-center gap-x-1 font-medium text-amber-400 hover:text-amber-300 transition-colors"
+                    aria-label={`Leer más sobre ${title}`}
+                >
+                    {link.text}
+                    <Fragment set:html={svg} />
                 </a>
             )}
-        </div>
-        { imageLocalUrl && (
-            <div class="shrink-0 flex align-center justify-center w-40 lg:w-96 h-auto ">
-                <CustomImage class="object-cover" src={imageLocalUrl} alt={image.alt ?? ''} />
+            <!-- Metadata adicional (opcional) -->
+            <div class="pt-2 flex items-center gap-3 text-xs text-neutral-500">
+                <span>
+                    Publicado hace {Math.floor((new Date().getTime() - new Date(pubDate).getTime()) / (1000 * 60 * 60 * 24)) === 1
+                        ? '1 día'
+                        : `${Math.floor((new Date().getTime() - new Date(pubDate).getTime()) / (1000 * 60 * 60 * 24))} días`}
+                </span>
+                <span>•</span>
+                <span>By {author}</span>
             </div>
-        )}
-	</div>
-</div>
+        </div>
+    </div>
+</article>
