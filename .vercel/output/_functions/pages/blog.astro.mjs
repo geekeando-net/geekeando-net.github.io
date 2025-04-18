@@ -8,7 +8,7 @@ import { c as createAstro, a as createComponent, r as renderComponent, b as rend
 import 'kleur/colors';
 import { $ as $$Layout } from '../chunks/Layout_CD72lvyj.mjs';
 import { $ as $$TitleSection } from '../chunks/TitleSection_bTZX-OIn.mjs';
-import { $ as $$SinglePost } from '../chunks/SinglePost_CIElunW-.mjs';
+import { $ as $$SinglePost } from '../chunks/SinglePost_BgMSk_0U.mjs';
 /* empty css                                */
 export { renderers } from '../renderers.mjs';
 

@@ -2,6 +2,9 @@
   "name": "geekeando",
   "type": "module",
   "version": "2.3.2",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

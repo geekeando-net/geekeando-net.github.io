@@ -1,7 +1,6 @@
 ---
-import Icon from "@components/ui/Icon.astro"
 import CustomImage from "@components/ui/CustomImage.astro";
-const { icon, title, text, link, svg, image, tags, pubDate, author } = Astro.props;
+const { title, text, link, svg, image, tags, pubDate, author } = Astro.props;
 const images = import.meta.glob('../../assets/images/posts/*.{jpg,png,webp,avif}');
 let imageLocalUrl = null;
 

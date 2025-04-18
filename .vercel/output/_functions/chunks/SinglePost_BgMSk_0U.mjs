@@ -6,7 +6,7 @@ const $$Astro = createAstro("https://www.geekeando.net");
 const $$SinglePost = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$SinglePost;
-  const { icon, title, text, link, svg, image, tags, pubDate, author } = Astro2.props;
+  const { title, text, link, svg, image, tags, pubDate, author } = Astro2.props;
   const images = /* #__PURE__ */ Object.assign({"../../assets/images/posts/cloud-tags.png": () => import('./cloud-tags_DIvao_fJ.mjs'),"../../assets/images/posts/css-grid-layout-tutorial.png": () => import('./css-grid-layout-tutorial_DmrgybVA.mjs'),"../../assets/images/posts/flexbox-guia-completa-diseno-responsive.png": () => import('./flexbox-guia-completa-diseno-responsive_BVTrIYC0.mjs'),"../../assets/images/posts/menu-despegable.png": () => import('./menu-despegable_DH9Be08Q.mjs'),"../../assets/images/posts/menu-navegacion-html-css-hover-efectos.png": () => import('./menu-navegacion-html-css-hover-efectos_mYAyq0Ah.mjs'),"../../assets/images/posts/postgres-backup-restore-guide.png": () => import('./postgres-backup-restore-guide_CzHjUWES.mjs'),"../../assets/images/posts/tag-cloud-tutorial.png": () => import('./tag-cloud-tutorial_3HKdCm4Q.mjs')});
   let imageLocalUrl = null;
   if (image?.url) {
