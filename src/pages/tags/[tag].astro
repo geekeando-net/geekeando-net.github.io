@@ -53,14 +53,15 @@ export async function getStaticPaths() {
 }
 const { tag } = Astro.params;
 const { postsFilter } = Astro.props as Props;
-
-const allPostsTags = await Astro.glob('@posts/*.md');
-const allTags = allPostsTags.map((post) => post.frontmatter.tags).flat();
-const tagCounts = allTags.reduce((acc, tag) => {
+// Re-import allPostFiles at script level
+const allPostFiles = import.meta.glob<MarkdownInstance<Frontmatter>>('@posts/*.md', { eager: true });
+const allPostsTags = Object.values(allPostFiles);
+const allTags = allPostsTags.map((post: MarkdownInstance<Frontmatter>) => post.frontmatter.tags || []).flat();
+const tagCounts = allTags.reduce((acc: Record<string, number>, tag) => {
     acc[tag] = (acc[tag] || 0) + 1;
     return acc;
-}, {});
-const tagsPost = Object.keys(tagCounts);
+}, {} as Record<string, number>);
+const tags = Object.keys(tagCounts);
 const title: string = `Posts etiquetados con  "${tag}"`;
 const subTitle: string = "Descubre artículos sobre tecnología, gaming y cultura geek";
 const arrowSVG: string = `<svg
@@ -81,7 +82,7 @@ const urlPath = "/";
                     <a href="/blog">Todos</a>
                 </button>
                 {
-                    tagsPost.map((tagFilter) => (
+                    tags.map((tagFilter) => (
                     <button class={`filter-btn ${tagFilter === tag ? 'active' : ''}`}>
                         <a href={`/tags/${tagFilter}`}>
                             {tagFilter}
