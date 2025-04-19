@@ -18,7 +18,9 @@ export default defineConfig({
       formats: ['image/webp'],
       minimumCacheTTL: 60
     },
-    runtime: 'nodejs20.x'
+    runtime: 'nodejs20.x',
+    functionPerRoute: true,
+    maxDuration: 60
   }),
   integrations: [
     icon()

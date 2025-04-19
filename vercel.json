@@ -1,10 +1,10 @@
 {
-  "version": 3,
+  "version": 2,
   "framework": "astro",
   "buildCommand": "npm run vercel-build",
   "devCommand": "npm run dev",
   "functions": {
-    "dist/server/entry.mjs": {
+    "api/*.js": {
       "runtime": "nodejs20.x"
     }
   }
