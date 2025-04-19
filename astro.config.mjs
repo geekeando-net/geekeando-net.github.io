@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
 import tailwind from '@astrojs/tailwind';
 
@@ -19,9 +19,6 @@ export default defineConfig({
       },
     }
   ),
-  build: {
-    serverEntry: '.vercel/output/functions/_render.func/dist/server/entry.mjs',
-  },
   markdown: {
     syntaxHighlight: 'shiki', // prism o highlight.js
     remarkPlugins: [], // Agrega aquí plugins adicionales si los necesitas
