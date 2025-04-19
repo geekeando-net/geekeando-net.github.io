@@ -1,15 +1,10 @@
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
 
 export default defineConfig({
   output: 'server',
   adapter: vercel({
-    includeFiles: [
-      'dist/**/*',
-      'public/**/*',
-      'src/**/*'
-    ],
     webAnalytics: {
       enabled: true,
     },
@@ -17,26 +12,21 @@ export default defineConfig({
       enabled: true,
     },
     imageService: true,
-    devImageService: 'sharp',
     imagesConfig: {
+      domains: [],
       sizes: [640, 750, 828, 1080, 1200, 1920],
       formats: ['image/webp'],
-      minimumCacheTTL: 60,
+      minimumCacheTTL: 60
     }
   }),
   integrations: [
-    icon({
-      include: { 
-        custom: ['src/assets/icons/*.svg'] // Asegúrate que esta ruta sea correcta
-      }
-    })
+    icon()
   ],
   vite: {
     ssr: {
-      noExternal: ['astro-icon'] // Fuerza a incluir en el bundle
+      external: ['@resvg/resvg-js']
     },
     plugins: [
-      // Plugin clave para resolver módulos virtuales
       {
         name: 'fix-virtual-modules',
         resolveId(id) {
