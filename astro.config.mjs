@@ -17,7 +17,8 @@ export default defineConfig({
       sizes: [640, 750, 828, 1080, 1200, 1920],
       formats: ['image/webp'],
       minimumCacheTTL: 60
-    }
+    },
+    runtime: 'nodejs20.x'
   }),
   integrations: [
     icon()
