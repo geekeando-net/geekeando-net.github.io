@@ -1,11 +1,10 @@
-/* empty css                                 */
-import { c as createAstro, a as createComponent, m as maybeRenderHead, d as addAttribute, b as renderTemplate, r as renderComponent } from '../chunks/astro/server_BysZ_O6H.mjs';
+import { c as createComponent, a as createAstro, m as maybeRenderHead, d as addAttribute, b as renderTemplate, r as renderComponent } from '../chunks/astro/server_dg1IQH5B.mjs';
 import 'kleur/colors';
-import { b as $$Icon, $ as $$Layout } from '../chunks/Layout_CD72lvyj.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_bTZX-OIn.mjs';
+import { b as $$Icon, $ as $$Layout } from '../chunks/Layout_Cw2jJvHY.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_Bourx7aR.mjs';
 export { renderers } from '../renderers.mjs';
 
-const $$Astro = createAstro("https://www.geekeando.net");
+const $$Astro = createAstro();
 const $$ContactForm = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$ContactForm;

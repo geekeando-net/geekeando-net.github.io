@@ -1,8 +1,7 @@
-/* empty css                                 */
-import { a as createComponent, m as maybeRenderHead, r as renderComponent, b as renderTemplate } from '../chunks/astro/server_BysZ_O6H.mjs';
+import { c as createComponent, m as maybeRenderHead, r as renderComponent, b as renderTemplate } from '../chunks/astro/server_dg1IQH5B.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../chunks/Layout_CD72lvyj.mjs';
-import { $ as $$Image } from '../chunks/_astro_assets_B3_A6ZKA.mjs';
+import { $ as $$Layout } from '../chunks/Layout_Cw2jJvHY.mjs';
+import { $ as $$Image } from '../chunks/_astro_assets_CJlpseDZ.mjs';
 export { renderers } from '../renderers.mjs';
 
 const heroImage = new Proxy({"src":"/_astro/hero.VzD7ZRpO.jpg","width":612,"height":459,"format":"jpg"}, {

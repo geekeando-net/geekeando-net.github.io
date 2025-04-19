@@ -3,7 +3,7 @@ export { renderers } from '../renderers.mjs';
 const robotsTxt = `
 User-agent: *
 Allow: /
-Sitemap: ${new URL("sitemap-index.xml", "https://www.geekeando.net").href}
+Sitemap: ${new URL("sitemap-index.xml", void 0).href}
 `.trim();
 const GET = () => {
   return new Response(robotsTxt, {

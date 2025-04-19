@@ -1,12 +1,11 @@
-/* empty css                                 */
-import { c as createAstro, a as createComponent, m as maybeRenderHead, r as renderComponent, b as renderTemplate, d as addAttribute, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_BysZ_O6H.mjs';
+import { c as createComponent, a as createAstro, m as maybeRenderHead, r as renderComponent, b as renderTemplate, d as addAttribute, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_dg1IQH5B.mjs';
 import 'kleur/colors';
-import { b as $$Icon, $ as $$Layout } from '../chunks/Layout_CD72lvyj.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_bTZX-OIn.mjs';
+import { b as $$Icon, $ as $$Layout } from '../chunks/Layout_Cw2jJvHY.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_Bourx7aR.mjs';
 import { s as stringsCards } from '../chunks/stringsCards_Cehy2Z6N.mjs';
 export { renderers } from '../renderers.mjs';
 
-const $$Astro$1 = createAstro("https://www.geekeando.net");
+const $$Astro$1 = createAstro();
 const $$ContactCard = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$ContactCard;
@@ -14,7 +13,7 @@ const $$ContactCard = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div class="rounded-xl border border-neutral-800 bg-neutral-900/30 p-6 transition-all duration-300 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10"> <div class="flex items-start gap-4"> <!-- Icono --> <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400"> ${icon.startsWith("mdi:") ? renderTemplate`${renderComponent($$result, "Icon", $$Icon, { "name": icon, "class": "h-6 w-6" })}` : renderTemplate`<span class="text-xl">${icon}</span>`} </div> <!-- Contenido --> <div class="flex-1"> <h3 class="text-lg font-bold text-neutral-200">${title}</h3> <ul class="mt-2 space-y-1.5"> ${items.map((item, i) => renderTemplate`<li${addAttribute(i, "data-key")} class="text-neutral-400"> ${renderComponent($$result, "Fragment", Fragment, {}, { "default": ($$result2) => renderTemplate`${unescapeHTML(item)}` })} </li>`)} </ul> ${link && renderTemplate`<a${addAttribute(link.href, "href")} class="mt-3 inline-flex items-center text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors"> ${link.text} ${renderComponent($$result, "Icon", $$Icon, { "name": "mdi:arrow-right", "class": "ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" })} </a>`} </div> </div> </div>`;
 }, "/Users/draexx/Proyecto/geekeando-main/src/components/ui/ContactCard.astro", void 0);
 
-const $$Astro = createAstro("https://www.geekeando.net");
+const $$Astro = createAstro();
 const $$Contact = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Contact;

@@ -1,44 +1,66 @@
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel';
+import vercel from '@astrojs/vercel/serverless';
 import icon from 'astro-icon';
-import tailwind from '@astrojs/tailwind';
-import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'server',
-  site: 'https://www.geekeando.net',
+  adapter: vercel({
+    includeFiles: [
+      'dist/**/*',
+      'public/**/*',
+      'src/**/*'
+    ],
+    webAnalytics: {
+      enabled: true,
+    },
+    speedInsights: {
+      enabled: true,
+    },
+    imageService: true,
+    devImageService: 'sharp',
+    imagesConfig: {
+      sizes: [640, 750, 828, 1080, 1200, 1920],
+      formats: ['image/webp'],
+      minimumCacheTTL: 60,
+    }
+  }),
   integrations: [
-    tailwind(),
-    sitemap(),
     icon({
       include: { 
-        custom: ['src/assets/icons/*'],
-      },
-    }),
+        custom: ['src/assets/icons/*.svg'] // Asegúrate que esta ruta sea correcta
+      }
+    })
   ],
-  adapter: vercel({
-    webAnalytics: { enabled: true },
-    functionPerRoute: false,
-  }),
   vite: {
     ssr: {
-      noExternal: [
-        '@astrojs/vercel',
-        'astro-icon',
-        'react',
-        'react-dom',
-      ],
+      noExternal: ['astro-icon'] // Fuerza a incluir en el bundle
     },
     plugins: [
-      // Solución clave para módulos virtuales
+      // Plugin clave para resolver módulos virtuales
       {
         name: 'fix-virtual-modules',
         resolveId(id) {
           if (id.startsWith('virtual:')) {
-            return '\0' + id;
+            return id.replace('virtual:', '\0virtual:');
           }
-        },
-      },
+        }
+      }
     ],
-  },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor': [
+              'astro-icon',
+              'nodemailer',
+              'particles.js',
+              'photoswipe',
+              'preline',
+              'swiper'
+            ]
+          }
+        }
+      }
+    }
+  }
 });
