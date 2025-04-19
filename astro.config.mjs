@@ -17,7 +17,9 @@ export default defineConfig({
       webAnalytics: {
           enabled:true,
       },
-      includeFiles: ['src/lib/**/*.js'], // Incluye helpers o utils
+      edgeMiddleware: false,
+      includeFiles: ['src/**/*.js'], // Incluye todos los JS
+      excludeFiles: ['src/**/*.test.js'] // Excluye tests
     }
   ),
   markdown: {
@@ -25,4 +27,10 @@ export default defineConfig({
     remarkPlugins: [], // Agrega aquí plugins adicionales si los necesitas
     rehypePlugins: [], // Si quieres manipular HTML generado
   },
+  vite: {
+    ssr: {
+      // Fuerza la resolución correcta de dependencias
+      noExternal: ['@astrojs/vercel']
+    }
+  }
 });
