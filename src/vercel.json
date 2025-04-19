@@ -1,0 +1,21 @@
+{
+    "version": 3,
+    "builds": [
+        {
+            "src": "dist/server/entry.mjs",
+            "use": "@vercel/node",
+            "config": {
+            "includeFiles": [
+                "dist/server/chunks/api/contact.mjs",
+                "dist/server/chunks/lib/**"
+                ]
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "dist/server/entry.mjs"
+        }
+    ]
+}

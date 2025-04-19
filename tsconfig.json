@@ -12,7 +12,8 @@
       "@posts/*": ["src/pages/posts/*"],
       "@styles/*": ["src/assets/styles/*"],
       "@images/*": ["src/assets/images/*"],
-      "@gallery/*":["src/assets/images/gallery/*"],
+      "@gallery/*": ["src/assets/images/gallery/*"],
     }
-  }
+  },
+  "include": ["src/**/*"]
 }

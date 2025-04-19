@@ -18,8 +18,11 @@ export default defineConfig({
           enabled:true,
       },
       edgeMiddleware: false,
-      includeFiles: ['src/**/*.js'], // Incluye todos los JS
-      excludeFiles: ['src/**/*.test.js'] // Excluye tests
+      includeFiles: [
+        './src/lib/email/templates.ts',
+        './src/lib/email/transporter.ts'
+      ],
+      excludeFiles: ['**/*.test.ts'] // Excluye tests
     }
   ),
   markdown: {
@@ -31,6 +34,11 @@ export default defineConfig({
     ssr: {
       // Fuerza la resolución correcta de dependencias
       noExternal: ['@astrojs/vercel']
+    },
+    resolve: {
+      alias: {
+        '@': '/src'  // Aliases para imports más limpios
+      }
     }
   }
 });
