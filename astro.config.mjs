@@ -1,6 +1,9 @@
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
+import tailwind from '@astrojs/tailwind';
+
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'server',
@@ -24,7 +27,9 @@ export default defineConfig({
     edgeMiddleware: false
   }),
   integrations: [
-    icon()
+    icon(),
+    tailwind(),
+    sitemap()
   ],
   vite: {
     ssr: {
