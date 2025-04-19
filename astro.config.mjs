@@ -20,7 +20,8 @@ export default defineConfig({
     },
     runtime: 'nodejs20.x',
     functionPerRoute: true,
-    maxDuration: 60
+    maxDuration: 60,
+    edgeMiddleware: false
   }),
   integrations: [
     icon()

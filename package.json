@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "build-icons": "astro-icon generate --icon-set @iconify-json/mdi --output public/icons",
-    "vercel-build": "astro check && astro build"
+    "vercel-build": "NODE_VERSION=20.x astro check && astro build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
