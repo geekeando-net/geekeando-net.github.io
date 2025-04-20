@@ -1,0 +1,73 @@
+---
+const cookiesTable = [
+    {
+        name: "cookie_consent",
+        type: "Esencial",
+        duration: "1 año",
+        purpose: "Recordar sus preferencias de cookies"
+    },
+    {
+        name: "session_id",
+        type: "Esencial",
+        duration: "Sesión",
+        purpose: "Mantener su sesión activa"
+    },
+    {
+        name: "_ga",
+        type: "Analítica",
+        duration: "2 años",
+        purpose: "Distinguir usuarios (Google Analytics)"
+    },
+    {
+        name: "_gid",
+        type: "Analítica",
+        duration: "24 horas",
+        purpose: "Distinguir usuarios (Google Analytics)"
+    },
+    {
+        name: "_gat",
+        type: "Analítica",
+        duration: "1 minuto",
+        purpose: "Limitar solicitudes (Google Analytics)"
+    },
+    {
+        name: "NID",
+        type: "Funcionalidad",
+        duration: "6 meses",
+        purpose: "Preferencias de Google Maps"
+    }
+];
+---
+
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-neutral-700">
+        <thead class="bg-neutral-800/50">
+        <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Nombre</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Tipo</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Duración</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Propósito</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-neutral-800">
+        {cookiesTable.map((cookie) => (
+            <tr>
+            <td class="px-4 py-3 text-sm text-neutral-300 font-mono">{cookie.name}</td>
+            <td class="px-4 py-3 text-sm text-neutral-400">
+                <span class={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                cookie.type === "Esencial"
+                    ? "bg-amber-900 text-amber-300"
+                    : cookie.type === "Analítica"
+                    ? "bg-purple-900 text-purple-300"
+                    : "bg-blue-900 text-blue-300"
+                }`}>
+                {cookie.type}
+                </span>
+            </td>
+            <td class="px-4 py-3 text-sm text-neutral-400">{cookie.duration}</td>
+            <td class="px-4 py-3 text-sm text-neutral-400">{cookie.purpose}</td>
+            </tr>
+        ))}
+        </tbody>
+    </table>
+</div>

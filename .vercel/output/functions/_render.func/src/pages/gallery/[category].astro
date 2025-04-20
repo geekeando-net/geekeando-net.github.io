@@ -1,7 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import Icon from "@/components/ui/IconPart.astro";
 import 'swiper/css';
 import "swiper/css/navigation";
 import 'photoswipe/style.css';
@@ -96,12 +95,17 @@ const allCategories = Array.from(new Set(
     .filter-btn {
         @apply px-4 py-2 rounded-full text-sm font-medium bg-neutral-800 text-neutral-300 hover:bg-purple-500/20 hover:text-amber-400 transition-colors;
     }
-
     .filter-btn.active {
         @apply bg-amber-500 text-neutral-900 font-bold;
     }
 </style>
 <script>
+    // Declare global variables for TypeScript
+    declare global {
+        interface Window {
+            gallerySwiper: any;
+        }
+    }
     // Core de Swiper y estilos
     import Swiper from 'swiper';
 
@@ -136,6 +140,15 @@ const allCategories = Array.from(new Set(
             nextEl: ".swiper-button-next",
         }
     });
+
+    // Add event listeners to make swiper variable usage explicit to TypeScript
+    swiper.on('slideChange', function() {
+        console.log('Slide changed to index', swiper.activeIndex);
+    });
+
+    // Create a global reference to make TypeScript recognize the usage
+    window.gallerySwiper = swiper;
+
     const lightbox = new PhotoSwipeLightbox({
         gallery: '#my-slider',
         children: 'a',

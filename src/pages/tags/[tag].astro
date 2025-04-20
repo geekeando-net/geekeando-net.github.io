@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro"
 import TitleSection from "@/components/ui/TitleSection.astro"
-import SinglePost from "@/components/ui/SinglePost.astro";
+import SinglePost from "@/components/ui/post/SinglePost.astro";
 import type { MarkdownInstance } from 'astro';
 
 interface Frontmatter {
@@ -79,7 +79,7 @@ const urlPath = "/";
             />
             <div class="mt-6 flex flex-wrap justify-center gap-3">
                 <button class="filter-btn">
-                    <a href="/blog">Todos</a>
+                    <a href="/blogs">Todos</a>
                 </button>
                 {
                     tags.map((tagFilter) => (

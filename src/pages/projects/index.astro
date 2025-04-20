@@ -1,0 +1,182 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import ProjectCard from "@/components/ui/ProjectCard.astro";
+import { Icon } from "astro-icon/components";
+const title = "Proyectos Geek";
+const subTitle = "Explora nuestras creaciones en tecnología, manualidades e innovación";
+
+// Datos de ejemplo para proyectos
+const projectCategories = [
+    {
+        id: "arduino",
+        name: "Arduino",
+        icon: "mdi:chip",
+        description: "Proyectos de electrónica y automatización con Arduino",
+        projects: [
+        {
+            id: "arduino-irrigation",
+            title: "Sistema de Riego Automático",
+            image: "src/assets/images/projects/arduino-irrigation.png",
+            tags: ["IoT", "Automatización"],
+            date: "2023-10-15",
+            difficulty: "Intermedio"
+        },
+        {
+            id: "weather-station",
+            title: "Estación Meteorológica",
+            image: "src/assets/images/projects/weather-station.png",
+            tags: ["Sensores", "Datos"],
+            date: "2023-08-22",
+            difficulty: "Avanzado"
+        }
+        ]
+    },
+    {
+        id: "paper-craft",
+        name: "Paper Craft",
+        icon: "mdi:paper-cut-vertical",
+        description: "Creaciones artísticas en papel y cartón",
+        projects: [
+        {
+            id: "futuristic-city",
+            title: "Maqueta de Ciudad Futurista",
+            image: "src/assets/images/projects/paper-city.png",
+            tags: ["Escala 1:100", "Arquitectura"],
+            date: "2023-11-05",
+            difficulty: "Principiante"
+        }
+        ]
+    },
+    {
+        id: "3d-print",
+        name: "3D Print",
+        icon: "mdi:printer-3d",
+        description: "Diseño e impresión 3D de objetos y prototipos",
+        projects: [
+        {
+            id: "robotic-arm",
+            title: "Brazo Robótico Modular",
+            image: "src/assets/images/projects/robotic-arm.png",
+            tags: ["Robótica", "Open Source"],
+            date: "2023-09-18",
+            difficulty: "Intermedio"
+        }
+        ]
+    },
+    {
+        id: "music",
+        name: "Music",
+        icon: "mdi:music",
+        description: "Proyectos musicales y de audio tecnología",
+        projects: [
+        {
+            id: "diy-synth",
+            title: "Sintetizador DIY",
+            image: "src/assets/images/projects/diy-synth.png",
+            tags: ["Electrónica", "Música"],
+            date: "2023-07-30",
+            difficulty: "Avanzado"
+        }
+        ]
+    }
+];
+---
+
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <!-- Encabezado -->
+        <div class="mx-auto max-w-4xl text-center mb-12">
+            <TitleSection
+                title={title}
+                subTitle={subTitle}
+                accentColor="purple"
+            />
+        </div>
+
+        <!-- Navegación por categorías -->
+        <div class="sticky top-16 z-10 bg-neutral-900/80 backdrop-blur-md py-4 mb-8 border-b border-neutral-800 text-neutral-400">
+            <div class="flex overflow-x-auto pb-2 gap-3 no-scrollbar">
+                {projectCategories.map((category) => (
+                <a
+                    href={`#${category.id}`}
+                    class="flex-shrink-0 flex items-center gap-2 rounded-full border border-neutral-700 px-4 py-2 text-sm font-medium transition-all hover:border-purple-500 hover:bg-purple-500/10 hover:text-purple-400"
+                >
+                    <Icon name={category.icon} class="h-4 w-4" />
+                    {category.name}
+                </a>
+                ))}
+            </div>
+        </div>
+
+        <!-- Contenido por categoría -->
+        <div class="space-y-20">
+        {projectCategories.map((category) => (
+            <div id={category.id} class="scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="flex items-center justify-center rounded-lg bg-purple-500/10 p-3 text-purple-400">
+                <Icon name={category.icon} class="h-6 w-6" />
+                </div>
+                <div>
+                <h2 class="text-2xl font-bold text-neutral-200">{category.name}</h2>
+                <p class="text-neutral-400">{category.description}</p>
+                </div>
+            </div>
+
+            <!-- Grid de proyectos -->
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {category.projects.map((project) => (
+                <ProjectCard
+                    id={project.id}
+                    title={project.title}
+                    image={project.image}
+                    category={category.name}
+                    tags={project.tags}
+                    date={project.date}
+                    difficulty={project.difficulty}
+                />
+                ))}
+            </div>
+
+            <!-- Botón ver más (opcional) -->
+            <div class="mt-8 text-center">
+                <a
+                href={`/projects/${category.id}`}
+                class="inline-flex items-center justify-center gap-x-2 rounded-lg border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-800 transition-colors"
+                >
+                Ver todos los proyectos de {category.name}
+                <Icon name="mdi:arrow-right" class="h-4 w-4" />
+                </a>
+            </div>
+            </div>
+        ))}
+        </div>
+
+        <!-- CTA final -->
+        <div class="mt-20 text-center">
+        <div class="inline-block rounded-xl border border-purple-500/30 bg-gradient-to-r from-purple-900/30 to-neutral-900/50 p-1 shadow-lg shadow-purple-500/10">
+            <div class="rounded-lg bg-neutral-900/80 p-8 backdrop-blur-sm">
+            <h3 class="text-xl font-bold text-neutral-200 mb-3">¿Tienes un proyecto para compartir?</h3>
+            <p class="mb-5 text-neutral-400">Únete a nuestra comunidad y muestra tus creaciones</p>
+            <a
+                href="/comunidad/subir-proyecto"
+                class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all"
+            >
+                <Icon name="mdi:plus-circle" class="h-5 w-5" />
+                Subir proyecto
+            </a>
+            </div>
+        </div>
+        </div>
+    </section>
+</Layout>
+
+<style is:global>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>

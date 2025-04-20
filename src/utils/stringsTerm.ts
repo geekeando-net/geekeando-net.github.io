@@ -142,6 +142,37 @@ const stringsConditionsTerm = [
     },
 ];
 
+const stringsCookiesTerm = [
+    {
+        icon: "mdi:cookie",
+        title: '1. ¿Qué son las cookies?',
+        text: '<p class="text-neutral-400">Las cookies son pequeños archivos de texto que los sitios web colocan en su dispositivo para almacenar información sobre su preferencias y actividad. En <span class="text-amber-400 font-medium">Geekeando</span> utilizamos cookies y tecnologías similares para mejorar su experiencia.</p>',
+    },
+    {
+        icon: "mdi:cookie-settings",
+        title: '2. Tipos de cookies que utilizamos',
+        text: '<CookieTable /><div class="mt-4 p-4 rounded-lg bg-neutral-800 border-l-4 border-amber-500"><p class="text-sm text-neutral-300"><Icon name="mdi:shield-alert" class="inline h-5 w-5 text-amber-400 mr-2" /><strong>Cookies esenciales:</strong> No puede desactivarlas ya que son necesarias para el funcionamiento básico del sitio.</p></div>',
+    },
+    {
+        icon: "mdi:cog",
+        title: '3. Cómo gestionar cookies',
+        text: '<p class="text-neutral-400 mb-3">Puede controlar y/o eliminar las cookies como desee:</p><ul class="text-neutral-400 space-y-2 list-disc pl-5 mb-4"><li><strong>Configuración del navegador:</strong> La mayoría de navegadores permiten bloquear o eliminar cookies. Consulte <a href="https://www.aboutcookies.org/" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">aboutcookies.org</a> para instrucciones.</li><li><strong>Herramienta de consentimiento:</strong> Utilice nuestro banner de cookies para personalizar sus preferencias.</li><li><strong>Herramientas de terceros:</strong> Extensiones como Ghostery o Privacy Badger.</li></ul><p class="text-neutral-400">Tenga en cuenta que deshabilitar cookies puede afectar la funcionalidad de nuestro sitio y otros que visite.</p>',
+    },
+    {
+        icon: "mdi:account-group",
+        title: '4. Cookies de terceros',
+        text: '<p class="text-neutral-400 mb-3">Algunas cookies son colocadas por servicios de terceros que aparecen en nuestras páginas:</p><ul class="text-neutral-400 space-y-2 list-disc pl-5 mb-4"><li><strong>Google Analytics:</strong> Para analizar el uso del sitio (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">Política de Privacidad</a>)</li><li><strong>YouTube:</strong> Para incrustar videos (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">Política de Privacidad</a>)</li><li><strong>Redes sociales:</strong> Para compartir contenido (<a href="https://www.facebook.com/policies/cookies/" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">Ejemplo Facebook</a>)</li></ul>',
+    },
+    {
+        icon: "mdi:update",
+        title: '<p class="text-neutral-400">Podemos actualizar esta Política de Cookies periódicamente. Le recomendamos revisar esta página para estar informado sobre cómo usamos las cookies.</p>',
+    },
+];
+
+
 export default {
-    stringsServiceTerm, stringPrivacyTerm, stringsConditionsTerm
+    stringsServiceTerm,
+    stringPrivacyTerm,
+    stringsConditionsTerm,
+    stringsCookiesTerm
 };

@@ -1,0 +1,62 @@
+---
+import CustomImage from "@components/ui/CustomImage.astro";
+const { number, title, content, image, code } = Astro.props;
+const imagesProjects = import.meta.glob('../../../assets/images/projects/*.{jpg,png,webp,avif}');
+const getImageProjectUrl = async (imagePath: string) => {
+    if (!imagePath) return null;
+    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
+    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
+    if (imageKey) {
+        try {
+            const module = await imagesProjects[imageKey]();
+            return (module as { default: string }).default;
+        } catch (e) {
+            console.error(`Error cargando la imagen: ${imageKey}`, e);
+            return null;
+        }
+    }else{
+        try {
+            const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
+            if (imageDefault) {
+                const module = await imagesProjects[imageDefault]();
+                return (module as { default: string }).default;
+            }
+            return null;
+        } catch (e) {
+            console.error(`Error cargando la imagen por defecto`, e);
+            return null;
+        }
+    }
+
+    return null;
+};
+const imageUrl = await getImageProjectUrl(image);
+---
+
+<div class="flex gap-5">
+    <div class="flex flex-col items-center">
+        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 font-bold text-lg">
+        {number}
+        </div>
+        {number < 3 && <div class="w-0.5 h-full bg-neutral-800 flex-1"></div>}
+    </div>
+    
+    <div class="flex-1 pb-10">
+        <h3 class="text-xl font-bold text-neutral-200 mb-3">{title}</h3>
+        <div class="prose prose-invert max-w-none text-neutral-300">
+        <p>{content}</p>
+        
+        {image && (
+            <div class="mt-4 rounded-lg overflow-hidden border border-neutral-800">
+            <CustomImage src={imageUrl} alt={`Paso ${number}`} class="w-full" />
+            </div>
+        )}
+        
+        {code && (
+            <pre class="mt-4 bg-neutral-900 rounded-lg border border-neutral-800 overflow-x-auto p-4 text-sm">
+            <code class="language-arduino">{code}</code>
+            </pre>
+        )}
+        </div>
+    </div>
+</div>

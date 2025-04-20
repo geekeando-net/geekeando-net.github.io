@@ -1,13 +1,13 @@
 /* empty css                                 */
-import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_gjNMqtlz.mjs';
-import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_Ca-RkOAN.mjs';
-import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_5bxHyKd3.mjs';
-import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_BGzrDrrK.mjs';
-import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_DqWyuT4I.mjs';
+import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_80qqAsBm.mjs';
+import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_aXoR7fUs.mjs';
+import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_CwUU3fkQ.mjs';
+import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_7aFxSqfs.mjs';
+import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_DYkohY_O.mjs';
 import { c as createComponent, r as renderComponent, b as renderTemplate, m as maybeRenderHead, d as addAttribute } from '../chunks/astro/server_C_ZC2ylG.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../chunks/Layout_BogMbZCy.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_BLso68J8.mjs';
+import { $ as $$Layout } from '../chunks/Layout_UoTbEvCZ.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_GCAWdQl6.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 

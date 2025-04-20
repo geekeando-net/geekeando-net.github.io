@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+const { files } = Astro.props;
+
+const fileIcons = {
+    PDF: "mdi:file-pdf",
+    ZIP: "mdi:folder-zip",
+    STL: "mdi:cube",
+    INO: "mdi:code-braces",
+    F3D: "mdi:cube",
+    SVG: "mdi:vector-arrange-below"
+};
+---
+
+<div class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
+  <h3 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-2">
+    <Icon name="mdi:download" class="h-5 w-5 text-purple-400" />
+    Archivos para descargar
+  </h3>
+  
+  <div class="space-y-3">
+    {files.map((file: { link: string, type: string, name: string, size: string }) => (
+      <a
+        href={file.link}
+        download
+        class="group flex items-center justify-between rounded-lg border border-neutral-800 px-4 py-3 hover:border-purple-500/50 hover:bg-purple-500/10 transition-colors"
+      >
+        <div class="flex items-center gap-3">
+          <div class={`p-2 rounded-lg ${file.type === 'PDF' ? 'bg-red-500/10 text-red-400' : file.type === 'ZIP' ? 'bg-amber-500/10 text-amber-400' : 'bg-purple-500/10 text-purple-400'}`}>
+            <Icon name={fileIcons[file.type as keyof typeof fileIcons] || "mdi:file"} class="h-5 w-5" />
+          </div>
+          <div>
+            <p class="font-medium text-neutral-200 group-hover:text-purple-400 transition-colors">
+              {file.name}
+            </p>
+            <p class="text-xs text-neutral-500">
+              {file.type} • {file.size}
+            </p>
+          </div>
+        </div>
+        <Icon 
+          name="mdi:download" 
+          class="h-5 w-5 text-neutral-500 group-hover:text-purple-400 transition-colors" 
+        />
+      </a>
+    ))}
+  </div>
+
+  {/* Licencia */}
+  <div class="mt-4 text-center">
+    <p class="text-xs text-neutral-500">
+      <Icon name="mdi:license" class="h-4 w-4 inline mr-1" />
+      Todos los archivos se comparten bajo licencia Creative Commons BY-NC-SA
+    </p>
+  </div>
+</div>

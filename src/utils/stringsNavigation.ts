@@ -1,6 +1,6 @@
 const navBarLinks = [
     { name: 'Home', url: '/' },
-    { name: 'Project', url: '/project' },
+    { name: 'Projects', url: '/projects' },
     { name: 'Blog', url: '/blogs' },
     { name: 'Gallery', url: '/gallery' },
     { name: 'About', url: '/about' },
@@ -11,16 +11,6 @@ const navBarLinks = [
     ];
 const footerLinks = [
     {
-        section: 'Projects',
-        icon: 'mdi:folder-multiple',
-        links:[
-            { name: 'Arduino', url: '/arduino', icon: 'mdi:chip',external: false },
-            { name: 'Paper Craft', url: '/paper-craft', icon: 'mdi:file-document',external: false },
-            { name: '3D Print', url: '/print3d', icon: 'mdi:printer-3d',external: false },
-            { name: 'Music', url: '/music', icon: 'mdi:music',external: false },
-        ],
-    },
-    {
         section: 'Information',
         icon: 'mdi:information',
         links:[
@@ -29,8 +19,18 @@ const footerLinks = [
             { name: 'FAQ', url: '/faq', icon: 'mdi:comment-question-outline',external: false },
             { name: 'Contact Us', url: '/contact', icon: 'mdi:email',external: false },
         ],
-    }
-    ];
+    },
+    {
+        section: 'Projects',
+        icon: 'mdi:folder-multiple',
+        links:[
+            { name: 'Arduino', url: '/projects/arduino', icon: 'mdi:chip',external: false },
+            { name: 'Paper Craft', url: '/projects/paper-craft', icon: 'mdi:file-document',external: false },
+            { name: '3D Print', url: '/projects/print3d', icon: 'mdi:printer-3d',external: false },
+            { name: 'Music', url: '/projects/music', icon: 'mdi:music',external: false },
+        ],
+    },
+];
 const socialLinks = [
         {name: 'mdi:facebook', url: 'https://www.facebook.com/'},
         {name: 'mdi:twitter', url: 'https://twitter.com/draexx'},

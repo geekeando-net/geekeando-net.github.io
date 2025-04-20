@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import SinglePostCard from "@/components/ui/SinglePostCard.astro"; // Nuevo componente para cards
+import SinglePostCard from "@/components/ui/post/SinglePostCard.astro"; // Nuevo componente para cards
 
 const allPostsFile = import.meta.glob('@posts/*.md', { eager: true });
 

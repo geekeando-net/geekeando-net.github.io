@@ -1,14 +1,14 @@
 /* empty css                                 */
-import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_gjNMqtlz.mjs';
-import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_Ca-RkOAN.mjs';
-import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_5bxHyKd3.mjs';
-import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_BGzrDrrK.mjs';
-import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_DqWyuT4I.mjs';
+import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_80qqAsBm.mjs';
+import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_aXoR7fUs.mjs';
+import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_CwUU3fkQ.mjs';
+import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_7aFxSqfs.mjs';
+import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_DYkohY_O.mjs';
 import { c as createComponent, a as createAstro, m as maybeRenderHead, d as addAttribute, r as renderComponent, b as renderTemplate, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_C_ZC2ylG.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../chunks/Layout_BogMbZCy.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_BLso68J8.mjs';
-import { $ as $$CustomImage } from '../chunks/PostLayout_CO6khs-H.mjs';
+import { $ as $$Layout } from '../chunks/Layout_UoTbEvCZ.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_GCAWdQl6.mjs';
+import { $ as $$CustomImage } from '../chunks/PostLayout_DI69P3Dd.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
@@ -17,7 +17,7 @@ const $$SinglePostCard = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$SinglePostCard;
   const { title, text, link, svg, image, tags, pubDate, author } = Astro2.props;
-  const images = /* #__PURE__ */ Object.assign({"../../assets/images/posts/cloud-tags.png": () => import('../chunks/cloud-tags_DIvao_fJ.mjs'),"../../assets/images/posts/css-grid-layout-tutorial.png": () => import('../chunks/css-grid-layout-tutorial_DmrgybVA.mjs'),"../../assets/images/posts/flexbox-guia-completa-diseno-responsive.png": () => import('../chunks/flexbox-guia-completa-diseno-responsive_BVTrIYC0.mjs'),"../../assets/images/posts/menu-despegable.png": () => import('../chunks/menu-despegable_DH9Be08Q.mjs'),"../../assets/images/posts/menu-navegacion-html-css-hover-efectos.png": () => import('../chunks/menu-navegacion-html-css-hover-efectos_mYAyq0Ah.mjs'),"../../assets/images/posts/postgres-backup-restore-guide.png": () => import('../chunks/postgres-backup-restore-guide_CzHjUWES.mjs'),"../../assets/images/posts/tag-cloud-tutorial.png": () => import('../chunks/tag-cloud-tutorial_3HKdCm4Q.mjs')});
+  const images = /* #__PURE__ */ Object.assign({"../../../assets/images/posts/cloud-tags.png": () => import('../chunks/cloud-tags_DIvao_fJ.mjs'),"../../../assets/images/posts/css-grid-layout-tutorial.png": () => import('../chunks/css-grid-layout-tutorial_DmrgybVA.mjs'),"../../../assets/images/posts/flexbox-guia-completa-diseno-responsive.png": () => import('../chunks/flexbox-guia-completa-diseno-responsive_BVTrIYC0.mjs'),"../../../assets/images/posts/menu-despegable.png": () => import('../chunks/menu-despegable_DH9Be08Q.mjs'),"../../../assets/images/posts/menu-navegacion-html-css-hover-efectos.png": () => import('../chunks/menu-navegacion-html-css-hover-efectos_mYAyq0Ah.mjs'),"../../../assets/images/posts/postgres-backup-restore-guide.png": () => import('../chunks/postgres-backup-restore-guide_CzHjUWES.mjs'),"../../../assets/images/posts/tag-cloud-tutorial.png": () => import('../chunks/tag-cloud-tutorial_3HKdCm4Q.mjs')});
   let imageLocalUrl = null;
   if (image?.url) {
     const imageFileName = image.url.split("/").pop();
@@ -33,7 +33,7 @@ const $$SinglePostCard = createComponent(async ($$result, $$props, $$slots) => {
   }
   return renderTemplate`${maybeRenderHead()}<article class="group h-full flex flex-col overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50 hover:border-amber-400/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/10"> <!-- Imagen --> ${imageLocalUrl && renderTemplate`<div class="lg:w-1/3 overflow-hidden rounded-lg border border-neutral-800 shadow-lg shadow-neutral-950/50"> ${renderComponent($$result, "CustomImage", $$CustomImage, { "src": imageLocalUrl, "alt": `Portada para ${image.alt || title}`, "class": "w-full lg:h-full object-cover transition-transform duration-500 group-hover:scale-105", "loading": "lazy", "widths": [400, 600, 800], "sizes": "(max-width: 1024px) 100vw, 33vw", "format": "webp" })} </div>`} <!-- Contenido --> <div class="flex-grow p-6 flex flex-col"> <!-- Categoría y fecha --> <div class="flex justify-between items-center mb-3"> ${tags.map((tag) => renderTemplate`<span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/10 text-amber-400"> <a${addAttribute(`/tags/${tag}`, "href")} class="no-underline text-amber-400 hover:text-amber-300 transition-colors"> ${tag} </a> </span>`)} <span class="text-xs text-neutral-500">${pubDate}</span> </div> <!-- Título --> <h3 class="text-xl font-bold text-neutral-100 mb-2 group-hover:text-amber-400 transition-colors line-clamp-2"> <a${addAttribute(link.href, "href")}>${title}</a> </h3> <!-- Descripción --> <p class="text-neutral-400 mb-4 line-clamp-3 flex-grow"> ${renderComponent($$result, "Fragment", Fragment, {}, { "default": async ($$result2) => renderTemplate`${unescapeHTML(text)}` })} </p> <!-- Metadata inferior --> <div class="mt-auto pt-4 border-t border-neutral-800"> <div class="flex justify-between items-center text-sm"> <span class="text-xs text-neutral-500">${new Date(pubDate).toLocaleDateString("es-ES", { year: "numeric", month: "long", day: "numeric" })}</span> <span class="text-xs text-neutral-500">${author}</span> <a${addAttribute(link.href, "href")} class="flex items-center text-amber-400 hover:text-amber-300 transition-colors font-medium">
 Leer más ${renderComponent($$result, "Fragment", Fragment, {}, { "default": async ($$result2) => renderTemplate`${unescapeHTML(svg)}` })} </a> </div> </div> </div> </article>`;
-}, "/Users/draexx/Proyecto/geekeando-main/src/components/ui/SinglePostCard.astro", void 0);
+}, "/Users/draexx/Proyecto/geekeando-main/src/components/ui/post/SinglePostCard.astro", void 0);
 
 const $$Blogs = createComponent(($$result, $$props, $$slots) => {
   const allPostsFile = /* #__PURE__ */ Object.assign({"/src/pages/posts/css-grid-layout-tutorial.md": __vite_glob_0_0,"/src/pages/posts/flexbox-guia-completa-diseno-responsive.md": __vite_glob_0_1,"/src/pages/posts/menu-navegacion-html-css-hover-efectos.md": __vite_glob_0_2,"/src/pages/posts/postgres-backup-restore-guide.md": __vite_glob_0_3,"/src/pages/posts/tag-cloud-tutorial.md": __vite_glob_0_4});
