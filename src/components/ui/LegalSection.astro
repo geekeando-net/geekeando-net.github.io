@@ -1,0 +1,22 @@
+---
+import { Icon } from "astro-icon/components";
+const { icon, iconColor = "amber", title, class: className = "" , text} = Astro.props;
+---
+
+<div class={`legal-section ${className}`}>
+    <h2 class="text-xl md:text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
+        <Icon name={icon} class={`h-5 w-5 md:h-6 md:w-6 text-${iconColor}-400`} />
+        {title}
+    </h2>
+    <div class="legal-content" >
+        <Fragment
+            set:html = { text }
+        />
+    </div>
+</div>
+
+<style>
+    .legal-content a {
+        @apply text-amber-400 hover:text-amber-300 underline transition-colors;
+    }
+</style>

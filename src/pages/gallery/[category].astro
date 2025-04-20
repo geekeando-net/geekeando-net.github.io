@@ -103,7 +103,7 @@ const allCategories = Array.from(new Set(
     // Declare global variables for TypeScript
     declare global {
         interface Window {
-            categorySwiper: any;
+            gallerySwiper: any;
         }
     }
     // Core de Swiper y estilos
@@ -147,7 +147,7 @@ const allCategories = Array.from(new Set(
     });
 
     // Create a global reference to make TypeScript recognize the usage
-    window.categorySwiper = swiper;
+    window.gallerySwiper = swiper;
 
     const lightbox = new PhotoSwipeLightbox({
         gallery: '#my-slider',

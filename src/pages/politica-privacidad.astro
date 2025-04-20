@@ -1,0 +1,57 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import LegalSection from "@/components/ui/LegalSection.astro";
+import { Icon } from "astro-icon/components";
+import stringsTerm from "@/utils/stringsTerm";
+const title = "Política de Privacidad";
+const lastUpdated = new Date().toLocaleDateString('es-ES', { 
+  year: 'numeric', 
+  month: 'long', 
+  day: 'numeric'
+});
+const stringsPrivacyTerm = stringsTerm.stringPrivacyTerm;
+---
+
+<Layout>
+  <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <!-- Encabezado -->
+    <div class="mx-auto max-w-4xl text-center mb-12">
+      <TitleSection 
+        title={title}
+        subTitle={`Última actualización: ${lastUpdated}`}
+        accentColor="purple"
+      />
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="mx-auto max-w-3xl rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 backdrop-blur-sm shadow-lg shadow-neutral-950/50">
+        {stringsPrivacyTerm.map((item) => (
+            <LegalSection
+                icon={item.icon}
+                title={item.title}
+                text={item.text}
+            />
+        ))}
+
+        <!-- Aceptación -->
+        <div class="mt-12 pt-8 border-t border-neutral-800">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-neutral-400 text-sm sm:text-base">
+                Al usar Geekeando, usted acepta los términos de esta Política de Privacidad.
+            </p>
+            <div class="flex gap-3">
+                <a href="/terminos-servicio" class="inline-flex items-center justify-center gap-x-1 rounded-lg border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-800 transition-colors">
+                <Icon name="mdi:file-document" class="h-4 w-4" />
+                Términos de Servicio
+                </a>
+                <a href="/" class="inline-flex items-center justify-center gap-x-1 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-sm font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all">
+                <Icon name="mdi:home" class="h-4 w-4" />
+                Volver al Inicio
+                </a>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
+</Layout>

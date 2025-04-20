@@ -1,0 +1,126 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import Accordion from "@/components/ui/Accordion.astro";
+import { Icon } from "astro-icon/components";
+import { stringsFAQ } from "@/utils/stringsCards";
+const title = "Preguntas Frecuentes";
+const subTitle = "Encuentra respuestas a las dudas más comunes sobre Geekeando";
+
+// Datos de las FAQs organizadas por categorías
+const faqCategories = stringsFAQ.categories;
+---
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <!-- Encabezado -->
+        <div class="mx-auto max-w-3xl text-center mb-12">
+            <TitleSection
+                title={title}
+                subTitle={subTitle}
+                accentColor="purple"
+            />
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="mx-auto mb-12 max-w-2xl">
+        <div class="relative">
+            <input
+            type="text"
+            placeholder="Buscar en preguntas frecuentes..."
+            class="block w-full rounded-xl border border-neutral-700 bg-neutral-800/50 px-5 py-3 pl-12 text-neutral-200 placeholder-neutral-500 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+            id="faq-search"
+            />
+            <Icon name="mdi:magnify" class="absolute left-4 top-3.5 h-5 w-5 text-neutral-500" />
+        </div>
+        </div>
+
+        <!-- Navegación por categorías -->
+        <div class="mb-12 flex flex-wrap justify-center gap-3">
+        {faqCategories.map((category) => (
+            <a
+            href={`#${category.id}`}
+            class="flex items-center gap-2 rounded-full border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 transition-all hover:border-purple-500 hover:bg-purple-500/10 hover:text-purple-400"
+            >
+            <Icon name={category.icon} class="h-4 w-4" />
+            {category.name}
+            </a>
+        ))}
+        </div>
+
+        <!-- FAQs por categoría -->
+        <div class="mx-auto max-w-3xl space-y-12">
+        {faqCategories.map((category) => (
+            <div id={category.id} class="scroll-mt-20">
+            <h2 class="mb-6 flex items-center gap-3 text-xl font-bold text-neutral-200">
+                <Icon name={category.icon} class="h-6 w-6 text-purple-400" />
+                {category.name}
+            </h2>
+
+            <div class="space-y-4">
+                {category.questions.map((item, index) => (
+                <Accordion
+                    key={`${category.id}-${index}`}
+                    question={item.question}
+                    answer={item.answer}
+                    modeDisplay={true}
+                />
+                ))}
+            </div>
+            </div>
+        ))}
+        </div>
+
+        <!-- CTA para contacto adicional -->
+        <div class="mt-16 text-center">
+        <div class="inline-block rounded-xl border border-purple-500/30 bg-gradient-to-r from-purple-900/30 to-neutral-900/50 p-1 shadow-lg shadow-purple-500/10">
+            <div class="rounded-lg bg-neutral-900/80 p-8 backdrop-blur-sm">
+            <h3 class="text-xl font-bold text-neutral-200 mb-3">
+                ¿No encontraste lo que buscabas?
+            </h3>
+            <p class="mb-5 text-neutral-400">
+                Nuestro equipo está listo para ayudarte con cualquier consulta.
+            </p>
+            <a
+                href="/contacto"
+                class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all"
+            >
+                Contactar al equipo
+                <Icon name="mdi:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+            </div>
+        </div>
+        </div>
+    </section>
+</Layout>
+
+<!-- Script para funcionalidad de búsqueda y acordeones -->
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Funcionalidad de búsqueda
+        const searchInput = document.getElementById('faq-search');
+        const accordions = document.querySelectorAll('.accordion-item');
+
+        if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            accordions.forEach(accordion => {
+            const question = accordion.querySelector('.accordion-question').textContent.toLowerCase();
+            const answer = accordion.querySelector('.accordion-answer').textContent.toLowerCase();
+
+            if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                accordion.style.display = 'block';
+                // Resaltar coincidencias
+                const regex = new RegExp(searchTerm, 'gi');
+                accordion.innerHTML = accordion.innerHTML.replace(
+                regex,
+                match => `<span class="bg-yellow-400/30 text-yellow-300">${match}</span>`
+                );
+            } else {
+                accordion.style.display = 'none';
+            }
+            });
+        });
+        }
+    });
+</script>

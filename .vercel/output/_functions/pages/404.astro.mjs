@@ -1,6 +1,7 @@
+/* empty css                                 */
 import { c as createComponent, r as renderComponent, b as renderTemplate, d as addAttribute, m as maybeRenderHead } from '../chunks/astro/server_C_ZC2ylG.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, a as $$Icon } from '../chunks/Layout_QKbNrxLE.mjs';
+import { $ as $$Layout, a as $$IconPart } from '../chunks/Layout_BogMbZCy.mjs';
 /* empty css                               */
 export { renderers } from '../renderers.mjs';
 
@@ -27,7 +28,7 @@ const $$404 = createComponent(($$result, $$props, $$slots) => {
             }
         });
     });
-    <\/script> `])), maybeRenderHead(), addAttribute(`window.location.href='${urlPath}'`, "onclick"), renderComponent($$result2, "Icon", $$Icon, { "name": "arrowRight", "class": "h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" })) })}`;
+    <\/script> `])), maybeRenderHead(), addAttribute(`window.location.href='${urlPath}'`, "onclick"), renderComponent($$result2, "Icon", $$IconPart, { "name": "arrowRight", "class": "h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" })) })}`;
 }, "/Users/draexx/Proyecto/geekeando-main/src/pages/404.astro", void 0);
 
 const $$file = "/Users/draexx/Proyecto/geekeando-main/src/pages/404.astro";

@@ -1,0 +1,56 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import LegalSection from "@/components/ui/LegalSection.astro";
+import { Icon } from "astro-icon/components";
+import stringsTerm from "@/utils/stringsTerm";
+const title = "Términos de Servicio";
+const lastUpdated = new Date().toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
+const stringsService = stringsTerm.stringsServiceTerm;
+---
+
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <!-- Header con efecto gradiente -->
+        <div class="mx-auto max-w-4xl text-center mb-12">
+        <TitleSection
+            title={title}
+            subTitle={`Última actualización: ${lastUpdated}`}
+            accentColor="amber"
+        />
+        </div>
+
+        <!-- Contenedor principal con efecto vidrio -->
+        <div class="mx-auto max-w-3xl rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 backdrop-blur-sm shadow-lg shadow-neutral-950/50">
+            {stringsService.map((item) => (
+                <LegalSection
+                    icon={item.icon}
+                    title={item.title}
+                    text={item.text}
+                />
+            ))}
+            <!-- Aceptación -->
+            <div class="mt-12 pt-8 border-t border-neutral-800">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-neutral-400 text-sm sm:text-base">
+                    Al continuar usando Geekeando, usted confirma que ha leído, entendido y aceptado estos Términos de Servicio.
+                </p>
+                <div class="flex gap-3">
+                    <a href="/politica-privacidad" class="inline-flex items-center justify-center gap-x-1 rounded-lg border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-800 transition-colors">
+                    <Icon name="mdi:shield-lock" class="h-4 w-4" />
+                    Política de Privacidad
+                    </a>
+                    <a href="/" class="inline-flex items-center justify-center gap-x-1 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-bold text-neutral-900 hover:shadow-lg hover:shadow-amber-500/20 transition-all">
+                    <Icon name="mdi:home" class="h-4 w-4" />
+                    Volver al Inicio
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

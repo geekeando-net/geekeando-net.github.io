@@ -1,0 +1,63 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import { Icon } from "astro-icon/components";
+import LegalSection from "@/components/ui/LegalSection.astro";
+import stringsTerm from "@/utils/stringsTerm";
+const title = "Términos y Condiciones";
+const subTitle = "Última actualización: " + new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+const stringsConditionsTerm = stringsTerm.stringsConditionsTerm;
+---
+
+<Layout>
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <!-- Encabezado -->
+        <div class="mx-auto max-w-4xl text-center mb-12">
+        <TitleSection
+            title={title}
+            subTitle={subTitle}
+            accentColor="purple"
+        />
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="mx-auto max-w-3xl prose prose-invert prose-headings:text-neutral-200 prose-a:text-purple-400 hover:prose-a:text-purple-300 prose-strong:text-amber-400">
+        <div class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 backdrop-blur-sm">
+            {stringsConditionsTerm.map((item) => (
+                <LegalSection
+                    icon={item.icon}
+                    iconColor="purple"
+                    title={item.title}
+                    text={item.text}
+                />
+            ))}
+
+            <!-- Contacto -->
+            <div class="mt-12 pt-6 border-t border-neutral-800">
+            <h2 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
+                <Icon name="mdi:email-fast" class="h-5 w-5 text-purple-400" />
+                Contacto
+            </h2>
+            <p class="text-neutral-400">
+                Para cualquier pregunta sobre estos términos, por favor contáctanos a través de nuestro <a href="/contact" class="text-purple-400 hover:underline">formulario de contacto</a>.
+            </p>
+            </div>
+        </div>
+
+        <!-- Aceptación de términos -->
+        <div class="mt-8 rounded-lg bg-neutral-900/50 border border-neutral-800 p-6 text-center">
+            <p class="text-neutral-400 mb-4">
+            Al continuar usando Geekeando, confirmas que has leído, comprendido y aceptado estos Términos y Condiciones.
+            </p>
+            <div class="flex items-center justify-center gap-4">
+            <a href="/" class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all">
+                Aceptar y volver al inicio
+            </a>
+            <a href="/politica-privacidad" class="inline-flex items-center justify-center gap-x-2 rounded-lg border border-neutral-700 px-6 py-3 font-medium text-neutral-300 hover:bg-neutral-800 transition-colors">
+                Leer Política de Privacidad
+            </a>
+            </div>
+        </div>
+        </div>
+    </section>
+</Layout>

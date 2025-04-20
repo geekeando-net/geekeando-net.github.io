@@ -55,8 +55,61 @@ const stringsContact = [
         link: {href:'mailto:draexx@geekeando.net', text:'draexx@geekeando.net'},
     },
 ];
-
+export const stringsFAQ = {
+    categories: [
+        {
+            id: "general",
+            name: "General",
+            icon: "mdi:help-circle",
+            questions: [
+                {
+                    question: "¿Qué es Geekeando?",
+                    answer: "Geekeando es tu portal definitivo sobre cultura geek, tecnología y gaming. Ofrecemos artículos, reviews, tutoriales y comunidad para apasionados del mundo geek."
+                },
+                {
+                    question: "¿Es gratuito el contenido?",
+                    answer: "¡Sí! Todo nuestro contenido es 100% gratuito. Algunos recursos premium pueden estar disponibles para suscriptores."
+                }
+            ]
+        },
+        {
+            id: "cuenta",
+            name: "Cuenta",
+            icon: "mdi:account-cog",
+            questions: [
+                {
+                    question: "¿Cómo creo una cuenta?",
+                    answer: "Puedes registrarte haciendo clic en 'Crear cuenta' en el menú superior. Solo necesitas un email válido."
+                }
+                ]
+        },
+        {
+            id: "contenido",
+            name: "Contenido",
+            icon: "mdi:newspaper",
+            questions: [
+                {
+                    question: "¿Con qué frecuencia publican nuevo contenido?",
+                    answer: "Publicamos nuevos artículos diariamente y actualizaciones semanales de nuestras secciones especiales."
+                }
+            ]
+        },
+        {
+            id: "comunidad",
+            name: "Comunidad",
+            icon: "mdi:account-group",
+            questions: [
+                {
+                    question: "¿Cómo puedo unirme a la comunidad?",
+                    answer: "Puedes participar en nuestros foros, unirte a nuestro Discord o seguirnos en redes sociales."
+                }
+            ]
+        }
+      // Más categorías...
+    ]
+};
 export default {
     stringsAbout,
     stringsContact,
+    stringsFAQ,
 };

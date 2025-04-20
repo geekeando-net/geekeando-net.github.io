@@ -27,7 +27,12 @@ export default defineConfig({
     edgeMiddleware: false
   }),
   integrations: [
-    icon(),
+    icon({
+      iconDir: 'src/icons',
+      include: {
+        mdi: ['*']
+      }
+    }),
     tailwind(),
     sitemap()
   ],
