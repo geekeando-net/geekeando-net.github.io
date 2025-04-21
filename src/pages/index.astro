@@ -4,13 +4,13 @@ import HeroSection from '@/components/Hero.astro';
 import CategoryPill from '@/components/ui/CategoryPill.astro';
 import BlogPostCard from '@/components/ui/BlogPostCard.astro';
 import { Icon } from 'astro-icon/components';
-
+import CustomImage from "@components/ui/CustomImage.astro";
 // Datos de ejemplo (deberían venir de tu CMS/API)
 const featuredProjects = [
 	{
 		category: "Arduino",
 		title: "Sistema de Riego Inteligente",
-		image: "/images/projects/featured-arduino.jpg",
+		image: "/projects/arduino-irrigation.png",
 		description: "Control automático de riego con IoT y sensores de humedad",
 		slug: "riego-inteligente",
 		tags: ["IoT", "Automatización"],
@@ -19,7 +19,6 @@ const featuredProjects = [
   // ... 2-3 proyectos más
 ];
 const allPostsFile = import.meta.glob('@posts/*.md', { eager: true });
-
 const allPosts = Object.entries(allPostsFile).map(([filePath, post]) => {
     const flatPost = Object.assign({}, post) as { frontmatter: { pubDate?: string } };
     const slug = filePath.replace('/src/pages/posts/', '').replace('.md', '');
@@ -110,6 +109,35 @@ const stats = {
 	categories: 8,
 	community: 2300
 };
+const imagesProjects = import.meta.glob('../assets/images/projects/*.{jpg,png,webp,avif}');
+const getImageProjectUrl = async (imagePath: string) => {
+    if (!imagePath) return null;
+    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
+    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
+    if (imageKey) {
+        try {
+            const module = await imagesProjects[imageKey]();
+            return (module as { default: string }).default;
+        } catch (e) {
+            console.error(`Error cargando la imagen: ${imageKey}`, e);
+            return null;
+        }
+    }else{
+        try {
+            const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
+            if (imageDefault) {
+                const module = await imagesProjects[imageDefault]();
+                return (module as { default: string }).default;
+            }
+            return null;
+        } catch (e) {
+            console.error(`Error cargando la imagen por defecto`, e);
+            return null;
+        }
+    }
+    return null;
+};
+
 ---
 
 <Layout title="Welcome to GeekEando">
@@ -151,8 +179,8 @@ const stats = {
 				<a href={`/projects/${project.category.toLowerCase()}/${project.slug}`} class="group block hover:no-underline">
 					<div class="relative rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900/50 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
 					<div class="aspect-[4/3] overflow-hidden">
-						<img
-						src={project.image}
+						<CustomImage
+						src={getImageProjectUrl(project.image)}
 						alt={project.title}
 						class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 						/>
@@ -224,7 +252,7 @@ const stats = {
 	<!-- CTA Final -->
 	<section class="py-16">
 	<div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-		<div class="rounded-xl bg-[url('/images/cta-bg.jpg')] bg-cover bg-center border border-neutral-800 overflow-hidden">
+		<div class="rounded-xl bg-[url('src/assets/images/cta-bg.png')] bg-cover bg-center border border-neutral-800 overflow-hidden">
 		<div class="bg-neutral-900/80 backdrop-blur-sm p-12 text-center">
 			<h2 class="text-2xl font-bold text-neutral-200 sm:text-3xl mb-4">¿Listo para compartir tu proyecto?</h2>
 			<p class="text-neutral-400 max-w-2xl mx-auto mb-6">
@@ -238,7 +266,7 @@ const stats = {
 				Crear cuenta gratis
 			</a>
 			<a
-				href="/proyectos/subir"
+				href="/projetcs/subir"
 				class="inline-flex items-center justify-center gap-x-2 rounded-lg border border-neutral-700 px-6 py-3 font-medium text-neutral-300 hover:bg-neutral-800 transition-colors"
 			>
 				Subir proyecto
@@ -260,7 +288,6 @@ const stats = {
 				<Icon name="mdi:arrow-right" class="h-5 w-5" />
 			</a>
 			</div>
-		
 			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{featuredPosts.map((post) => (
 				<BlogPostCard

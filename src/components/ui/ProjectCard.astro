@@ -1,7 +1,37 @@
 ---
 const { id,title, image, category, tags = [], date, difficulty } = Astro.props;
 import { Icon } from "astro-icon/components";
+import CustomImage from "@components/ui/CustomImage.astro";
 
+const imagesProjects = import.meta.glob('../../assets/images/projects/*.{jpg,png,webp,avif}');
+const getImageProjectUrl = async (imagePath: string) => {
+    if (!imagePath) return null;
+    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
+    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
+    if (imageKey) {
+        try {
+            const module = await imagesProjects[imageKey]();
+            return (module as { default: string }).default;
+        } catch (e) {
+            console.error(`Error cargando la imagen: ${imageKey}`, e);
+            return null;
+        }
+    }else{
+        try {
+            const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
+            if (imageDefault) {
+                const module = await imagesProjects[imageDefault]();
+                return (module as { default: string }).default;
+            }
+            return null;
+        } catch (e) {
+            console.error(`Error cargando la imagen por defecto`, e);
+            return null;
+        }
+    }
+    return null;
+};
+const imageUrl = await getImageProjectUrl(image)
 const difficultyColors = {
     Principiante: "bg-green-900/50 text-green-400 border-green-800",
     Intermedio: "bg-amber-900/50 text-amber-400 border-amber-800",
@@ -12,8 +42,8 @@ const difficultyColors = {
 <article class="group relative overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
     <!-- Imagen del proyecto -->
     <div class="aspect-[4/3] overflow-hidden">
-        <img
-        src={image}
+        <CustomImage
+        src={imageUrl}
         alt={title}
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
