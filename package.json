@@ -1,7 +1,7 @@
 {
   "name": "geekeando",
   "type": "module",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "engines": {
     "node": "20.x"
   },

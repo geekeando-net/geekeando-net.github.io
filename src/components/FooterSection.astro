@@ -9,7 +9,7 @@ const navigation = stringsNavigation;
 <footer class="w-full border-t border-neutral-800 bg-gradient-to-b from-neutral-900 to-neutral-950">
     <div class="mx-auto w-full max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <!-- Grid principal -->
-        <div class="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+        <div class="grid grid-cols-2gap-8 md:grid-cols-4 lg:grid-cols-5">
             <!-- Logo y descripción -->
             <div class="col-span-full lg:col-span-1">
                 <div class="flex flex-col items-start gap-6">
@@ -18,7 +18,7 @@ const navigation = stringsNavigation;
                         Tu portal definitivo sobre tecnología, gaming y cultura geek.
                     </p>
                     <!-- Redes sociales -->
-                    <div class="flex gap-3">
+                    <div class="flex gap-2">
                         {navigation.socialLinks.map((social) => (
                             <a
                                 href={social.url}
@@ -93,8 +93,8 @@ const navigation = stringsNavigation;
                     </p>
                 </div>
             </div>
-        </div>
 
+        </div>
         <!-- División -->
         <div class="my-8 h-px w-full bg-gradient-to-r from-transparent via-neutral-700 to-transparent"></div>
 

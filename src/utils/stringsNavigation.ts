@@ -37,7 +37,7 @@ const socialLinks = [
         {name: 'mdi:github', url: 'https://github.com/draexx'},
         {name: 'mdi:instagram', url: 'https://www.instagram.com/draexx'},
         {name: 'mdi:dev-to', url: 'https://dev.to/draexx'},
-        {name: 'mdi:linkedin', url: 'https://linkedin.com/draexx'},
+       // {name: 'mdi:linkedin', url: 'https://linkedin.com/draexx'},
     ];
 export default {
     navBarLinks,
