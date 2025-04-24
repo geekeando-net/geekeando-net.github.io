@@ -1,11 +1,11 @@
 /* empty css                                 */
 import { c as createAstro, a as createComponent, m as maybeRenderHead, b as addAttribute, d as renderTemplate, r as renderComponent } from '../chunks/astro/server_BMkU2_iT.mjs';
 import 'kleur/colors';
-import { $ as $$Icon, a as $$Layout } from '../chunks/Layout_B6Z4hCVN.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_a5HlY491.mjs';
+import { $ as $$Icon, a as $$Layout } from '../chunks/Layout_CCLo-yCv.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_ByLCRk0e.mjs';
 export { renderers } from '../renderers.mjs';
 
-const $$Astro = createAstro("https://geekeando.vercel.app");
+const $$Astro = createAstro("https://www.geekeando.net");
 const $$ContactForm = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$ContactForm;

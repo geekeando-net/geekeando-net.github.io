@@ -1,18 +1,18 @@
 /* empty css                                 */
-import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_u0XXWZqC.mjs';
-import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_j_l-ASyY.mjs';
-import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_BbdNSDPA.mjs';
-import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_ku7QGwIF.mjs';
-import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_Bj73mXYs.mjs';
+import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_DCER6-0S.mjs';
+import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_CG17B20-.mjs';
+import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_CajhT6gD.mjs';
+import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_pEn52rH4.mjs';
+import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_B7TbMVsV.mjs';
 import { c as createAstro, a as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, d as renderTemplate, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_BMkU2_iT.mjs';
 import 'kleur/colors';
-import { a as $$Layout } from '../chunks/Layout_B6Z4hCVN.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_a5HlY491.mjs';
-import { $ as $$CustomImage } from '../chunks/CustomImage_DwkGqyH6.mjs';
+import { a as $$Layout } from '../chunks/Layout_CCLo-yCv.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_ByLCRk0e.mjs';
+import { $ as $$CustomImage } from '../chunks/CustomImage_6VHaluud.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
-const $$Astro = createAstro("https://geekeando.vercel.app");
+const $$Astro = createAstro("https://www.geekeando.net");
 const $$SinglePostCard = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$SinglePostCard;

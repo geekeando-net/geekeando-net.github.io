@@ -1,7 +1,7 @@
 {
   "name": "geekeando",
   "type": "module",
-  "version": "2.5.3",
+  "version": "2.5.4",
   "engines": {
     "node": "20.x"
   },
@@ -16,12 +16,12 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/sitemap": "^3.3.1",
     "@astrojs/vercel": "^8.1.3",
     "@resvg/resvg-js": "^2.6.2",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "^5.7.4",
+    "astro": "^5.7.5",
     "nodemailer": "^6.10.1",
     "particles.js": "^2.0.0",
     "photoswipe": "^5.4.4",
