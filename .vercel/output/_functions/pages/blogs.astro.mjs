@@ -1,18 +1,18 @@
 /* empty css                                 */
-import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_KrTwnfj0.mjs';
-import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_CaEyn1b7.mjs';
-import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_D0VFIvs3.mjs';
-import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_D-RlpTEa.mjs';
-import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_CjmqkTlU.mjs';
-import { c as createComponent, a as createAstro, m as maybeRenderHead, b as addAttribute, r as renderComponent, d as renderTemplate, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_D9GjGfaR.mjs';
+import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_u0XXWZqC.mjs';
+import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_j_l-ASyY.mjs';
+import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_BbdNSDPA.mjs';
+import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_ku7QGwIF.mjs';
+import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_Bj73mXYs.mjs';
+import { c as createAstro, a as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, d as renderTemplate, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_BMkU2_iT.mjs';
 import 'kleur/colors';
-import { a as $$Layout } from '../chunks/Layout_Bah5QcA6.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_DPt04_qM.mjs';
-import { $ as $$CustomImage } from '../chunks/CustomImage_DOw1OwCU.mjs';
+import { a as $$Layout } from '../chunks/Layout_B6Z4hCVN.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_a5HlY491.mjs';
+import { $ as $$CustomImage } from '../chunks/CustomImage_DwkGqyH6.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
-const $$Astro = createAstro();
+const $$Astro = createAstro("https://geekeando.vercel.app");
 const $$SinglePostCard = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$SinglePostCard;

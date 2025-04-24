@@ -1,14 +1,14 @@
 /* empty css                                    */
 import { _ as __vite_glob_0_17, a as __vite_glob_0_16, b as __vite_glob_0_15, c as __vite_glob_0_14, d as __vite_glob_0_13, e as __vite_glob_0_12, f as __vite_glob_0_11, g as __vite_glob_0_10, h as __vite_glob_0_9, i as __vite_glob_0_8, j as __vite_glob_0_7, k as __vite_glob_0_6, l as __vite_glob_0_5, m as __vite_glob_0_4, n as __vite_glob_0_3, o as __vite_glob_0_2, p as __vite_glob_0_1, q as __vite_glob_0_0 } from '../../chunks/image9_LQ8-QX_j.mjs';
-import { c as createComponent, a as createAstro, r as renderComponent, e as renderScript, d as renderTemplate, m as maybeRenderHead, b as addAttribute } from '../../chunks/astro/server_D9GjGfaR.mjs';
+import { c as createAstro, a as createComponent, r as renderComponent, e as renderScript, d as renderTemplate, m as maybeRenderHead, b as addAttribute } from '../../chunks/astro/server_BMkU2_iT.mjs';
 import 'kleur/colors';
-import { a as $$Layout } from '../../chunks/Layout_Bah5QcA6.mjs';
-import { $ as $$TitleSection } from '../../chunks/TitleSection_DPt04_qM.mjs';
+import { a as $$Layout } from '../../chunks/Layout_B6Z4hCVN.mjs';
+import { $ as $$TitleSection } from '../../chunks/TitleSection_a5HlY491.mjs';
 /* empty css                                         */
 /* empty css                                         */
 export { renderers } from '../../renderers.mjs';
 
-const $$Astro = createAstro();
+const $$Astro = createAstro("https://geekeando.vercel.app");
 const $$category = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$category;

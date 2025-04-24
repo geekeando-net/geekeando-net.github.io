@@ -1,14 +1,14 @@
 /* empty css                                 */
-import { c as createComponent, a as createAstro, m as maybeRenderHead, b as addAttribute, r as renderComponent, d as renderTemplate, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_D9GjGfaR.mjs';
+import { c as createAstro, a as createComponent, m as maybeRenderHead, b as addAttribute, r as renderComponent, d as renderTemplate, F as Fragment, u as unescapeHTML } from '../chunks/astro/server_BMkU2_iT.mjs';
 import 'kleur/colors';
-import { a as $$Layout } from '../chunks/Layout_Bah5QcA6.mjs';
-import { $ as $$TitleSection } from '../chunks/TitleSection_DPt04_qM.mjs';
-import { $ as $$IconPart } from '../chunks/IconPart_CRQDEQNZ.mjs';
+import { a as $$Layout } from '../chunks/Layout_B6Z4hCVN.mjs';
+import { $ as $$TitleSection } from '../chunks/TitleSection_a5HlY491.mjs';
+import { $ as $$IconPart } from '../chunks/IconPart_C-9K-7BC.mjs';
 /* empty css                                 */
 import { s as stringsCards } from '../chunks/stringsCards_B1d3POVN.mjs';
 export { renderers } from '../renderers.mjs';
 
-const $$Astro = createAstro();
+const $$Astro = createAstro("https://geekeando.vercel.app");
 const $$AboutCard = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$AboutCard;

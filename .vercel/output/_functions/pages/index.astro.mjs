@@ -1,15 +1,15 @@
 /* empty css                                 */
-import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_KrTwnfj0.mjs';
-import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_CaEyn1b7.mjs';
-import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_D0VFIvs3.mjs';
-import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_D-RlpTEa.mjs';
-import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_CjmqkTlU.mjs';
-import { c as createComponent, d as renderTemplate, r as renderComponent, m as maybeRenderHead, a as createAstro, b as addAttribute } from '../chunks/astro/server_D9GjGfaR.mjs';
+import { _ as __vite_glob_0_0 } from '../chunks/css-grid-layout-tutorial_u0XXWZqC.mjs';
+import { _ as __vite_glob_0_1 } from '../chunks/flexbox-guia-completa-diseno-responsive_j_l-ASyY.mjs';
+import { _ as __vite_glob_0_2 } from '../chunks/menu-navegacion-html-css-hover-efectos_BbdNSDPA.mjs';
+import { _ as __vite_glob_0_3 } from '../chunks/postgres-backup-restore-guide_ku7QGwIF.mjs';
+import { _ as __vite_glob_0_4 } from '../chunks/tag-cloud-tutorial_Bj73mXYs.mjs';
+import { a as createComponent, d as renderTemplate, r as renderComponent, m as maybeRenderHead, c as createAstro, b as addAttribute } from '../chunks/astro/server_BMkU2_iT.mjs';
 import 'kleur/colors';
-import { $ as $$Icon, a as $$Layout } from '../chunks/Layout_Bah5QcA6.mjs';
-import { $ as $$Image } from '../chunks/_astro_assets_BfzqWX3C.mjs';
+import { $ as $$Icon, a as $$Layout } from '../chunks/Layout_B6Z4hCVN.mjs';
+import { $ as $$Image } from '../chunks/_astro_assets_CS2SnMW7.mjs';
 /* empty css                                 */
-import { $ as $$CustomImage } from '../chunks/CustomImage_DOw1OwCU.mjs';
+import { $ as $$CustomImage } from '../chunks/CustomImage_DwkGqyH6.mjs';
 export { renderers } from '../renderers.mjs';
 
 const heroImage = new Proxy({"src":"/_astro/hero.VzD7ZRpO.jpg","width":612,"height":459,"format":"jpg"}, {
@@ -80,7 +80,7 @@ Unirse a la Comunidad
 <\/script> `])), maybeRenderHead(), renderComponent($$result, "Image", $$Image, { "src": heroImage, "alt": "Persona disfrutando de hobbies geek (videojuegos, c\xF3mics, tecnolog\xEDa)", "format": "avif", "loading": "eager", "class": "h-full w-full object-cover object-center", "widths": [600, 800, 1200], "sizes": "(max-width: 768px) 100vw, 50vw" }), renderComponent($$result, "Icon", $$Icon, { "name": "mdi:rocket", "class": "h-5 w-5" }));
 }, "/Users/draexx/Proyecto/geekeando-main/src/components/Hero.astro", void 0);
 
-const $$Astro$1 = createAstro();
+const $$Astro$1 = createAstro("https://geekeando.vercel.app");
 const $$CategoryPill = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$CategoryPill;
@@ -94,7 +94,7 @@ const $$CategoryPill = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<span${addAttribute(`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${categoryStyles[category] || "bg-neutral-800 text-neutral-400"}`, "class")}> ${renderComponent($$result, "Icon", $$Icon, { "name": category === "Arduino" ? "mdi:chip" : category === "Paper Craft" ? "mdi:paper-cut-vertical" : category === "3D Print" ? "mdi:printer-3d" : "mdi:music", "class": "h-3.5 w-3.5" })} ${category} </span>`;
 }, "/Users/draexx/Proyecto/geekeando-main/src/components/ui/CategoryPill.astro", void 0);
 
-const $$Astro = createAstro();
+const $$Astro = createAstro("https://geekeando.vercel.app");
 const $$BlogPostCard = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$BlogPostCard;
