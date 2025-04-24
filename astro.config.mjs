@@ -23,7 +23,7 @@ export default defineConfig({
       minimumCacheTTL: 60
     },
     runtime: 'nodejs20.x',
-    functionPerRoute: true,
+    functionPerRoute: false,
     maxDuration: 60,
     edgeMiddleware: false
   }),
@@ -39,7 +39,7 @@ export default defineConfig({
   ],
   vite: {
     ssr: {
-      external: ['@resvg/resvg-js']
+      noExternal: ['@resvg/resvg-js']
     },
     plugins: [
       {
