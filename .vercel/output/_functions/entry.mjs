@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports } from './chunks/entrypoint_FyOM-sUF.mjs';
-import { manifest } from './manifest_DulbWRbE.mjs';
+import { c as createExports } from './chunks/entrypoint_CBsA1AKv.mjs';
+import { manifest } from './manifest_DAzPMtyF.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -23,14 +23,15 @@ const _page15 = () => import('./pages/posts/flexbox-guia-completa-diseno-respons
 const _page16 = () => import('./pages/posts/menu-navegacion-html-css-hover-efectos.astro.mjs');
 const _page17 = () => import('./pages/posts/postgres-backup-restore-guide.astro.mjs');
 const _page18 = () => import('./pages/posts/tag-cloud-tutorial.astro.mjs');
-const _page19 = () => import('./pages/projects/_category_.astro.mjs');
-const _page20 = () => import('./pages/projects.astro.mjs');
-const _page21 = () => import('./pages/robots.txt.astro.mjs');
-const _page22 = () => import('./pages/tags/_tag_.astro.mjs');
-const _page23 = () => import('./pages/tags.astro.mjs');
-const _page24 = () => import('./pages/terminos-condiciones.astro.mjs');
-const _page25 = () => import('./pages/terminos-servicio.astro.mjs');
-const _page26 = () => import('./pages/index.astro.mjs');
+const _page19 = () => import('./pages/projects/_category_/_project_.astro.mjs');
+const _page20 = () => import('./pages/projects/_category_.astro.mjs');
+const _page21 = () => import('./pages/projects.astro.mjs');
+const _page22 = () => import('./pages/robots.txt.astro.mjs');
+const _page23 = () => import('./pages/tags/_tag_.astro.mjs');
+const _page24 = () => import('./pages/tags.astro.mjs');
+const _page25 = () => import('./pages/terminos-condiciones.astro.mjs');
+const _page26 = () => import('./pages/terminos-servicio.astro.mjs');
+const _page27 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/404.astro", _page1],
@@ -51,14 +52,15 @@ const pageMap = new Map([
     ["src/pages/posts/menu-navegacion-html-css-hover-efectos.md", _page16],
     ["src/pages/posts/postgres-backup-restore-guide.md", _page17],
     ["src/pages/posts/tag-cloud-tutorial.md", _page18],
-    ["src/pages/projects/[category].astro", _page19],
-    ["src/pages/projects/index.astro", _page20],
-    ["src/pages/robots.txt.ts", _page21],
-    ["src/pages/tags/[tag].astro", _page22],
-    ["src/pages/tags/index.astro", _page23],
-    ["src/pages/terminos-condiciones.astro", _page24],
-    ["src/pages/terminos-servicio.astro", _page25],
-    ["src/pages/index.astro", _page26]
+    ["src/pages/projects/[category]/[project].astro", _page19],
+    ["src/pages/projects/[category]/index.astro", _page20],
+    ["src/pages/projects/index.astro", _page21],
+    ["src/pages/robots.txt.ts", _page22],
+    ["src/pages/tags/[tag].astro", _page23],
+    ["src/pages/tags/index.astro", _page24],
+    ["src/pages/terminos-condiciones.astro", _page25],
+    ["src/pages/terminos-servicio.astro", _page26],
+    ["src/pages/index.astro", _page27]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -69,7 +71,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "006da4c5-da2e-42a2-81a7-ff148e69c99c",
+    "middlewareSecret": "f827dbe9-194c-4951-b006-ff26b1bf8205",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);

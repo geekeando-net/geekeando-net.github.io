@@ -63,7 +63,7 @@ if (image?.url) {
         <!-- Metadata inferior -->
         <div class="mt-auto pt-4 border-t border-neutral-800">
             <div class="flex justify-between items-center text-sm">
-                <span class="text-xs text-neutral-500">{new Date(pubDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                <span class="text-xs text-neutral-500">{new Date(pubDate).toLocaleDateString('es-LA', { year: 'numeric', month: 'numeric', day: 'numeric' })}</span>
                 <span class="text-xs text-neutral-500">{author}</span>
                 <a href={link.href}class="flex items-center text-amber-400 hover:text-amber-300 transition-colors font-medium">
                     Leer más <Fragment set:html={svg} />
