@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
 import tailwind from '@astrojs/tailwind';
-
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
@@ -39,18 +38,8 @@ export default defineConfig({
   ],
   vite: {
     ssr: {
-      noExternal: ['@resvg/resvg-js']
+      noExternal: ['@resvg/resvg-js', 'sharp']
     },
-    plugins: [
-      {
-        name: 'fix-virtual-modules',
-        resolveId(id) {
-          if (id.startsWith('virtual:')) {
-            return id.replace('virtual:', '\0virtual:');
-          }
-        }
-      }
-    ],
     build: {
       rollupOptions: {
         output: {
