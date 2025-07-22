@@ -6,14 +6,41 @@ import { Icon } from 'astro-icon/components';
 
 // Obtener la categoría de los parámetros de la ruta
 const { category } = Astro.params;
-
+const imagesBanner = import.meta.glob('../../../../src/assets/images/categories/*.{jpg,png,webp,avif}');
+const getImageBannerUrl = async (imagePath: string) => {
+    if (!imagePath) return null;
+    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
+    const imageKey = Object.keys(imagesBanner).find((key) => key.endsWith(imageFileName));
+    if (imageKey) {
+        try {
+            const module = await imagesBanner[imageKey]();
+            return (module as { default: string }).default;
+        } catch (e) {
+            console.error(`Error cargando la imagen: ${imageKey}`, e);
+            return null;
+        }
+    }else{
+        try {
+            const imageDefault = Object.keys(imagesBanner).find((key) => key.endsWith('default.png'));
+            if (imageDefault) {
+                const module = await imagesBanner[imageDefault]();
+                return (module as { default: any }).default;
+            }
+            return null;
+        } catch (e) {
+            console.error(`Error cargando la imagen por defecto`, e);
+            return null;
+        }
+    }
+    return null;
+};
 // Datos de ejemplo (en producción vendrían de una API o CMS)
 const categoryData = {
     "arduino": {
         name: "Arduino",
         description: "Proyectos de automatización y electrónica con Arduino",
         icon: "mdi:chip",
-        banner: "../../../src/assets/images/categories/arduino-bg.png",
+        banner: "../../../assets/images/categories/arduino-bg.png",
         projects: [
             {
                 slug: "riego-automatico",
@@ -30,7 +57,8 @@ const categoryData = {
 };
 
 const currentCategory = categoryData[category as keyof typeof categoryData] || categoryData.arduino;
-const bgCategory = `bg-[url('${currentCategory.banner}')]`;
+const imageCategoryBanner = await getImageBannerUrl(currentCategory.banner);
+
 const difficultyColors = {
     Principiante: "bg-green-900/50 text-green-400 border-green-800",
     Intermedio: "bg-amber-900/50 text-amber-400 border-amber-800",
@@ -46,7 +74,7 @@ const difficultyColors = {
             <span class="text-purple-400">{currentCategory.name}</span>
         </div>
         <div class="relative rounded-xl overflow-hidden border border-neutral-800 mb-12">
-            <div class={`aspect-[16/5] w-full bg-neutral-900 bg-cover bg-center ${bgCategory}`}>
+            <div style={`background-image: url('${imageCategoryBanner?.src}')`} class="aspect-[16/5] w-full bg-neutral-900 bg-cover bg-center">
                 <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent">
                 </div>
                 <div class="absolute bottom-0 left-0 right-0 p-8 text-center">

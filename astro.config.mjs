@@ -3,10 +3,14 @@ import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import { passthroughImageService } from 'astro/config';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
   site: 'https://www.geekeando.net',
   output: 'server',
+  image: isProduction ? undefined : { service: passthroughImageService() },
   adapter: vercel({
     webAnalytics: {
       enabled: true,
@@ -14,17 +18,17 @@ export default defineConfig({
     speedInsights: {
       enabled: true,
     },
-    imageService: true,
-    imagesConfig: {
-      domains: [],
-      sizes: [640, 750, 828, 1080, 1200, 1920],
-      formats: ['image/webp'],
-      minimumCacheTTL: 60
-    },
     runtime: 'nodejs20.x',
     functionPerRoute: false,
     maxDuration: 60,
-    edgeMiddleware: false
+    edgeMiddleware: false,
+    ...(isProduction && {
+      imageService: true,
+      images: {
+        sizes: [640, 768, 1024, 1280, 1536],
+        domains: ['www.geekeando.net']
+      }
+    })
   }),
   integrations: [
     icon({
