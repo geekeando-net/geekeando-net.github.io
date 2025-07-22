@@ -1,5 +1,4 @@
 ---
-import CustomImage from "@components/ui/CustomImage.astro";
 import { Icon } from 'astro-icon/components';
 const {
     title,
@@ -21,7 +20,7 @@ const getImageProjectUrl = async (imagePath: string) => {
     if (imageKey) {
         try {
             const module = await imagesProjects[imageKey]();
-            return (module as { default: string }).default;
+            return (module as { default: any }).default;
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
             return null;
@@ -36,7 +35,7 @@ const getImageAuthorUrl = async (imagePath: string) => {
     if (imageKey) {
         try {
             const module = await imagesAuthors[imageKey]();
-            return (module as { default: string }).default;
+            return (module as { default: any }).default;
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
             return null;
@@ -57,14 +56,12 @@ const difficultyColors = {
 <div class="relative rounded-xl overflow-hidden border border-neutral-800">
     <!-- Imagen de portada -->
     <div class="aspect-[16/7] w-full bg-neutral-900">
-        <CustomImage
-                src={imageHeaderUrl}
+        <img
+                src={imageHeaderUrl?.src}
                 alt={title}
                 class="w-full lg:h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="eager"
-                widths={[400, 600, 800]}
                 sizes="(max-width: 1024px) 100vw, 33vw"
-                format="webp"
             />
         <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/10 to-transparent"></div>
     </div>
@@ -103,14 +100,12 @@ const difficultyColors = {
             <!-- Autor y stats -->
             <div class="space-y-5 sm:w-48 flex-shrink-0">
             <div class="flex items-center gap-3">
-                <CustomImage
-                    src={imageAuthorUrl}
+                <img
+                    src={imageAuthorUrl?.src}
                     alt={author.name}
                     class="h-10 w-10 rounded-full"
                     loading="eager"
-                    widths={[400, 600, 800]}
                     sizes="(max-width: 1024px) 100vw, 33vw"
-                    format="webp"
                 />
                 <div>
                 <p class="text-sm font-medium text-neutral-200">{author.name}</p>

@@ -1,7 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import TitlePost from '@/components/ui/post/TitlePost.astro';
-import CustomImage from '@/components/ui/CustomImage.astro';
 import '@styles/markdown.css';
 const { frontmatter } = Astro.props;
 const images = import.meta.glob('../assets/images/posts/*.{jpg,png,webp}');
@@ -16,7 +15,7 @@ if (frontmatter.image?.url) {
     if (imageKey) {
         try {
             const module = await images[imageKey](); // Cargar la imagen
-            imageLocalUrl = (module as { default: string }).default; // URL de la imagen
+            imageLocalUrl = (module as { default: any }).default; // URL de la imagen
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
         }
@@ -24,15 +23,13 @@ if (frontmatter.image?.url) {
         console.error(`No se encontró la imagen: ${imageFileName}`);
     }
 }
-
-// console.log(JSON.stringify(imageLocalUrl));
 ---
 <Layout>
     <article class="mx-auto max-w-[85rem] px-4 py-0 sm:px-6 lg:px-8 lg:py-14">
         <header class="text-neutral-200">
             { imageLocalUrl && (
                 <div class="flex justify-center object-cover">
-                    <CustomImage src={imageLocalUrl} alt={frontmatter.image.alt ?? ''} class="object-cover"/>
+                    <img src={imageLocalUrl?.src} alt={frontmatter.image.alt ?? ''} class="object-cover"/>
                 </div>
             )}
             <div class="flex flex-col lg:flex-row lg:justify-between">

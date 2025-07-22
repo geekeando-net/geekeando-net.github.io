@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-import CustomImage from './CustomImage.astro';
 const { title, excerpt, category, date, slug, image, readingTime } = Astro.props;
 const images = import.meta.glob('../../assets/images/posts/*.{jpg,png,webp,avif}');
 let imageLocalUrl = null;
@@ -10,7 +9,7 @@ if (image?.url) {
     if (imageKey) {
         try {
             const module = await images[imageKey](); // Cargar la imagen
-            imageLocalUrl = (module as { default: string }).default; // URL de la imagen
+            imageLocalUrl = (module as { default: any }).default; // URL de la imagen
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
         }
@@ -22,8 +21,8 @@ if (image?.url) {
     <a href={`${slug}`} class="block hover:no-underline">
         <!-- Imagen del post -->
         <div class="aspect-[16/9] overflow-hidden">
-        <CustomImage
-            src={imageLocalUrl}
+        <img
+            src={imageLocalUrl.src}
             alt={title}
             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />

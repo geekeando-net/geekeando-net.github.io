@@ -1,5 +1,4 @@
 ---
-import CustomImage from "@components/ui/CustomImage.astro";
 const { number, title, content, image, code } = Astro.props;
 const imagesProjects = import.meta.glob('../../../assets/images/projects/*.{jpg,png,webp,avif}');
 const getImageProjectUrl = async (imagePath: string) => {
@@ -9,7 +8,7 @@ const getImageProjectUrl = async (imagePath: string) => {
     if (imageKey) {
         try {
             const module = await imagesProjects[imageKey]();
-            return (module as { default: string }).default;
+            return (module as { default: any }).default;
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
             return null;
@@ -48,7 +47,7 @@ const imageUrl = await getImageProjectUrl(image);
         
         {image && (
             <div class="mt-4 rounded-lg overflow-hidden border border-neutral-800">
-            <CustomImage src={imageUrl} alt={`Paso ${number}`} class="w-full" />
+            <img src={imageUrl?.src} alt={`Paso ${number}`} class="w-full" />
             </div>
         )}
         

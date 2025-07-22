@@ -4,7 +4,6 @@ import HeroSection from '@/components/Hero.astro';
 import CategoryPill from '@/components/ui/CategoryPill.astro';
 import BlogPostCard from '@/components/ui/BlogPostCard.astro';
 import { Icon } from 'astro-icon/components';
-import CustomImage from "@components/ui/CustomImage.astro";
 // Datos de ejemplo (deberían venir de tu CMS/API)
 const featuredProjects = [
 	{
@@ -117,7 +116,7 @@ const getImageProjectUrl = async (imagePath: string) => {
     if (imageKey) {
         try {
             const module = await imagesProjects[imageKey]();
-            return (module as { default: string }).default;
+            return (module as { default: any }).default;
         } catch (e) {
             console.error(`Error cargando la imagen: ${imageKey}`, e);
             return null;
@@ -127,7 +126,7 @@ const getImageProjectUrl = async (imagePath: string) => {
             const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
             if (imageDefault) {
                 const module = await imagesProjects[imageDefault]();
-                return (module as { default: string }).default;
+                return (module as { default: any }).default;
             }
             return null;
         } catch (e) {
@@ -138,6 +137,7 @@ const getImageProjectUrl = async (imagePath: string) => {
     return null;
 };
 
+const imageFeaturedProjects = await Promise.all(featuredProjects.map((project) => getImageProjectUrl(project.image)))
 ---
 
 <Layout title="Welcome to GeekEando">
@@ -175,12 +175,12 @@ const getImageProjectUrl = async (imagePath: string) => {
 				</a>
 			</div>
 			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{featuredProjects.map((project) => (
+				{featuredProjects.map((project,index) => (
 				<a href={`/projects/${project.category.toLowerCase()}/${project.slug}`} class="group block hover:no-underline">
 					<div class="relative rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900/50 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
 					<div class="aspect-[4/3] overflow-hidden">
-						<CustomImage
-						src={getImageProjectUrl(project.image)}
+						<img
+						src={imageFeaturedProjects[index]?.src}
 						alt={project.title}
 						class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 						/>

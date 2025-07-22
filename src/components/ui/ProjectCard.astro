@@ -1,7 +1,6 @@
 ---
 const { id,title, image, category, tags = [], date, difficulty } = Astro.props;
 import { Icon } from "astro-icon/components";
-import CustomImage from "@components/ui/CustomImage.astro";
 
 const imagesProjects = import.meta.glob('../../assets/images/projects/*.{jpg,png,webp,avif}');
 const getImageProjectUrl = async (imagePath: string) => {
@@ -21,7 +20,7 @@ const getImageProjectUrl = async (imagePath: string) => {
             const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
             if (imageDefault) {
                 const module = await imagesProjects[imageDefault]();
-                return (module as { default: string }).default;
+                return (module as { default: any }).default;
             }
             return null;
         } catch (e) {
@@ -42,13 +41,13 @@ const difficultyColors = {
 <article class="group relative overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
     <!-- Imagen del proyecto -->
     <div class="aspect-[4/3] overflow-hidden">
-        <CustomImage
-        src={imageUrl}
+        <img
+        src={imageUrl?.src}
         alt={title}
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 via-neutral-900/20 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 via-neutral-900/20 to-transparent pointer-events-none"></div>
     </div>
     <!-- Contenido -->
     <div class="p-5">
@@ -81,7 +80,7 @@ const difficultyColors = {
         </span>
         <a
             href={`/projects/${category}/${id}`}
-            class="text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1"
+            class="group text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1"
         >
             Ver detalles
             <Icon name="mdi:arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
