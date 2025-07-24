@@ -1,0 +1,48 @@
+name: Validate Blog Branch Content
+
+on:
+  push:
+    branches: [ blog-content ]
+
+jobs:
+  validate-blog-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Necesario para comparar cambios
+        
+      - name: Get changed files
+        id: changes
+        uses: tj-actions/changed-files@v44
+        with:
+          separator: ','
+        
+      - name: Validate only blog files are modified
+        run: |
+          ALLOWED_PATHS=(
+            "src/pages/posts/"
+            "src/assets/images/posts/"   # Ejemplo para imágenes del blog
+          )
+          
+          IFS=',' read -ra FILES <<< "${{ steps.changes.outputs.all_changed_and_modified_files }}"
+          
+          for file in "${FILES[@]}"; do
+            allowed=false
+            for path in "${ALLOWED_PATHS[@]}"; do
+              if [[ "$file" == "$path"* ]]; then
+                allowed=true
+                break
+              fi
+            done
+            
+            if [ "$allowed" = false ]; then
+              echo "::error file=$file::La rama blog-content solo permite cambios en directorios de blog"
+              echo "Archivo modificado no permitido: $file"
+              echo "Directorios permitidos: ${ALLOWED_PATHS[*]}"
+              exit 1
+            fi
+          done
+          
+          echo "✅ Todos los cambios son válidos en directorios de blog"
