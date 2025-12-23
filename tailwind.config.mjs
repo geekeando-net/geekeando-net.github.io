@@ -5,7 +5,13 @@ export default {
 		'./node_modules/preline/preline.js',
 	],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				display: ["Orbitron", "sans-serif"],
+				sans: ["Inter", "sans-serif"],
+				mono: ["Fira Code", "monospace"],
+			},
+		},
 	},
 	plugins: [
 		// require('@tailwindcss/forms'),

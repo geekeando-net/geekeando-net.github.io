@@ -1,136 +1,60 @@
 ---
+// BrandLogo.astro
 const { class: className = "" } = Astro.props;
 ---
-
-<svg
-  width="287.31812mm"
-  height="117.75723mm"
-  viewBox="0 0 287.31812 117.75723"
-  id="svg1"
-  xmlns="http://www.w3.org/2000/svg"
-  class={`${className}`}
-
+<div 
+  class={`flex items-center gap-3 group cursor-pointer animate-reveal ${className}`}
 >
-  <defs id="defs1" />
-  <g
-    id="layer1"
-    transform="translate(20.372902,-144.99165)"
-  >
-    <g
-      id="g2"
-      transform="translate(871.6664,-371.51495)"
-    >
-      <path
-        style={{
-          fill: "none",
-          stroke: "#acc67f",
-          strokeWidth: 2,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
-        }}
-        d="m -827.34303,535.53336 c -13.67118,-18.0994 -25.01989,-19.00081 -44.61957,-5.2894 -10.53807,7.37215 -16.95786,22.26704 -18.70561,39.53347 -1.72734,17.06473 2.77093,33.87227 9.73632,37.81914 10.6101,6.01211 24.04499,0.11118 24.56419,-7.52628 0.81751,-12.02537 -9.02517,-18.65433 -14.99309,-17.10603 -8.82246,2.28887 -7.35105,9.63587 -4.97615,14.87044 3.38274,7.45594 11.85114,4.91415 13.11934,-0.52356 2.41939,-10.37372 -10.54938,-15.10257 -8.25917,-0.18816"
-        id="path14"
-      />
-      <path
-        style={{
-          fill: "none",
-          fillOpacity: 1,
-          stroke: "#acc680",
-          strokeWidth: 2,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
-        }}
-        d="m -818.77978,543.76727 c 17.74746,1.57659 24.84198,1.04438 25.03109,-2.96421 0.30615,-6.48952 -10.59906,-7.24497 -17.12653,-11.85683 -8.60036,-18.2396 -12.31715,-10.4456 -15.8091,-5.2697"
-        id="path15"
-      />
-      <path
-        style={{
-          fill: "none",
-          stroke: "#ff0000",
-          strokeWidth: 2,
-          strokeDasharray: "none",
-        }}
-        d="m -788.80834,540.80306 c 19.35911,2.85836 27.76579,-0.89702 26.5656,-7.15477 -2.25912,-11.77911 -13.13797,-5.69615 -14.05007,-2.0672 -2.1014,8.36081 6.76812,7.5767 8.23391,5.59906 3.61678,-4.87976 -0.29015,-6.25582 -1.64679,-6.48224 -1.94461,-0.32455 -4.0494,2.95573 -0.29143,4.40182"
-        id="path16"
-      />
-      <text
-        xml:space="preserve"
-        style={{
-          fontSize: "45.8564px",
-          lineHeight: 1,
-          fontFamily: "Nasa",
-          textAlign: "center",
-          letterSpacing: "-0.506889px",
-          textAnchor: "middle",
-          fill: "#be7618",
-          fillOpacity: 1,
-          stroke: "none",
-          strokeWidth: 2.73454,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
-        }}
-        x="-925.20398"
-        y="489.814"
-        id="text16"
-        transform="scale(0.81763816,1.2230349)"
-      >
-        <tspan
-          id="tspan16"
-          style={{
-            fontStyle: "normal",
-            fontVariant: "normal",
-            fontWeight: "normal",
-            fontStretch: "normal",
-            lineHeight: 1,
-            fontFamily: "Roboto",
-            letterSpacing: "-0.506889px",
-            fill: "#be7618",
-            fillOpacity: 1,
-            stroke: "none",
-            strokeWidth: 2.73454,
-            strokeDasharray: "none",
-          }}
-          x="-925.4574"
-          y="489.814"
-          dx="0"
-        >
-          Geekeando
-        </tspan>
-      </text>
-      <text
-        xml:space="preserve"
-        style={{
-          fontStyle: "normal",
-          fontVariant: "normal",
-          fontWeight: "normal",
-          fontStretch: "normal",
-          fontSize: "21.8114px",
-          lineHeight: 1,
-          fontFamily: "Roboto",
-          textAlign: "center",
-          letterSpacing: "-1.48714px",
-          textAnchor: "middle",
-          fill: "#000000",
-          fillOpacity: 1,
-          strokeWidth: 5.62068,
-        }}
-        x="-765.73828"
-        y="595.94611"
-        id="text1"
-        transform="scale(0.94692488,1.05605)"
-      >
-        <tspan
-          id="tspan1"
-          x="-812.48126"
-          y="595.94611"
-          style={{
-            fill: "#ffffff",
-            strokeWidth: 5.62068,
-          }}
-        >
-          Ser geek también es un trabajo
-        </tspan>
-      </text>
-    </g>
-  </g>
-</svg>
+  <div class="relative flex items-center justify-center">
+    <img 
+      src="/geekeando.svg" 
+      alt="Logo Geekeando" 
+      class="h-10 w-auto md:h-12 z-10 transition-all duration-500 group-hover:scale-110" 
+    />
+    <div class="absolute inset-0 bg-amber-500/0 group-hover:bg-amber-500/20 blur-xl rounded-full transition-all duration-700"></div>
+  </div>
+
+  <div class="flex flex-col border-l border-neutral-700/60 pl-3 transition-all duration-500 group-hover:border-amber-500/50">
+    <span class="font-display text-xl md:text-2xl font-black uppercase tracking-tighter text-white transition-colors duration-300 group-hover:text-amber-400">
+      Geekeando
+    </span>
+    
+    <span class="font-mono text-[9px] md:text-[10px] text-amber-500 lowercase mt-1 opacity-80 leading-none transition-all duration-700 ease-out tracking-[0.1em] group-hover:tracking-[0.25em] group-hover:text-white group-hover:opacity-100">
+      ser geek también es un trabajo
+    </span>
+  </div>
+</div>
+
+<style is:global>
+  /* Fuentes de marca */
+  .font-display { font-family: 'Orbitron', sans-serif; }
+  .font-mono { font-family: 'Fira Code', monospace; }
+
+  /* 1. Animación de Entrada (Reveal) */
+  @keyframes reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  .animate-reveal {
+    animation: reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* 2. Animación de Latido (Pulse) al hacer Hover */
+  @keyframes geek-pulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.05); filter: brightness(1.25); }
+  }
+
+  .group:hover img {
+    animation: geek-pulse 2s infinite ease-in-out;
+  }
+</style>
