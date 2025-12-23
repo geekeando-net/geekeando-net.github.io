@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@fontsource/orbitron/index.css';
+@import '@fontsource/inter/index.css';
+@import '@fontsource/fira-code/index.css';
+
+h1 {
+	@apply font-display uppercase;
+}
