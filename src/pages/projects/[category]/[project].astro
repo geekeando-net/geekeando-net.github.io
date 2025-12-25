@@ -12,184 +12,159 @@ import DownloadsSection from "@/components/ui/projects/DownloadsSection.astro";
 import ProjectsTips from '@/components/ui/projects/ProjectsTips.astro';
 import { Icon } from 'astro-icon/components';
 
-// 1. Generar rutas dinámicas desde la carpeta src/content/projects/
 export async function getStaticPaths() {
     const projectEntries = await getCollection('projects');
-    return projectEntries.map((entry) => {
-        // Limpiamos la categoría para evitar errores de formato
-        const catParam = entry.data.category.toLowerCase().trim();
-        return {
-            params: { 
-                category: catParam, 
-                project: entry.slug 
-            },
-            props: { entry },
-        };
-    });
+    return projectEntries.map((entry) => ({
+        params: { 
+            category: entry.data.category.toLowerCase().trim(), 
+            project: entry.slug 
+        },
+        props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
-const { title, author, image } = entry.data;
-// CONTROL DE SEGURIDAD: Si no hay entry, redirigir o mostrar error
-if (!entry) {
-    return Astro.redirect('/404');
-}
+
+if (!entry) return Astro.redirect('/404');
+
 const { Content } = await entry.render();
-const projectData = entry.data;
-const { stlLink, codeRepo } = projectData;
-const { gallery } = entry.data;
-const { category } = entry.data;
-const { steps } = entry.data;
-// Obtener todos los proyectos de la misma categoría
+const pData = entry.data;
+
+// Obtener proyectos relacionados (misma categoría, distinto slug)
 const allProjects = await getCollection('projects');
 const relatedProjects = allProjects
-  .filter(p => p.data.category === category && p.slug !== entry.slug)
-  .slice(0, 3); // Solo mostramos los 3 más recientes
-// Mapeo de colores por dificultad (Estilo Geek)
-const diffColors = {
-    Principiante: "text-emerald-400 border-emerald-800 bg-emerald-950/30",
-    Intermedio: "text-amber-400 border-amber-800 bg-amber-950/30",
-    Avanzado: "text-red-400 border-red-800 bg-red-950/30"
-};
+  .filter(p => p.data.category === pData.category && p.slug !== entry.slug)
+  .slice(0, 3);
 
-// Mapeamos los links individuales a la estructura de lista
-const downloadFiles = [
-  stlLink && { name: "DISEÑO_3D_CHASIS", type: "STL", link: stlLink, size: "2.4MB" },
-  codeRepo && { name: "CONTROL_SISTEMA_INO", type: "INO", link: codeRepo }
+// Lógica de descargas dinámica
+// Si tienes archivos específicos en el frontmatter, los mapeamos
+const dynamicDownloads = pData.downloadFiles?.map(file => ({
+    name: file.name,
+    type: file.type || file.file.split('.').pop()?.toUpperCase(),
+    link: file.file, // Astro resolverá esta ruta relativa
+    size: "DETECTOR_PENDIENTE" // Opcional: podrías añadir el tamaño manualmente en el MD
+})) || [];
+
+// Mantenemos tus links externos si existen (STL o Repo)
+const externalLinks = [
+  pData.stlLink && { name: "DISEÑO_3D_EXTERNO", type: "STL", link: pData.stlLink },
+  pData.codeRepo && { name: "GITHUB_REPOSITORY", type: "GIT", link: pData.codeRepo }
 ].filter(Boolean);
 
+const allDownloads = [...dynamicDownloads, ...externalLinks];
 ---
 
-<Layout title={`${projectData.title} | Geekeando`}>
-    <article class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 bg-neutral-950">
-        <Breadcrumbs 
-        category={projectData.category} 
-        title={projectData.title} 
-        />
+<Layout title={`${pData.title} | Geekeando Labs`}>
+    <article class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 bg-neutral-950 font-mono">
+        
+        <Breadcrumbs category={pData.category} title={pData.title} />
+
         <ProjectHeader
-            title={projectData.title}
-            category={projectData.category}
-            difficulty={projectData.difficulty}
-            date={projectData.pubDate.toDateString()}
-            description={projectData.description}
-            coverImage={projectData.image}
-            tags={projectData.tags}
-            author={projectData.author}
+            title={pData.title}
+            category={pData.category}
+            difficulty={pData.difficulty}
+            date={pData.pubDate.toDateString()}
+            description={pData.description}
+            coverImage={pData.image} 
+            tags={pData.tags}
+            author={pData.author}
         />
 
-        <div class="lg:grid lg:grid-cols-12 lg:gap-8 mt-12">
-            <div class="lg:col-span-8 space-y-12">
-                {projectData.verified && (
-                <div class="flex items-center gap-4 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 group hover:border-amber-500/40 transition-colors">
-                    <div class="relative">
-                        <img src="/geekeando.svg" class="h-10 w-10 grayscale group-hover:grayscale-0 transition-all relative z-10" alt="Bitsa Core" />
-                        <div class="absolute inset-0 bg-amber-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="lg:grid lg:grid-cols-12 lg:gap-12 mt-16">
+            <div class="lg:col-span-8 space-y-16">
+                
+                {/* Badge de Verificación */}
+                {pData.verified && (
+                    <div class="flex items-center gap-5 p-5 border border-amber-500/20 bg-amber-500/5 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-1 bg-amber-500 text-[8px] font-black text-black tracking-tighter">VERIFIED_LOG</div>
+                        <Icon name="mdi:check-decagram" class="h-8 w-8 text-amber-500 animate-pulse" />
+                        <div>
+                            <p class="text-xs font-bold text-amber-500 uppercase tracking-[0.2em]">BitsaBots Lab Tested</p>
+                            <p class="text-[11px] text-neutral-500 font-sans">Hardware y firmware validados en entorno físico controlado.</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xs font-mono text-amber-500 font-bold uppercase tracking-widest">BitsaBots Verified Core</p>
-                        <p class="text-[11px] text-neutral-400 leading-tight">Este proyecto ha sido testeado en nuestro laboratorio físico.</p>
-                    </div>
-                </div>
                 )}
-                <div class="mt-8">
-                    {gallery.length > 0 && <ProjectGallery images={gallery} />}
-                    {steps && steps.length > 0 && (
-                        <section class="mt-20 max-w-4xl">
-                            <h2 class="text-xs font-mono text-amber-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-3">
-                                <Icon name="mdi:hammer-wrench" class="h-4 w-4" />
-                                Guía de Ensamblaje [.build]
-                            </h2>
-                            <div class="flex flex-col">
-                                {steps.map((step, index) => (
-                                    <StepByStep 
-                                        {...step} 
-                                        isLast={index === steps.length - 1} 
-                                    />
-                                ))}
-                            </div>
-                        </section>
-                    )}
-                    <ProjectsTips tips={projectData.tips} />
-                    {relatedProjects.length > 0 && (
-                        <section class="mt-20 border-t border-neutral-800 pt-10">
-                          <div class="flex items-center justify-between mb-8">
-                            <h3 class="text-xs font-mono text-amber-500 uppercase tracking-[0.3em] flex items-center gap-2">
-                              <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
-                              Proyectos Similares [.rel]
-                            </h3>
-                            <a href={`/projects/${category.toLowerCase()}`} class="text-[10px] font-mono text-neutral-500 hover:text-amber-500 transition-colors">
-                              VER_TODO_{category.toUpperCase()} ->
-                            </a>
-                          </div>
-                          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {relatedProjects.map((project) => (
-                              <RelatedProjects 
-                                projects={relatedProjects}
-                                currentCategory={category}
-                              />
+
+                {/* Galería (Page Bundle) */}
+                {pData.gallery && pData.gallery.length > 0 && (
+                    <section>
+                        <h2 class="text-[10px] text-neutral-600 mb-6 flex items-center gap-2 italic">
+                            <span class="w-8 h-px bg-neutral-800"></span> VISUAL_ASSETS
+                        </h2>
+                        <ProjectGallery images={pData.gallery} />
+                    </section>
+                )}
+
+                {/* Guía de Ensamblaje */}
+                {pData.steps && pData.steps.length > 0 && (
+                    <section class="pt-12 border-t border-neutral-900">
+                        <h2 class="text-xs font-bold text-amber-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-3">
+                            <Icon name="mdi:hammer-wrench" class="h-5 w-5" />
+                            Build_Sequence [.v1]
+                        </h2>
+                        <div class="space-y-4">
+                            {pData.steps.map((step, index) => (
+                                <StepByStep
+                                    {...step}
+                                    isLast={index === (pData.steps?.length ?? 0) - 1} 
+                                />
                             ))}
-                          </div>
-                        </section>
-                      )}
-                </div>
+                        </div>
+                    </section>
+                )}
+
+                <ProjectsTips tips={pData.tips} />
+
+                {/* Proyectos Relacionados */}
+                {relatedProjects.length > 0 && (
+                    <section class="pt-16 border-t border-neutral-900">
+                        <div class="flex items-center justify-between mb-10">
+                            <h3 class="text-xs font-bold text-neutral-400 uppercase tracking-[0.3em]">Project_Relacionado</h3>
+                            <a href={`/projects/${pData.category.toLowerCase()}`} class="text-[9px] text-amber-500/50 hover:text-amber-500 transition-colors">
+                                VER_DIRECTORIO_COMPLETO ->
+                            </a>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {relatedProjects.map((p) => (
+                                <RelatedProjects project={p} currentCategory={pData.category}/> 
+                            ))}
+                        </div>
+                    </section>
+                )}
             </div>
             
             <aside class="lg:col-span-4 space-y-8">
-                
-                <div class="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6 backdrop-blur-sm">
-                    <h3 class="font-display text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <Icon name="mdi:format-list-bulleted-type" class="h-5 w-5 text-amber-500" />
-                        LISTA DE MATERIALES
-                    </h3>
-                    <MaterialsList items={projectData.materials || []} />
+                <div class="sticky top-24 space-y-8">
                     
+                    <div class="border border-neutral-800 bg-neutral-900/20 p-8">
+                        <h3 class="text-xs font-black text-white mb-6 flex items-center gap-2 tracking-widest">
+                            <Icon name="mdi:memory" class="h-4 w-4 text-amber-500" />
+                            BOM_LIST
+                        </h3>
+                        <MaterialsList items={pData.materials || []} />
+                    </div>
+
+                    <section class="border border-neutral-800 bg-black/40 p-8 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-500/5 -rotate-45 translate-x-8 -translate-y-8"></div>
+                        <h3 class="text-xs font-black text-white mb-6 flex items-center gap-2 tracking-widest">
+                            <Icon name="mdi:cloud-download" class="h-4 w-4 text-amber-500" />
+                            DOWNLOAD_CENTER
+                        </h3>
+                        <DownloadsSection files={allDownloads} />
+                    </section>
+
+                    <section class="p-6 border border-neutral-900">
+                        <div class="flex justify-between gap-4">
+                            <button class="flex-grow flex items-center justify-center gap-2 py-3 border border-neutral-800 text-[10px] uppercase text-neutral-500 hover:text-amber-500 hover:border-amber-500 transition-all">
+                                <Icon name="mdi:share-variant" /> Share
+                            </button>
+                            <button class="flex-grow flex items-center justify-center gap-2 py-3 border border-neutral-800 text-[10px] uppercase text-neutral-500 hover:text-amber-500 hover:border-amber-500 transition-all">
+                                <Icon name="mdi:link-variant" /> Copy
+                            </button>
+                        </div>
+                    </section>
                 </div>
-
-                <section class="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2 text-amber-500 font-mono text-xs uppercase tracking-tighter">
-                            <Icon name="mdi:folder-download" class="h-4 w-4" />
-                            Recursos [.root]
-                        </div>
-                    
-                        <div class="grid gap-2">
-                            {downloadFiles.length > 0 && <DownloadsSection files={downloadFiles} />}
-                        </div>
-                    </div>
-                </section>
-
-                <section class="rounded-2xl border border-neutral-800 bg-amber-500/5 p-6">
-                    <p class="text-xs font-mono text-amber-500 mb-4 uppercase tracking-widest text-center">Difundir Conocimiento</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-neutral-400 hover:text-white transition-colors">
-                            <Icon name="mdi:twitter" class="h-4 w-4" /> Twitter
-                        </button>
-                        <button class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-neutral-400 hover:text-white transition-colors">
-                            <Icon name="mdi:content-copy" class="h-4 w-4" /> Enlace
-                        </button>
-                    </div>
-                </section>
             </aside>
         </div>
     </article>
 </Layout>
-
-<style is:global>
-    /* Estilo para que el contenido Markdown se vea Geek */
-    .prose pre {
-        background-color: #0a0a0a !important;
-        border: 1px solid #262626;
-        border-radius: 12px;
-    }
-    .prose h2, .prose h3 {
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: -0.05em;
-    }
-    .prose blockquote {
-    border-left: 4px solid #f59e0b; /* Amber 500 */
-    background: rgba(245, 158, 11, 0.05);
-    padding: 1rem;
-    font-style: italic;
-    border-radius: 0 0.5rem 0.5rem 0;
-}
-</style>

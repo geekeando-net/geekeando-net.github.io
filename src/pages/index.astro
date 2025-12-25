@@ -4,20 +4,15 @@ import Layout from '@layouts/Layout.astro';
 import HeroSection from '@/components/Hero.astro';
 import { Icon } from 'astro-icon/components';
 
-const imagesProjects = import.meta.glob('../assets/images/projects/*.{jpg,png,webp,avif}');
 // 1. Cargamos todos los archivos Markdown del blog
 const allPostsFile = import.meta.glob('../pages/posts/*.md', { eager: true });
-
 // 2. Procesamos y ordenamos por fecha (del más reciente al más antiguo)
 const latestPosts = Object.entries(allPostsFile)
     .map(([filePath, post]: any) => {
         const slug = filePath.split('/').pop()?.replace('.md', '');
-        
-        // FORZAMOS LA CONVERSIÓN A FECHA AQUÍ
         const dateValue = post.frontmatter.pubDate 
             ? new Date(post.frontmatter.pubDate) 
             : new Date();
-
         return {
             ...post.frontmatter,
             url: `/posts/${slug}`,
@@ -33,49 +28,14 @@ const latestPosts = Object.entries(allPostsFile)
 const allProjects = await getCollection("projects");
 // 2. Definir los destacados (puedes filtrar por los que tengan featured: true en el MD)
 // Si aún no tienes ese campo, simplemente toma los últimos 3
-const featuredProjects = allProjects
+// Filtrado de destacados
+const displayProjects = allProjects
     .filter(project => project.data.featured === true) 
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0, 3);
 
-// 3. Si no hay ninguno marcado como featured, tomamos los 3 más recientes como respaldo
-const displayProjects = featuredProjects.length > 0 
-    ? featuredProjects 
-    : allProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
-	
-	// 4. Procesar las imágenes (usando displayProjects que es el que vamos a renderizar)
-	const getImageProjectUrl = async (imagePath: any) => {
-		if (!imagePath) return null;
-		if (typeof imagePath === 'object' && imagePath.src) {
-        return imagePath;
-    }
-		const imageFileName = imagePath.split('/').pop() ?? 'default.png';
-		const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
-		if (imageKey) {
-			try {
-				const module = await imagesProjects[imageKey]();
-				return (module as { default: any }).default;
-			} catch (e) {
-				console.error(`Error cargando la imagen: ${imageKey}`, e);
-				return null;
-			}
-		}else{
-			try {
-				const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
-				if (imageDefault) {
-					const module = await imagesProjects[imageDefault]();
-					return (module as { default: any }).default;
-				}
-				return null;
-			} catch (e) {
-				console.error(`Error cargando la imagen por defecto`, e);
-				return null;
-			}
-		}
-		return null;
-	};
-	const imageFeaturedProjects = await Promise.all(
-    displayProjects.map((project) => getImageProjectUrl(project.data.image))
-);
+// Fallback si no hay destacados
+const finalProjects = displayProjects.length > 0 ? displayProjects : allProjects.slice(0, 3);
 
 // 5. Categorías con contador real (lo que hicimos antes)
 const baseCategories = [
@@ -140,20 +100,20 @@ const stats = {
 			</div>
 	
 			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{displayProjects.map((project, index) => (
+				{finalProjects.map((project, index) => (
 					<a href={`/projects/${project.data.category.toLowerCase()}/${project.slug}`} 
 					   class="group relative flex flex-col h-full rounded-xl border border-neutral-800 bg-neutral-900/40 overflow-hidden hover:border-amber-500/50 transition-all duration-500">
-						
+
 						{/* Badge Técnico */}
 						<div class="absolute top-4 right-4 z-20">
 							<span class="text-[8px] font-mono font-bold px-2 py-1 rounded bg-neutral-950 border border-amber-500/30 text-amber-500">
 								DATA_ID: {project.data.difficulty?.toUpperCase()}
 							</span>
 						</div>
-	
+							
 						<div class="relative aspect-video overflow-hidden border-b border-neutral-800">
 							<img
-								src={imageFeaturedProjects[index]?.src || '/images/default-project.jpg'}
+								src={project.data.image.src}
 								alt={project.data.title}
 								class="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
 							/>

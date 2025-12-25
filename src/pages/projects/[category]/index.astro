@@ -20,7 +20,7 @@ if (allProjects.length === 0 && category !== 'all') {
 }
 
 // 2. Cargar Banner
-const imagesBanner = import.meta.glob('../../../assets/images/categories/*.{jpg,png,webp,avif}');
+const imagesBanner = import.meta.glob('/src/assets/images/categories/*.{jpg,png,webp,avif}');
 const categoryKey = Object.keys(imagesBanner).find(key => key.includes(category || 'default'));
 const bannerImage = categoryKey ? (await (imagesBanner[categoryKey]() as any)).default : null;
 
@@ -87,13 +87,7 @@ const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
             {allProjects.map((project) => (
                 <div class="project-item" data-title={project.data.title.toLowerCase()} data-tags={project.data.tags?.join(' ').toLowerCase()}>
                     <ProjectCard
-                        title={project.data.title}
-                        image={project.data.image}
-                        category={project.data.category}
-                        slug={project.slug}
-                        difficulty={project.data.difficulty}
-                        pubDate={project.data.pubDate}
-                        tags={project.data.tags}
+                        project={project}
                     />
                 </div>
             ))}

@@ -8,10 +8,10 @@ import { Icon } from "astro-icon/components";
 const title = "Proyectos [.root]";
 const subTitle = "Laboratorio de ingeniería, diseño y manualidades técnicas";
 
-// 1. Obtenemos todos los proyectos dinámicos
+// 1. Obtenemos la colección completa (Astro procesa las imágenes automáticamente)
 const allProjects = await getCollection("projects");
 
-// 2. Definimos las categorías con su estilo visual
+// 2. Definimos las categorías
 const categories = [
     { id: "arduino", name: "Arduino", icon: "mdi:chip", desc: "Electrónica y código" },
     { id: "papercraft", name: "Paper Craft", icon: "mdi:paper-cut-vertical", desc: "Ingeniería en papel" },
@@ -19,38 +19,30 @@ const categories = [
     { id: "music", name: "Music", icon: "mdi:music", desc: "Tecnología sonora" }
 ];
 
-// 3. Agrupamos proyectos por categoría dinámicamente
+// 3. Agrupamos los objetos de proyecto enteros por categoría
 const projectsByCategory = categories.map(cat => ({
     ...cat,
-    projects: allProjects
-        .filter(p => p.data.category.toLowerCase() === cat.id)
-        .map(p => ({
-            ...p.data,      // Esparcimos los datos del frontmatter (title, image, etc.)
-            slug: p.slug,   // Agregamos el slug (nombre del archivo) al mismo nivel
-        }))
+    projects: allProjects.filter(p => p.data.category.toLowerCase() === cat.id)
 }));
 ---
 
 <Layout title="Geekeando | Repositorio de Proyectos">
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 bg-neutral-950">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 bg-neutral-950 font-mono">
         
-        <div class="mx-auto max-w-4xl text-center mb-16">
-            <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <div class="mx-auto max-w-4xl text-center mb-16 relative">
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#fbbf24 1px, transparent 1px); background-size: 20px 20px;"></div>
             <TitleSection
                 title={title}
                 subTitle={subTitle}
                 accentColor="amber" 
             />
-            <div class="mt-4 flex justify-center">
-                <div class="h-1 w-24 bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
-            </div>
         </div>
 
-        <div class="sticky top-16 z-20 bg-neutral-950/90 backdrop-blur-md py-4 mb-12 border-b border-neutral-800">
+        <div class="sticky top-16 z-20 bg-neutral-950/95 backdrop-blur-md py-4 mb-12 border-b border-neutral-800">
             <div class="flex items-center gap-4 overflow-x-auto no-scrollbar pb-2">
-                <span class="text-xs font-mono text-neutral-600 uppercase tracking-tighter">Filtrar_Labs:</span>
+                <span class="text-[10px] text-neutral-600 uppercase tracking-widest border-r border-neutral-800 pr-4">Categorías:</span>
                 {categories.map((cat) => (
-                    <a href={`#${cat.id}`} class="flex-shrink-0 flex items-center gap-2 rounded-lg border border-neutral-800 px-4 py-2 text-xs font-mono uppercase tracking-widest text-neutral-400 transition-all hover:border-amber-500 hover:text-amber-500 hover:bg-amber-500/5">
+                    <a href={`#${cat.id}`} class="flex-shrink-0 flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest text-neutral-500 hover:text-amber-500 transition-all">
                         <Icon name={cat.icon} class="h-4 w-4" />
                         {cat.name}
                     </a>
@@ -58,35 +50,30 @@ const projectsByCategory = categories.map(cat => ({
             </div>
         </div>
 
-        <div class="space-y-24">
+        <div class="space-y-32">
             {projectsByCategory.map((cat) => (
                 cat.projects.length > 0 && (
-                <div id={cat.id} class="scroll-mt-32 group">
-                    <div class="flex items-end justify-between mb-10 border-l-4 border-amber-500 pl-6">
-                        <div>
-                            <div class="flex items-center gap-2 text-amber-500 mb-1">
-                                <Icon name={cat.icon} class="h-5 w-5" />
-                                <span class="text-xs font-mono uppercase tracking-widest">Sección_{cat.id}</span>
+                <div id={cat.id} class="scroll-mt-32">
+                    <div class="flex items-end justify-between mb-10 border-b border-neutral-900 pb-6">
+                        <div class="flex items-center gap-6">
+                            <div class="h-16 w-16 flex items-center justify-center bg-amber-500/5 border border-amber-500/20 text-amber-500">
+                                <Icon name={cat.icon} class="h-8 w-8" />
                             </div>
-                            <h2 class="font-display text-3xl font-black text-white uppercase tracking-tighter">{cat.name}</h2>
-                            <p class="text-neutral-500 text-sm mt-1">{cat.desc}</p>
+                            <div>
+                                <h2 class="text-3xl font-black text-white uppercase tracking-tighter italic">{cat.name}</h2>
+                                <p class="text-neutral-500 text-[10px] uppercase tracking-widest mt-1">{cat.desc}</p>
+                            </div>
                         </div>
-                        <a href={`/projects/${cat.id}`} class="hidden sm:flex items-center gap-2 text-xs font-mono text-neutral-500 hover:text-amber-500 transition-colors">
-                            VER_TODO <Icon name="mdi:chevron-right" />
+                        <a href={`/projects/${cat.id}`} class="group flex items-center gap-2 px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded text-[10px] font-mono text-amber-500 hover:border-amber-500/50 transition-all">
+                            <span class="tracking-widest">[ EXPLORAR_TODO ]</span>
+                            <Icon name="mdi:chevron-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"/>
                         </a>
+                        
                     </div>
 
                     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                         {cat.projects.map((project) => (
-                            <ProjectCard
-                                slug={project.slug}
-                                title={project.title}
-                                image={project.image}
-                                category={cat.id}
-                                tags={project.tags}
-                                pubDate={project.pubDate}
-                                difficulty={project.difficulty}
-                            />
+                            <ProjectCard project={project} />
                         ))}
                     </div>
                 </div>
@@ -94,28 +81,21 @@ const projectsByCategory = categories.map(cat => ({
             ))}
         </div>
 
-        <div class="mt-32">
-            <div class="relative overflow-hidden rounded-3xl border border-amber-500/20 bg-neutral-900/50 p-1">
-                <div class="absolute -right-10 -bottom-10 opacity-10">
-                    <img src="/geekeando.svg" class="h-64 w-64" alt="Watermark" />
-                </div>
-                <div class="relative z-10 rounded-[22px] bg-neutral-950 p-12 text-center">
-                    <img src="/bitsabots-brain.svg" class="h-16 w-16 mx-auto mb-6 brightness-0 invert opacity-80" alt="BitsaBots" />
-                    <h3 class="font-display text-2xl font-bold text-white uppercase mb-4">¿Tienes un prototipo listo?</h3>
-                    <p class="text-neutral-400 max-w-lg mx-auto mb-8 font-light">
-                        Publica tu documentación, archivos STL y código fuente en nuestra base de datos .root
-                    </p>
-                    <a href="/comunidad/subir" class="inline-flex items-center gap-3 rounded-xl bg-amber-500 px-8 py-4 font-display font-black text-neutral-950 hover:bg-white transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.2)] uppercase">
-                        <Icon name="mdi:plus-circle" class="h-5 w-5" />
-                        Subir al Repositorio
-                    </a>
-                </div>
-            </div>
+        <div class="mt-32 border-2 border-dashed border-neutral-800 p-8 md:p-16 text-center relative overflow-hidden">
+            <div class="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-500"></div>
+            <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-500"></div>
+
+            <h3 class="text-2xl font-black text-white uppercase mb-4 tracking-tighter italic">¿PROTOTIPO_LISTO?</h3>
+            <p class="text-neutral-500 text-sm max-w-lg mx-auto mb-10">
+                Sincroniza tus esquemas, archivos STL y código fuente con el repositorio central .root
+            </p>
+            <a href="/comunidad/subir" class="inline-block bg-amber-500 px-10 py-4 text-xs font-black text-black uppercase tracking-widest hover:bg-white transition-all">
+                SUBIR_PROYECTO.EXE
+            </a>
         </div>
     </section>
 </Layout>
 
 <style>
-    .font-display { font-family: 'Orbitron', sans-serif; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
 </style>

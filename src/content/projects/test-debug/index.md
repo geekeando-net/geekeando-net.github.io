@@ -4,14 +4,14 @@ description: "Proyecto de prueba para validar componentes de terminal y galería
 category: "arduino"
 difficulty: "Avanzado"
 pubDate: 2025-12-23
-image: "../../assets/images/projects/default.png"
+image: "./cover.png"
 tags: ["Debug", "Astro", "Tailwind"]
 verified: true
 author:
   name: "Pedro Carranza"
   role: "Lead Engineer"
-  avatar: "../../assets/images/authors/default-avatar.png"
-stlLink: "/files/chasis-test.stl"
+  avatar: "@authors/default-avatar.png"
+stlLink: "./chasis-test.stl"
 codeRepo: "https://github.com/bitsabots/test"
 materials:
   - name: "Sensor Capacitivo"
@@ -21,7 +21,7 @@ steps:
   - number: 1
     title: "Iniciando Protocolo"
     content: "Verifica que el led parpadee en color ámbar."
-    image: "../../assets/images/projects/arduino-irrigation.png"
+    image: "./arduino-irrigation.png"
     code: "void setup() { pinMode(13, OUTPUT); }"
 tips:
   - type: "warning"

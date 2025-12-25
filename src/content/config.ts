@@ -32,6 +32,11 @@ const projects = defineCollection({
             type: z.enum(["info", "warning", "tip"]),
             message: z.string(),
         })).optional(),
+        downloadFiles: z.array(z.object({
+            name: z.string(),
+            file: z.string(), // Ruta al archivo: "./files/case.stl"
+            type: z.string().optional(),
+        })).optional(),
     }),
 });
 

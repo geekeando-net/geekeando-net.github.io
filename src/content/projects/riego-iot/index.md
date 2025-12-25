@@ -4,28 +4,34 @@ description: "Monitoreo de humedad en tiempo real con alertas vía WiFi y contro
 category: "arduino"
 difficulty: "Intermedio"
 pubDate: 2025-12-23
-image: "../../assets/images/projects/arduino-irrigation-cover.png"
+image: "./cover.png"
 tags: ["IoT", "Automatización", "Agricultura Urbana"]
-codeRepo: "https://github.com/geekeando/riego-iot"
-stlLink: "/downloads/case-sensor.stl"
 author:
   name: "Pedro Carranza"
-  avatar: "../../assets/images/authors/default-avatar.png"
+  avatar: "@authors/default-avatar.png"
   role: "Maker & Developer"
+verified: true
 materials:
   - { name: "Arduino Uno R3", quantity: 1, link: "#" }
   - { name: "Sensor Humedad Capacitivo", quantity: 1, link: "#" }
   - { name: "Relé 5V", quantity: 1, link: "#" }
-verified: true
+codeRepo: "https://github.com/geekeando/riego-iot"
+stlLink: "https://printables.com/"
+downloadFiles:
+  - name: "PLANOS_CORTA_LASER"
+    file: "./downloads/planos.pdf"
+  - name: "PIEZAS_3D_COMPLETO"
+    file: "./downloads/arm_all_parts.zip"
+    type: "ZIP"
 gallery:
-  - "../../assets/images/projects/gallery/riego-1.png"
-  - "../../assets/images/projects/gallery/riego-2.png"
-  - "../../assets/images/projects/gallery/riego-3.png"
+  - "./gallery/riego-1.png"
+  - "./gallery/riego-2.png"
+  - "./gallery/riego-3.png"
 steps:
   - number: 1
     title: "Preparación de Componentes"
     content: "Reunir todos los materiales y verificar su funcionamiento. Es recomendable probar cada sensor por separado antes del ensamblaje final."
-    image: "../../assets/images/projects/irrigation-1.png"
+    image: "./irrigation-1.png"
   - number: 2
     title: "Conexión del circuito"
     content: "Conectar los sensores al Arduino según el diagrama proporcionado. Usar resistencias de 10kΩ para los sensores de humedad."

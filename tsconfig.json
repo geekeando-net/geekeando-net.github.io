@@ -13,6 +13,7 @@
       "@styles/*": ["src/assets/styles/*"],
       "@images/*": ["src/assets/images/*"],
       "@gallery/*": ["src/assets/images/gallery/*"],
+      "@authors/*": ["src/assets/images/authors/*"],
     }
   },
   "include": ["src/**/*"]
