@@ -3,149 +3,115 @@ import Layout from "@/layouts/Layout.astro"
 import TitleSection from "@/components/ui/TitleSection.astro"
 import SinglePost from "@/components/ui/post/SinglePost.astro";
 import type { MarkdownInstance } from 'astro';
+import { Icon } from "astro-icon/components";
 
+// Interfaces mantenidas pero optimizadas
 interface Frontmatter {
-    layout?: string;
     title?: string;
     pubDate?: string;
     description?: string;
     author?: string;
-    image?: {
-        url?: string;
-        alt?: string;
-    };
+    image?: { url?: string; alt?: string; };
     tags?: string[];
-}
-interface MarkdownPost {
-    frontmatter: Frontmatter;
-    url: string;
-    file: string;
-    rawContent(): string;
-    compiledContent(): string;
-    Content: any;
-}
-
-interface Props {
-    postsFilter: MarkdownInstance<MarkdownPost>[];
 }
 
 export const prerender = true;
 export async function getStaticPaths() {
     const allPostFiles = import.meta.glob<MarkdownInstance<Frontmatter>>("@posts/*.md", { eager: true });
-
-    // Convertir a un array de objetos
     const allPosts = Object.values(allPostFiles);
-    const uniqueTags = Array.from(
-        new Set(
-            allPosts.flatMap((post) => post.frontmatter.tags || []).filter(Boolean)
-        )
-    );
+    const uniqueTags = Array.from(new Set(allPosts.flatMap((post) => post.frontmatter.tags || []).filter(Boolean)));
 
     return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post) =>
-            post.frontmatter.tags?.includes(tag)
-        );
+        const filteredPosts = allPosts.filter((post) => post.frontmatter.tags?.includes(tag));
         return {
             params: { tag },
             props: { postsFilter: filteredPosts },
         };
     });
 }
+
 const { tag } = Astro.params;
-const { postsFilter } = Astro.props as Props;
-// Re-import allPostFiles at script level
+const { postsFilter } = Astro.props;
+
+// Obtener todos los tags para la nube de filtros lateral o superior
 const allPostFiles = import.meta.glob<MarkdownInstance<Frontmatter>>('@posts/*.md', { eager: true });
-const allPostsTags = Object.values(allPostFiles);
-const allTags = allPostsTags.map((post: MarkdownInstance<Frontmatter>) => post.frontmatter.tags || []).flat();
-const tagCounts = allTags.reduce((acc: Record<string, number>, tag) => {
-    acc[tag] = (acc[tag] || 0) + 1;
-    return acc;
-}, {} as Record<string, number>);
-const tags = Object.keys(tagCounts);
-const title: string = `Posts etiquetados con  "${tag}"`;
-const subTitle: string = "Descubre artículos sobre tecnología, gaming y cultura geek";
-const arrowSVG: string = `<svg
-class="h-4 w-4 flex-shrink-0 transition ease-in-out group-hover:translate-x-1"
-fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /> </svg>`;
-const urlPath = "/";
+const tags = [...new Set(Object.values(allPostFiles).flatMap(p => p.frontmatter.tags || []))].filter(Boolean);
+
+const title = `TAG_QUERY: #${tag?.toUpperCase()}`;
+const subTitle = `// Filtrando todos los registros asociados a la etiqueta seleccionada`;
 ---
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div class="mx-auto max-w-4xl text-center">
-            <TitleSection
-                title={ title }
-                subTitle={ subTitle }
-            />
-            <div class="mt-6 flex flex-wrap justify-center gap-3">
-                <button class="filter-btn">
-                    <a href="/blogs">Todos</a>
-                </button>
-                {
-                    tags.map((tagFilter) => (
-                    <button class={`filter-btn ${tagFilter === tag ? 'active' : ''}`}>
-                        <a href={`/tags/${tagFilter}`}>
-                            {tagFilter}
-                        </a>
-                    </button>
-                    ))
-                }
+<Layout title={`Logs - #${tag}`}>
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8">
+        
+        {/* Cabecera de Búsqueda */}
+        <div class="mb-12 border-b border-neutral-900 pb-10">
+            <TitleSection title={title} subTitle={subTitle} />
+            
+            <div class="mt-8 flex flex-wrap gap-2">
+                <a href="/blogs" class="filter-btn">
+                    [ ALL_FILES ]
+                </a>
+                {tags.map((tagFilter) => (
+                    <a href={`/tags/${tagFilter}`} 
+                       class={`filter-btn ${tagFilter === tag ? 'active' : ''}`}>
+                        {`#${tagFilter.toUpperCase()}`}
+                    </a>
+                ))}
             </div>
         </div>
-        <div class="space-y-8">
-            {
-                postsFilter.length > 0 ? (
-                    postsFilter.map((post,index) => (
-                        <SinglePost
-                            icon = { '' }
-                            title = { (post.frontmatter as Frontmatter)?.title || "Sin Titulo" }
-                            text = { (post.frontmatter as Frontmatter)?.description }
-                            link = { {href:post.url,text:"Continuar Leyendo"} }
-                            tags = { (post.frontmatter as Frontmatter)?.tags }
-                            pubDate = { (post.frontmatter as Frontmatter)?.pubDate }
-                            author = { (post.frontmatter as Frontmatter)?.author }
-                            svg = { arrowSVG }
-                            image = { (post.frontmatter as Frontmatter)?.image }
-                            key = { index }
-                        />
-                    ))
-                ) : (
-                <SinglePost
-                    icon = { '' }
-                    title = { 'No hay posts' }
-                    text = { '' }
-                    link = { {href:`window.location.href='${urlPath}'`,text:"Go back!"} }
-                />
-                )
-            }
+
+        {/* Lista de Resultados */}
+        <div class="space-y-6">
+            {postsFilter.length > 0 ? (
+                postsFilter.map((post) => (
+                    <SinglePost
+                        title={post.frontmatter.title}
+                        text={post.frontmatter.description}
+                        link={{ href: post.url, text: "ACCESS_FILE_ >>" }}
+                        tags={post.frontmatter.tags}
+                        pubDate={post.frontmatter.pubDate}
+                        author={post.frontmatter.author}
+                        image={post.frontmatter.image}
+                    />
+                ))
+            ) : (
+                <div class="text-center py-20 border border-dashed border-neutral-800 rounded-xl">
+                    <p class="font-mono text-neutral-500 uppercase tracking-widest">
+                        Error 404: No se encontraron registros bajo este tag.
+                    </p>
+                    <a href="/blogs" class="mt-4 inline-block text-amber-500 font-mono text-xs hover:underline">
+                        {`<< RESTART_SEARCH`}
+                    </a>
+                </div>
+            )}
         </div>
-         <!-- Paginación (Opcional) -->
-         <div class="mt-12 flex justify-center gap-2">
-            <button class="pagination-btn disabled" disabled>
-                Anterior
+
+        {/* Paginación CLI */}
+        <div class="mt-16 flex items-center justify-center gap-4 font-mono">
+            <button class="pagination-btn disabled">
+                <Icon name="mdi:chevron-left" class="h-4 w-4" /> PREV
             </button>
-            <button class="pagination-btn active">1</button>
-            <button class="pagination-btn">2</button>
-            <button class="pagination-btn">Siguiente</button>
+            <div class="flex gap-1">
+                <span class="px-3 py-1 bg-amber-500 text-neutral-900 font-bold text-xs">01</span>
+            </div>
+            <button class="pagination-btn disabled">
+                NEXT <Icon name="mdi:chevron-right" class="h-4 w-4" />
+            </button>
         </div>
     </section>
+
     <style>
-        /* Estilos para los filtros */
         .filter-btn {
-            @apply rounded-full px-4 py-2 text-sm font-medium bg-neutral-800 text-neutral-300 hover:bg-amber-400/10 hover:text-amber-400 transition-colors;
+            @apply px-3 py-1.5 text-[10px] font-mono border border-neutral-800 bg-neutral-900/50 text-neutral-500 hover:border-amber-500/50 hover:text-amber-500 transition-all uppercase tracking-widest;
         }
         .filter-btn.active {
-            @apply bg-amber-500/20 text-amber-400;
+            @apply border-amber-500 bg-amber-500/10 text-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.1)];
         }
-        /* Estilos para paginación */
         .pagination-btn {
-            @apply rounded-lg px-4 py-2 bg-neutral-800 text-neutral-300 hover:bg-amber-500 hover:text-neutral-900 transition-colors;
-        }
-        .pagination-btn.active {
-            @apply bg-amber-500 text-neutral-900;
+            @apply flex items-center gap-1 px-4 py-2 text-[10px] bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-amber-500 hover:border-amber-500/50 transition-all uppercase tracking-widest;
         }
         .pagination-btn.disabled {
-            @apply opacity-50 cursor-not-allowed;
+            @apply opacity-30 pointer-events-none;
         }
     </style>
 </Layout>

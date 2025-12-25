@@ -1,141 +1,132 @@
 ---
-import heroImage from '@images/hero.jpg';
+import heroImage from '@images/hero-geekeando.jpg';
 import { Icon } from 'astro-icon/components';
-
 ---
 
-<section class="relative overflow-hidden">
-    <!-- Contenedor del carrusel -->
-    <div class="relative h-[600px] md:h-[700px]">
-        <!-- Slide 1 -->
+<section class="relative overflow-hidden bg-neutral-950 border-b border-neutral-900">
+    {/* Fondo de rejilla técnica */}
+    <div class="absolute inset-0 opacity-[0.05] z-0" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+    <div class="relative h-[600px] md:h-[700px] z-10">
+        
+        {/* SLIDE 01: WELCOME LOG */}
         <div id="slide1" class="absolute inset-0 transition-opacity duration-1000 opacity-100">
-        <div class="mx-auto grid max-w-[85rem] gap-4 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:gap-8 lg:px-8 2xl:max-w-full bg-gradient-to-br from-neutral-900/90 via-neutral-900 to-neutral-950/80 rounded-xl border border-neutral-800/50 h-full">
-            <div class="space-y-6 z-10">
-            <h1 class="text-balance text-4xl font-bold tracking-tight text-neutral-100 sm:text-5xl lg:text-6xl lg:leading-tight">
-                Disfruta de tu día y tus hobbies con <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">Geekeando</span>
-            </h1>
-            <p class="text-pretty text-lg leading-relaxed text-neutral-300 lg:w-4/5">
-                Encuentra los productos que te gustan y disfruta de tus hobbies con la mejor calidad y precio.
-            </p>
-            <div class="flex flex-wrap gap-4 pt-2">
-                <a href="/blog" class="rounded-lg bg-gradient-to-r from-yellow-500 to-amber-600 px-6 py-3 font-medium text-neutral-900 hover:shadow-lg hover:shadow-amber-500/20 transition-all duration-300">
-                Explorar artículos
-                </a>
-                <a href="/comunidad" class="rounded-lg border-2 border-neutral-600 px-6 py-3 font-medium text-neutral-200 hover:border-amber-500 hover:text-amber-500 transition-all duration-300">
-                Únete a la comunidad
-                </a>
+            <div class="mx-auto grid max-w-[85rem] h-full gap-4 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center lg:px-8">
+                <div class="space-y-8 animate-fade-in-left">
+                    <div class="inline-flex items-center gap-x-2 rounded border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[10px] font-mono text-amber-500 uppercase tracking-[0.2em]">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                        </span>
+                        SYSTEM_STATUS: ONLINE_V2.0.25
+                    </div>
+                    
+                    <h1 class="font-display text-4xl font-black tracking-tighter text-white sm:text-6xl lg:text-7xl leading-none uppercase">
+                        Domina tus <br/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-600">Hobbies</span>
+                    </h1>
+                    
+                    <p class="font-mono text-[13px] md:text-sm leading-relaxed text-neutral-500 lg:w-4/5 border-l-2 border-amber-500/50 pl-4">
+                        // INITIALIZING_CORE_RESOURCES...<br/>
+                        Arduino, Papercraft, 3D Print & Music Tech.<br/>
+                        Proyectos open-source para elevar tu nivel maker.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button class="group relative overflow-hidden rounded-md bg-amber-500 px-8 py-4 text-[11px] font-mono font-bold text-neutral-950 transition-all hover:shadow-[0_0_25px_rgba(245,158,11,0.4)] uppercase tracking-widest">
+                            <span class="relative z-10 flex items-center gap-2">
+                                [ EXPLORAR_LABS ] <Icon name="mdi:code-tags" class="h-4 w-4" />
+                            </span>
+                        </button>
+                        <button class="rounded-md border border-neutral-700 bg-neutral-900/50 px-8 py-4 text-[11px] font-mono font-bold text-white hover:border-amber-500 transition-all uppercase tracking-widest">
+                            {`> ÚNETE_AL_CLAN`}
+                        </button>
+                    </div>
+                </div>
+
+                {/* Imagen con efecto de monitor antiguo */}
+                <div class="relative hidden md:block h-[450px] group">
+                    <div class="absolute inset-0 bg-amber-500/5 rounded-2xl rotate-2 group-hover:rotate-3 transition-transform duration-500"></div>
+                    <div class="relative h-full overflow-hidden rounded-2xl border border-neutral-800 shadow-2xl">
+                        <img
+                            src={heroImage.src}
+                            alt="Geekeando Lab"
+                            class="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                        />
+                        <div class="absolute top-4 left-4 z-20 pointer-events-none">
+                            <div class="bg-neutral-950/80 backdrop-blur-sm border border-neutral-800 p-2 rounded text-[8px] font-mono text-amber-500 uppercase tracking-tighter">
+                                Live_Feed: Core_Visuals
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-80"></div>
+                    </div>
+                </div>
             </div>
-            </div>
-            <div class="relative overflow-hidden rounded-xl shadow-2xl shadow-neutral-900/50 h-full">
-            <img
-                src={heroImage.src}
-                alt="Persona disfrutando de hobbies geek (videojuegos, cómics, tecnología)"
-                loading="eager"
-                class="h-full w-full object-cover object-center"
-                sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 via-neutral-900/30 to-transparent md:bg-gradient-to-r"></div>
-            </div>
-        </div>
         </div>
 
-        <!-- Slide 2 -->
+        {/* SLIDE 02: PHILOSOPHY */}
         <div id="slide2" class="absolute inset-0 transition-opacity duration-1000 opacity-0">
-        <div class="relative bg-gradient-to-br from-neutral-900 to-purple-900/30 h-full flex items-center justify-center">
-            <div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl font-bold text-neutral-100 sm:text-5xl lg:text-6xl">
-                Crea, Comparte y <span class="text-amber-400">Aprende</span>
-            </h1>
-            <p class="mt-6 text-xl text-neutral-300 max-w-3xl mx-auto">
-                Descubre proyectos DIY de tecnología, manualidades e innovación para todos los niveles
-            </p>
-            <div class="mt-8 flex flex-wrap justify-center gap-4">
-                <a
-                href="/projects"
-                class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-amber-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-amber-500/20 transition-all"
-                >
-                Explorar Proyectos
-                <Icon name="mdi:rocket" class="h-5 w-5" />
-                </a>
-                <a
-                href="/comunidad"
-                class="inline-flex items-center justify-center gap-x-2 rounded-lg border border-neutral-700 px-6 py-3 font-medium text-neutral-300 hover:bg-neutral-800 transition-colors"
-                >
-                Unirse a la Comunidad
-                </a>
+            <div class="flex h-full items-center justify-center bg-neutral-950 px-4 text-center">
+                <div class="max-w-4xl space-y-6">
+                    <span class="font-mono text-[10px] text-amber-500/50 uppercase tracking-[0.5em]">System_Philosophy</span>
+                    <h2 class="font-display text-4xl font-black text-white sm:text-6xl lg:text-8xl uppercase tracking-tighter">
+                        Crea. <span class="text-amber-500 text-glow">Imprime.</span> Suena.
+                    </h2>
+                    <p class="font-mono text-sm text-neutral-500 max-w-2xl mx-auto italic">
+                        "El único límite es el tamaño de tu cama de impresión y la capacidad de tu memoria flash."
+                    </p>
+                    <div class="pt-8">
+                         <button class="inline-flex items-center gap-x-3 rounded-md bg-white px-8 py-4 text-[11px] font-mono font-black text-neutral-900 hover:bg-amber-500 transition-all duration-300 uppercase tracking-[0.2em] shadow-xl">
+                            [ VER_REPOSITORIOS ] <Icon name="mdi:rocket-launch" class="h-4 w-4" />
+                        </button>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
         </div>
     </div>
 
-    <!-- Controles del carrusel -->
-    <div class="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-10">
-        <button onclick="showSlide(1)" class="h-3 w-3 rounded-full bg-amber-500 focus:outline-none transition-all" aria-label="Mostrar slide 1"></button>
-        <button onclick="showSlide(2)" class="h-3 w-3 rounded-full bg-neutral-600 hover:bg-neutral-500 focus:outline-none transition-all" aria-label="Mostrar slide 2"></button>
+    {/* Dots de Navegación más técnicos */}
+    <div class="absolute bottom-10 left-0 right-0 flex justify-center gap-2 z-20">
+        <button onclick="showSlide(1)" class="nav-dot h-[3px] w-12 bg-amber-500 opacity-100 transition-all" aria-label="Slide 1"></button>
+        <button onclick="showSlide(2)" class="nav-dot h-[3px] w-12 bg-neutral-800 opacity-50 transition-all" aria-label="Slide 2"></button>
     </div>
 </section>
 
-<script is:inline>
-    let currentSlide = 1;
-    const slideDuration = 3000; // 3 segundos
+<style>
+    .font-display { font-family: 'Orbitron', sans-serif; }
+    .font-mono { font-family: 'Fira Code', monospace; }
 
-    function showSlide(n) {
-        // Actualizar estado visual
-        document.getElementById('slide1').style.opacity = n === 1 ? '1' : '0';
-        document.getElementById('slide2').style.opacity = n === 2 ? '1' : '0';
-
-        // Actualizar controles
-        document.querySelectorAll('[onclick^="showSlide"]').forEach((btn, i) => {
-        btn.classList.toggle('bg-amber-500', i+1 === n);
-        btn.classList.toggle('bg-neutral-600', i+1 !== n);
-        btn.classList.toggle('w-3', i+1 !== n);
-        btn.classList.toggle('w-6', i+1 === n);
-        });
-
-        currentSlide = n;
-        resetTimer();
+    .text-glow {
+        text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
     }
 
-    function nextSlide() {
-        currentSlide = currentSlide === 1 ? 2 : 1;
-        showSlide(currentSlide);
+    /* Animaciones de entrada */
+    @keyframes fade-in-left {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
     }
-
-    let slideInterval;
-    function startTimer() {
-        slideInterval = setInterval(nextSlide, slideDuration);
-    }
-
-    function resetTimer() {
-        clearInterval(slideInterval);
-        startTimer();
-    }
-
-    // Iniciar carrusel automático
-    document.addEventListener('DOMContentLoaded', () => {
-        startTimer();
-
-        // Pausar al hacer hover
-        const hero = document.querySelector('.relative.overflow-hidden');
-        hero.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        hero.addEventListener('mouseleave', startTimer);
-    });
-</script>
-
-<style is:global>
-  /* Transición suave entre slides */
-    #slide1, #slide2 {
-        transition: opacity 1s ease-in-out;
-    }
-
-    /* Mejora para los controles */
-    [onclick^="showSlide"] {
-        transition: all 0.3s ease;
-    }
-
-    .bg-amber-500 {
-        width: 24px !important;
-        border-radius: 8px !important;
+    .animate-fade-in-left {
+        animation: fade-in-left 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 </style>
+
+<script is:inline>
+    let currentSlide = 1;
+    function showSlide(n) {
+        document.getElementById('slide1').style.opacity = n === 1 ? '1' : '0';
+        document.getElementById('slide2').style.opacity = n === 2 ? '1' : '0';
+        
+        const dots = document.querySelectorAll('.nav-dot');
+        dots.forEach((dot, i) => {
+            dot.style.opacity = (i + 1 === n) ? '1' : '0.3';
+            dot.style.backgroundColor = (i + 1 === n) ? '#f59e0b' : '#3f3f46';
+            dot.style.width = (i + 1 === n) ? '48px' : '32px';
+        });
+        currentSlide = n;
+    }
+
+    // Auto-play simple
+    setInterval(() => {
+        currentSlide = currentSlide === 1 ? 2 : 1;
+        showSlide(currentSlide);
+    }, 5000);
+</script>

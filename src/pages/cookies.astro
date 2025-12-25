@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
 import CookieTable from "@/components/ui/CookieTable.astro";
 import { Icon } from "astro-icon/components";
-const title = "Política de Cookies";
+
+const title = "COOKIE_PROTOCOL_v2.5";
 const lastUpdated = new Date().toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
@@ -11,113 +12,91 @@ const lastUpdated = new Date().toLocaleDateString('es-ES', {
 });
 ---
 
-<Layout>
+<Layout title="Protocolo de Cookies | Geekeando">
     <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <!-- Encabezado -->
-        <div class="mx-auto max-w-4xl text-center mb-12">
-        <TitleSection
-            title={title}
-            subTitle={`Última actualización: ${lastUpdated}`}
-            accentColor="amber"
-        />
+        
+        <div class="mx-auto max-w-4xl text-center mb-16">
+            <div class="inline-block px-3 py-1 mb-4 border border-amber-500/30 bg-amber-500/5 rounded-sm">
+                <span class="font-mono text-[10px] text-amber-500 tracking-[0.4em] uppercase">Security_&_Privacy_Sector</span>
+            </div>
+            <TitleSection
+                title={title}
+                subTitle={`SYS_LAST_UPDATE: ${lastUpdated.toUpperCase()}`}
+                accentColor="amber"
+            />
         </div>
 
-        <!-- Contenido principal -->
-        <div class="mx-auto max-w-3xl rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 backdrop-blur-sm shadow-lg shadow-neutral-950/50">
-            <!-- Introducción -->
-        <div class="mb-10">
-            <h2 class="text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-            <Icon name="mdi:cookie" class="h-6 w-6 text-amber-400" />
-            1. ¿Qué son las cookies?
-            </h2>
-            <p class="text-neutral-400">
-            Las cookies son pequeños archivos de texto que los sitios web colocan en su dispositivo para almacenar información sobre su preferencias y actividad. En <span class="text-amber-400 font-medium">Geekeando</span> utilizamos cookies y tecnologías similares para mejorar su experiencia.
-            </p>
-        </div>
+        <div class="mx-auto max-w-4xl bg-neutral-950 border border-neutral-800 shadow-[20px_20px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+            
+            {/* Pestañas simuladas de terminal */}
+            <div class="flex border-b border-neutral-800 bg-neutral-900/50">
+                <div class="px-6 py-3 border-r border-neutral-800 bg-neutral-950 text-amber-500 font-mono text-xs italic">
+                    README.md
+                </div>
+                <div class="px-6 py-3 border-r border-neutral-800 text-neutral-600 font-mono text-xs hover:text-neutral-400 cursor-help">
+                    SECURITY_LOGS
+                </div>
+            </div>
 
-        <!-- Tipos de cookies -->
-        <div class="mb-10">
-            <h2 class="text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-            <Icon name="mdi:cookie-settings" class="h-6 w-6 text-amber-400" />
-            2. Tipos de cookies que utilizamos
-            </h2>
-            <CookieTable />
-            <div class="mt-4 p-4 rounded-lg bg-neutral-800 border-l-4 border-amber-500">
-            <p class="text-sm text-neutral-300">
-                <Icon name="mdi:shield-alert" class="inline h-5 w-5 text-amber-400 mr-2" />
-                <strong>Cookies esenciales:</strong> No puede desactivarlas ya que son necesarias para el funcionamiento básico del sitio.
-            </p>
+            <div class="p-8 md:p-12 font-mono">
+                <div class="mb-12 relative group">
+                    <div class="absolute -left-6 top-0 text-amber-500/20 text-xl font-black">01</div>
+                    <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-3 tracking-tighter uppercase italic">
+                        <Icon name="mdi:cookie" class="h-5 w-5 text-amber-500" />
+                        Definición_de_Paquetes (Cookies)
+                    </h2>
+                    <p class="text-sm text-neutral-400 leading-relaxed">
+                        Las cookies son pequeños archivos de texto que el <span class="text-neutral-200">[SERVER]</span> coloca en su dispositivo para almacenar parámetros de sesión y actividad. En <span class="text-amber-500">Geekeando Labs</span> procesamos estos datos para optimizar la interfaz de usuario.
+                    </p>
+                </div>
+
+                <div class="mb-12 relative group">
+                    <div class="absolute -left-6 top-0 text-amber-500/20 text-xl font-black">02</div>
+                    <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-3 tracking-tighter uppercase italic">
+                        <Icon name="mdi:database-cog" class="h-5 w-5 text-amber-500" />
+                        Módulos_Instalados
+                    </h2>
+                    <div class="overflow-x-auto border border-neutral-800 bg-black/40 p-1">
+                        <CookieTable />
+                    </div>
+                    <div class="mt-6 flex items-start gap-4 p-4 bg-amber-500/5 border border-amber-500/20">
+                        <Icon name="mdi:shield-alert" class="h-10 w-10 text-amber-500 shrink-0" />
+                        <p class="text-[11px] text-amber-200/70 leading-normal">
+                            <strong class="text-amber-500 uppercase">Aviso Crítico:</strong> Las cookies esenciales son necesarias para mantener la integridad de la sesión. No pueden ser deshabilitadas por el protocolo de usuario.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mb-12 relative group">
+                    <div class="absolute -left-6 top-0 text-amber-500/20 text-xl font-black">03</div>
+                    <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-3 tracking-tighter uppercase italic">
+                        <Icon name="mdi:console-line" class="h-5 w-5 text-amber-500" />
+                        Override_User_Control
+                    </h2>
+                    <p class="text-sm text-neutral-400 mb-6">
+                        Usted puede ejecutar un <span class="text-neutral-200 italic">"Full Wipe"</span> de las cookies mediante:
+                    </p>
+                    <ul class="text-xs text-neutral-500 space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-500">>></span>
+                            <span><strong class="text-neutral-300">Navegador:</strong> Modificar parámetros en <code class="bg-neutral-800 px-1 text-amber-400">Settings > Privacy</code>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-amber-500">>></span>
+                            <span><strong class="text-neutral-300">Third-Party:</strong> Implementación de <a href="https://www.aboutcookies.org/" target="_blank" class="text-amber-500 hover:underline">AboutCookies.org</a>.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-16 pt-8 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="text-left">
+                        <h3 class="text-sm font-bold text-white uppercase mb-1">Direct_Channel</h3>
+                        <p class="text-[10px] text-neutral-500">privacidad@geekeando.net</p>
+                    </div>
+                    <a href="mailto:privacidad@geekeando.net" class="px-6 py-2 border border-neutral-700 text-[10px] text-neutral-400 hover:border-amber-500 hover:text-amber-500 transition-all uppercase tracking-widest">
+                        Enviar_Consulta
+                    </a>
+                </div>
             </div>
         </div>
-
-        <!-- Gestión de cookies -->
-        <div class="mb-10">
-            <h2 class="text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-            <Icon name="mdi:cog" class="h-6 w-6 text-amber-400" />
-            3. Cómo gestionar cookies
-            </h2>
-            <p class="text-neutral-400 mb-3">
-            Puede controlar y/o eliminar las cookies como desee:
-            </p>
-            <ul class="text-neutral-400 space-y-2 list-disc pl-5 mb-4">
-            <li>
-                <strong>Configuración del navegador:</strong> La mayoría de navegadores permiten bloquear o eliminar cookies. Consulte <a href="https://www.aboutcookies.org/" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">aboutcookies.org</a> para instrucciones.
-            </li>
-            <li>
-                <strong>Herramienta de consentimiento:</strong> Utilice nuestro banner de cookies para personalizar sus preferencias.
-            </li>
-            <li>
-                <strong>Herramientas de terceros:</strong> Extensiones como Ghostery o Privacy Badger.
-            </li>
-            </ul>
-            <p class="text-neutral-400">
-            Tenga en cuenta que deshabilitar cookies puede afectar la funcionalidad de nuestro sitio y otros que visite.
-            </p>
-        </div>
-
-        <!-- Cookies de terceros -->
-        <div class="mb-10">
-            <h2 class="text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-            <Icon name="mdi:account-group" class="h-6 w-6 text-amber-400" />
-            4. Cookies de terceros
-            </h2>
-            <p class="text-neutral-400 mb-3">
-            Algunas cookies son colocadas por servicios de terceros que aparecen en nuestras páginas:
-            </p>
-            <ul class="text-neutral-400 space-y-2 list-disc pl-5 mb-4">
-            <li>
-                <strong>Google Analytics:</strong> Para analizar el uso del sitio (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">Política de Privacidad</a>)
-            </li>
-            <li>
-                <strong>YouTube:</strong> Para incrustar videos (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">Política de Privacidad</a>)
-            </li>
-            <li>
-                <strong>Redes sociales:</strong> Para compartir contenido (<a href="https://www.facebook.com/policies/cookies/" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline">Ejemplo Facebook</a>)
-            </li>
-            </ul>
-        </div>
-
-        <!-- Cambios en la política -->
-        <div class="mb-10">
-            <h2 class="text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-            <Icon name="mdi:update" class="h-6 w-6 text-amber-400" />
-            5. Cambios en esta política
-            </h2>
-            <p class="text-neutral-400">
-            Podemos actualizar esta Política de Cookies periódicamente. Le recomendamos revisar esta página para estar informado sobre cómo usamos las cookies.
-            </p>
-        </div>
-
-        <!-- Contacto -->
-        <div class="mt-12 pt-8 border-t border-neutral-800">
-            <h2 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-            <Icon name="mdi:email-fast" class="h-5 w-5 text-amber-400" />
-            Contacto
-            </h2>
-            <p class="text-neutral-400">
-            Para preguntas sobre esta política, contáctenos en <a href="mailto:privacidad@geekeando.net" class="text-amber-400 hover:underline">privacidad@geekeando.net</a>.
-            </p>
-        </div>
-        </div>
-    </section>
-</Layout>
+    </section

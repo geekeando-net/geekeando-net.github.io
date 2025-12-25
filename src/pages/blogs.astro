@@ -1,99 +1,89 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import SinglePostCard from "@/components/ui/post/SinglePostCard.astro"; // Nuevo componente para cards
+import SinglePostCard from "@/components/ui/post/SinglePostCard.astro";
+import { Icon } from "astro-icon/components";
 
 const allPostsFile = import.meta.glob('@posts/*.md', { eager: true });
 
-const allPosts = Object.entries(allPostsFile).map(([filePath, post]) => {
-    const flatPost = Object.assign({}, post) as { frontmatter: { pubDate?: string } };
-    const slug = filePath.replace('/src/pages/posts/', '').replace('.md', '');
+const allPosts = Object.entries(allPostsFile).map(([filePath, post]: any) => {
+    const slug = filePath.split('/').pop()?.replace('.md', '');
     return {
-        ...flatPost,
+        ...post.frontmatter,
         url: `/posts/${slug}`,
-        pubDate: new Date(flatPost.frontmatter?.pubDate || 0),
+        pubDate: new Date(post.frontmatter?.pubDate || Date.now()),
     };
 });
-const allPostsTags = Object.values(import.meta.glob('@posts/*.md', { eager: true }));
-const allTags = allPostsTags.map((post) => (post as { frontmatter: { tags: string[] } }).frontmatter.tags).flat();
-const tagCounts = allTags.reduce((acc: Record<string, number>, tag) => {
-    acc[tag] = (acc[tag] || 0) + 1;
-    return acc;
-}, {} as Record<string, number>);
-const tags = Object.keys(tagCounts);
-const sortedPosts = allPosts.sort((a, b) =>
-    (b?.pubDate?.getTime() || 0) - (a?.pubDate?.getTime() || 0)
-);
 
-const title = "Explora el Universo Geek";
-const subTitle = "Descubre artículos, reviews y guías para fans";
-const arrowSVG = `<svg class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>`;
+// Extracción de tags única
+const tags = [...new Set(allPosts.map((post) => post.tags).flat())].filter(Boolean);
+
+const sortedPosts = allPosts.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
+
+const title = "BIBLIOTECA_DE_LOGS";
+const subTitle = "// Documentación técnica, guías maker y tutoriales de hardware";
 ---
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <!-- Header con efecto especial -->
-        <div class="mx-auto max-w-4xl text-center">
-            <TitleSection
-                title={title}
-                subTitle={subTitle}
-            />
-            <div class="mt-8 flex flex-wrap justify-center gap-3">
-                <button class="filter-btn active">Todos</button>
-                <!-- <button class="filter-btn">🎮 Gaming</button>
-                <button class="filter-btn">🤖 Tecnología</button>
-                <button class="filter-btn">📺 Anime</button> -->
-                {
-                    tags.map((tag) => (
-                    <button class="filter-btn">
-                        <a href={`/tags/${tag}`}>
-                            {tag}
-                        </a>
-                    </button>
-                    ))
-                }
+<Layout title="Blog | Geekeando">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8">
+        
+        <div class="mb-12 border-b border-neutral-900 pb-10">
+            <TitleSection title={title} subTitle={subTitle} accentColor="amber"/>
+            
+            {/* Filtros estilo Terminal */}
+            <div class="mt-8 flex flex-wrap gap-2">
+                <span class="text-[10px] font-mono text-neutral-600 self-center mr-2">FILTER_BY:</span>
+                <a href="/blog" class="filter-btn active">ALL_FILES</a>
+                {tags.map((tag) => (
+                    <a href={`/tags/${tag}`} class="filter-btn">
+                        {`#${tag.toUpperCase()}`}
+                    </a>
+                ))}
             </div>
         </div>
 
-        <!-- Grid de Cards Verticales -->
+        {/* Grid de Posts */}
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {sortedPosts.map((post, index) => {
-                return (
-                    <SinglePostCard
-                        link = { {href:post.url,text:"Continuar Leyendo"} }
-                        title = { (post.frontmatter as Frontmatter)?.title || "Sin título"}
-                        text = { (post.frontmatter as Frontmatter)?.description }
-                        image = { (post.frontmatter as Frontmatter)?.image}
-                        pubDate = { (post.frontmatter as Frontmatter)?.pubDate }
-                        tags = { (post.frontmatter as Frontmatter)?.tags}
-                        author = { (post.frontmatter as Frontmatter)?.author}
-                        svg={arrowSVG}
-                        key={index}
-                    />
-                );
-            })}
+            {sortedPosts.map((post) => (
+                <SinglePostCard
+                    link={{ href: post.url, text: "READ_ENTRY_ >>" }}
+                    title={post.title}
+                    text={post.description}
+                    image={post.image}
+                    pubDate={post.pubDate}
+                    tags={post.tags}
+                    author={post.author}
+                />
+            ))}
         </div>
 
-        <!-- Paginación Estilizada -->
-        <div class="mt-16 flex justify-center gap-2">
-            <button class="pagination-btn">← Anterior</button>
-            <button class="pagination-btn active">1</button>
-            <button class="pagination-btn">2</button>
-            <button class="pagination-btn">Siguiente →</button>
+        {/* Paginación Estilo CLI */}
+        <div class="mt-20 flex items-center justify-center gap-4 font-mono">
+            <button class="pagination-btn disabled">
+                <Icon name="mdi:chevron-left" class="h-4 w-4" /> PREV
+            </button>
+            <div class="flex gap-1 text-[11px]">
+                <span class="px-3 py-1 bg-amber-500 text-neutral-900 font-bold">01</span>
+                <span class="px-3 py-1 bg-neutral-900 text-neutral-500 border border-neutral-800">02</span>
+                <span class="px-3 py-1 bg-neutral-900 text-neutral-500 border border-neutral-800">03</span>
+            </div>
+            <button class="pagination-btn">
+                NEXT <Icon name="mdi:chevron-right" class="h-4 w-4" />
+            </button>
         </div>
     </section>
 
     <style>
         .filter-btn {
-            @apply rounded-full px-4 py-2 text-sm font-medium bg-neutral-800 text-neutral-300 hover:bg-amber-400/10 hover:text-amber-400 transition-all duration-300;
+            @apply px-3 py-1.5 text-[10px] font-mono border border-neutral-800 bg-neutral-900/50 text-neutral-500 hover:border-amber-500/50 hover:text-amber-500 transition-all uppercase tracking-widest;
         }
         .filter-btn.active {
-            @apply bg-gradient-to-r from-amber-500/80 to-amber-600 text-neutral-900 font-bold;
+            @apply border-amber-500 bg-amber-500/10 text-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.1)];
         }
         .pagination-btn {
-            @apply rounded-md px-4 py-2 bg-neutral-800 text-neutral-300 hover:bg-amber-500 hover:text-neutral-900 transition-colors border border-neutral-700;
+            @apply flex items-center gap-1 px-4 py-2 text-[10px] bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-amber-500 hover:border-amber-500/50 transition-all uppercase tracking-widest;
         }
-        .pagination-btn.active {
-            @apply bg-amber-500 text-neutral-900 border-amber-500;
+        .pagination-btn.disabled {
+            @apply opacity-30 pointer-events-none;
         }
     </style>
 </Layout>

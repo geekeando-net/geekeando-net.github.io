@@ -1,182 +1,101 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
 import ProjectCard from "@/components/ui/ProjectCard.astro";
 import { Icon } from "astro-icon/components";
-const title = "Proyectos Geek";
-const subTitle = "Explora nuestras creaciones en tecnología, manualidades e innovación";
 
-// Datos de ejemplo para proyectos
-const projectCategories = [
-    {
-        id: "arduino",
-        name: "Arduino",
-        icon: "mdi:chip",
-        description: "Proyectos de electrónica y automatización con Arduino",
-        projects: [
-        {
-            id: "arduino-irrigation",
-            title: "Sistema de Riego Automático",
-            image: "src/assets/images/projects/arduino-irrigation.png",
-            tags: ["IoT", "Automatización"],
-            date: "2023-10-15",
-            difficulty: "Intermedio"
-        },
-        {
-            id: "weather-station",
-            title: "Estación Meteorológica",
-            image: "src/assets/images/projects/weather-station.png",
-            tags: ["Sensores", "Datos"],
-            date: "2023-08-22",
-            difficulty: "Avanzado"
-        }
-        ]
-    },
-    {
-        id: "paper-craft",
-        name: "Paper Craft",
-        icon: "mdi:paper-cut-vertical",
-        description: "Creaciones artísticas en papel y cartón",
-        projects: [
-        {
-            id: "futuristic-city",
-            title: "Maqueta de Ciudad Futurista",
-            image: "src/assets/images/projects/paper-city.png",
-            tags: ["Escala 1:100", "Arquitectura"],
-            date: "2023-11-05",
-            difficulty: "Principiante"
-        }
-        ]
-    },
-    {
-        id: "3d-print",
-        name: "3D Print",
-        icon: "mdi:printer-3d",
-        description: "Diseño e impresión 3D de objetos y prototipos",
-        projects: [
-        {
-            id: "robotic-arm",
-            title: "Brazo Robótico Modular",
-            image: "src/assets/images/projects/robotic-arm.png",
-            tags: ["Robótica", "Open Source"],
-            date: "2023-09-18",
-            difficulty: "Intermedio"
-        }
-        ]
-    },
-    {
-        id: "music",
-        name: "Music",
-        icon: "mdi:music",
-        description: "Proyectos musicales y de audio tecnología",
-        projects: [
-        {
-            id: "diy-synth",
-            title: "Sintetizador DIY",
-            image: "src/assets/images/projects/diy-synth.png",
-            tags: ["Electrónica", "Música"],
-            date: "2023-07-30",
-            difficulty: "Avanzado"
-        }
-        ]
-    }
+const title = "Proyectos [.root]";
+const subTitle = "Laboratorio de ingeniería, diseño y manualidades técnicas";
+
+// 1. Obtenemos la colección completa (Astro procesa las imágenes automáticamente)
+const allProjects = await getCollection("projects");
+
+// 2. Definimos las categorías
+const categories = [
+    { id: "arduino", name: "Arduino", icon: "mdi:chip", desc: "Electrónica y código" },
+    { id: "papercraft", name: "Paper Craft", icon: "mdi:paper-cut-vertical", desc: "Ingeniería en papel" },
+    { id: "3d-print", name: "3D Print", icon: "mdi:printer-3d", desc: "Prototipado aditivo" },
+    { id: "music", name: "Music", icon: "mdi:music", desc: "Tecnología sonora" }
 ];
+
+// 3. Agrupamos los objetos de proyecto enteros por categoría
+const projectsByCategory = categories.map(cat => ({
+    ...cat,
+    projects: allProjects.filter(p => p.data.category.toLowerCase() === cat.id)
+}));
 ---
 
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <!-- Encabezado -->
-        <div class="mx-auto max-w-4xl text-center mb-12">
+<Layout title="Geekeando | Repositorio de Proyectos">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 bg-neutral-950 font-mono">
+        
+        <div class="mx-auto max-w-4xl text-center mb-16 relative">
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#fbbf24 1px, transparent 1px); background-size: 20px 20px;"></div>
             <TitleSection
                 title={title}
                 subTitle={subTitle}
-                accentColor="purple"
+                accentColor="amber" 
             />
         </div>
 
-        <!-- Navegación por categorías -->
-        <div class="sticky top-16 z-10 bg-neutral-900/80 backdrop-blur-md py-4 mb-8 border-b border-neutral-800 text-neutral-400">
-            <div class="flex overflow-x-auto pb-2 gap-3 no-scrollbar">
-                {projectCategories.map((category) => (
-                <a
-                    href={`#${category.id}`}
-                    class="flex-shrink-0 flex items-center gap-2 rounded-full border border-neutral-700 px-4 py-2 text-sm font-medium transition-all hover:border-purple-500 hover:bg-purple-500/10 hover:text-purple-400"
-                >
-                    <Icon name={category.icon} class="h-4 w-4" />
-                    {category.name}
-                </a>
+        <div class="sticky top-16 z-20 bg-neutral-950/95 backdrop-blur-md py-4 mb-12 border-b border-neutral-800">
+            <div class="flex items-center gap-4 overflow-x-auto no-scrollbar pb-2">
+                <span class="text-[10px] text-neutral-600 uppercase tracking-widest border-r border-neutral-800 pr-4">Categorías:</span>
+                {categories.map((cat) => (
+                    <a href={`#${cat.id}`} class="flex-shrink-0 flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest text-neutral-500 hover:text-amber-500 transition-all">
+                        <Icon name={cat.icon} class="h-4 w-4" />
+                        {cat.name}
+                    </a>
                 ))}
             </div>
         </div>
 
-        <!-- Contenido por categoría -->
-        <div class="space-y-20">
-        {projectCategories.map((category) => (
-            <div id={category.id} class="scroll-mt-24">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="flex items-center justify-center rounded-lg bg-purple-500/10 p-3 text-purple-400">
-                <Icon name={category.icon} class="h-6 w-6" />
-                </div>
-                <div>
-                <h2 class="text-2xl font-bold text-neutral-200">{category.name}</h2>
-                <p class="text-neutral-400">{category.description}</p>
-                </div>
-            </div>
+        <div class="space-y-32">
+            {projectsByCategory.map((cat) => (
+                cat.projects.length > 0 && (
+                <div id={cat.id} class="scroll-mt-32">
+                    <div class="flex items-end justify-between mb-10 border-b border-neutral-900 pb-6">
+                        <div class="flex items-center gap-6">
+                            <div class="h-16 w-16 flex items-center justify-center bg-amber-500/5 border border-amber-500/20 text-amber-500">
+                                <Icon name={cat.icon} class="h-8 w-8" />
+                            </div>
+                            <div>
+                                <h2 class="text-3xl font-black text-white uppercase tracking-tighter italic">{cat.name}</h2>
+                                <p class="text-neutral-500 text-[10px] uppercase tracking-widest mt-1">{cat.desc}</p>
+                            </div>
+                        </div>
+                        <a href={`/projects/${cat.id}`} class="group flex items-center gap-2 px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded text-[10px] font-mono text-amber-500 hover:border-amber-500/50 transition-all">
+                            <span class="tracking-widest">[ EXPLORAR_TODO ]</span>
+                            <Icon name="mdi:chevron-right" class="h-4 w-4 transition-transform group-hover:translate-x-1"/>
+                        </a>
+                        
+                    </div>
 
-            <!-- Grid de proyectos -->
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {category.projects.map((project) => (
-                <ProjectCard
-                    id={project.id}
-                    title={project.title}
-                    image={project.image}
-                    category={category.name}
-                    tags={project.tags}
-                    date={project.date}
-                    difficulty={project.difficulty}
-                />
-                ))}
-            </div>
-
-            <!-- Botón ver más (opcional) -->
-            <div class="mt-8 text-center">
-                <a
-                href={`/projects/${category.id}`}
-                class="inline-flex items-center justify-center gap-x-2 rounded-lg border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-800 transition-colors"
-                >
-                Ver todos los proyectos de {category.name}
-                <Icon name="mdi:arrow-right" class="h-4 w-4" />
-                </a>
-            </div>
-            </div>
-        ))}
+                    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                        {cat.projects.map((project) => (
+                            <ProjectCard project={project} />
+                        ))}
+                    </div>
+                </div>
+                )
+            ))}
         </div>
 
-        <!-- CTA final -->
-        <div class="mt-20 text-center">
-        <div class="inline-block rounded-xl border border-purple-500/30 bg-gradient-to-r from-purple-900/30 to-neutral-900/50 p-1 shadow-lg shadow-purple-500/10">
-            <div class="rounded-lg bg-neutral-900/80 p-8 backdrop-blur-sm">
-            <h3 class="text-xl font-bold text-neutral-200 mb-3">¿Tienes un proyecto para compartir?</h3>
-            <p class="mb-5 text-neutral-400">Únete a nuestra comunidad y muestra tus creaciones</p>
-            <a
-                href="/comunidad/subir-proyecto"
-                class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all"
-            >
-                <Icon name="mdi:plus-circle" class="h-5 w-5" />
-                Subir proyecto
+        <div class="mt-32 border-2 border-dashed border-neutral-800 p-8 md:p-16 text-center relative overflow-hidden">
+            <div class="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-amber-500"></div>
+            <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-amber-500"></div>
+
+            <h3 class="text-2xl font-black text-white uppercase mb-4 tracking-tighter italic">¿PROTOTIPO_LISTO?</h3>
+            <p class="text-neutral-500 text-sm max-w-lg mx-auto mb-10">
+                Sincroniza tus esquemas, archivos STL y código fuente con el repositorio central .root
+            </p>
+            <a href="/comunidad/subir" class="inline-block bg-amber-500 px-10 py-4 text-xs font-black text-black uppercase tracking-widest hover:bg-white transition-all">
+                SUBIR_PROYECTO.EXE
             </a>
-            </div>
-        </div>
         </div>
     </section>
 </Layout>
 
-<style is:global>
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
+<style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
 </style>

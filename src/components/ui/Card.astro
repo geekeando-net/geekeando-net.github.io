@@ -1,36 +1,100 @@
 ---
 import Icon from "@components/ui/IconPart.astro"
 
-const { icon, title, text1, text2, text3, link, svg } = Astro.props;
+const { icon, title, text1, text2, text3, link, svg, accentColor = "amber" } = Astro.props;
+
+const colorMap = {
+    amber: {
+        border: "border-amber-500/30",
+        text: "text-amber-500",
+        shadow: "shadow-amber-500/20",
+        glow: "group-hover:text-amber-400"
+    },
+    purple: {
+        border: "border-purple-500/30",
+        text: "text-purple-400",
+        shadow: "shadow-purple-500/20",
+        glow: "group-hover:text-purple-300"
+    },
+    blue: {
+        border: "border-blue-500/30",
+        text: "text-blue-400",
+        shadow: "shadow-blue-500/20",
+        glow: "group-hover:text-blue-300"
+    },
+    green: {
+        border: "border-emerald-500/30",
+        text: "text-emerald-400",
+        shadow: "shadow-emerald-500/20",
+        glow: "group-hover:text-emerald-300"
+    }
+};
+
+const style = colorMap[accentColor as keyof typeof colorMap] || colorMap.amber;
 ---
 
-<div class="flex gap-x-7 py-6">
-	{ icon && <Icon name={ icon } />}
-	<div class="grow">
-		<h3 class="font-bold text-neutral-300">
-			{ title }
-		</h3>
-		<p class="mt-1 text-sm text-neutral-400">
-			<Fragment
-				set:html = { text1 }
-			/>
-		</p>
-		<p class="mt-1 text-sm text-neutral-400">
-			<Fragment
-				set:html = { text2 }
-			/>
-		</p>
-		<p class="mt-1 text-sm text-neutral-400">
-			<Fragment
-				set:html = { text3 }
-			/>
-		</p>
-		{ link && (
-			<a
-				class="group mt-2 inline-flex items-center gap-x-2 rounded-lg text-sm font-medium outline-none transition duration-300  focus-visible:ring text-zinc-400 ring-zinc-200 hover:text-zinc-200 focus:outline-none focus:ring-1"
-				href={ link.href }>
-					{ link.text } <Fragment set:html={svg} />
-			</a>
-		)}
-	</div>
+<div class={`group relative flex flex-col gap-y-4 p-6 bg-neutral-900/40 border-l-2 ${style.border} hover:bg-neutral-900/60 transition-all duration-500 overflow-hidden`}>
+    
+    {/* Efecto de Brillo en el Fondo al hacer Hover */}
+    <div class={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-br from-transparent via-transparent to-current ${style.text}`}></div>
+
+    <div class="flex items-center gap-x-4 relative z-10">
+        { icon && (
+            <div class={`p-2 bg-neutral-800 rounded border ${style.border} transition-all duration-500 group-hover:scale-110 ${style.shadow} group-hover:shadow-lg`}>
+                <div class={`transition-all duration-500 ${style.text} ${style.glow} icon-container`}>
+                    <Icon name={ icon } />
+                </div>
+            </div>
+        )}
+        <h3 class="font-display font-bold text-neutral-100 uppercase tracking-tighter group-hover:text-white transition-colors">
+            { title }
+        </h3>
+    </div>
+
+    <div class="grow space-y-3 relative z-10">
+        <div class="space-y-1">
+            <span class="text-[10px] font-mono opacity-30 uppercase tracking-widest block">Sector_01</span>
+            <p class="text-sm text-neutral-400 leading-relaxed font-sans">
+                <Fragment set:html={ text1 } />
+            </p>
+        </div>
+        
+        { (text2 || text3) && <div class="h-px w-full bg-neutral-800 my-2"></div> }
+
+        { text2 && (
+            <div class="space-y-1">
+                 <span class="text-[10px] font-mono opacity-30 uppercase tracking-widest block">Sector_02</span>
+                 <p class="text-sm text-neutral-400 leading-relaxed font-sans">
+                    <Fragment set:html={ text2 } />
+                </p>
+            </div>
+        )}
+        
+        { link && (
+            <a
+                class={`group/link mt-4 inline-flex items-center gap-x-2 font-mono text-[10px] uppercase tracking-widest transition-all duration-300 ${style.text} hover:brightness-125`}
+                href={ link.href }>
+                    <span class="opacity-50 tracking-normal">>></span> 
+                    { `EXEC_DIR/${link.text}` }
+                    <div class="transition-transform group-hover/link:translate-x-1">
+                        <Fragment set:html={svg} />
+                    </div>
+            </a>
+        )}
+    </div>
 </div>
+
+<style>
+    /* Efecto de resplandor para el icono */
+    .group:hover .icon-container {
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    /* Animación sutil de entrada para los textos */
+    .group p {
+        transition: transform 0.3s ease-out;
+    }
+    .group:hover p {
+        transform: translateX(4px);
+    }
+</style>

@@ -5,35 +5,51 @@ import Card from "@/components/ui/AboutCard.astro";
 import stringsAbout from "@/utils/stringsCards";
 
 const about = stringsAbout.stringsAbout;
-const title: string = "Acerca de Nosotros";
-const subTitle: string = "Tu universo geek al alcance de un clic";
+const title: string = "ABOUT_SYSTEM_v2.0";
+const subTitle: string = "// Inicializando perfil del creador: Pedro Carranza";
 ---
 
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div class="mx-auto max-w-4xl text-center">
+<Layout title="Sobre Geekeando | Labs">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-4xl">
             <TitleSection
                 title={ title }
                 subTitle={ subTitle }
-                accentColor="purple" // Cambio de color para diferenciar sección
+                accentColor="purple"
             />
-            <div class="mt-8 rounded-xl bg-gradient-to-r from-purple-900/30 to-neutral-900/50 p-8 border border-purple-800/30">
-                <p class="text-lg text-neutral-300">
-                    Somos una comunidad apasionada que te invita a sumergirte en el fascinante mundo geek. 
-                    En Geekeando, encontrarás todo lo que necesitas para alimentar tu curiosidad y conectar 
-                    con otros amantes de la cultura pop.
+            
+            {/* Contenedor tipo "Terminal de Bio" */}
+            <div class="mt-8 relative overflow-hidden rounded-xl bg-neutral-900/40 p-8 border border-purple-500/20 backdrop-blur-sm">
+                <div class="absolute top-0 right-0 p-2 opacity-10 font-mono text-[60px] select-none pointer-events-none">
+                    GEEK
+                </div>
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="h-3 w-3 rounded-full bg-purple-500 animate-pulse"></div>
+                    <div class="h-3 w-3 rounded-full bg-neutral-700"></div>
+                    <div class="h-3 w-3 rounded-full bg-neutral-700"></div>
+                </div>
+                
+                <p class="text-lg font-light text-neutral-300 leading-relaxed italic">
+                    "Más que un blog, este es un registro de ingeniería personal. Desde la precisión del <span class="text-purple-400 font-mono">3D_Printing</span> hasta la paciencia del <span class="text-purple-400 font-mono">Papercraft</span>, Geekeando es el espacio donde el código y el hardware se encuentran con la música y la cultura geek."
                 </p>
             </div>
         </div>
     </section>
-    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-10">
-        <div class="mx-auto max-w-4xl">
-            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-5xl">
+            {/* Header de Atributos */}
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="font-display text-xs tracking-[0.5em] text-purple-500 uppercase">Core_Modules</h2>
+                <div class="h-px flex-grow bg-neutral-800"></div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {
                     about.map((item, index) => (
                         <Card
                             icon={item.icon || '📌'} 
-                            title = { item.title }
+                            title = { item.title.toUpperCase() }
                             text1 = { item.text1 }
                             text2 = { item.text2 }
                             text3 = { item.text3 }
@@ -46,3 +62,10 @@ const subTitle: string = "Tu universo geek al alcance de un clic";
         </div>
     </section>
 </Layout>
+
+<style>
+    /* Aseguramos que el degradado púrpura no sea chillón sino técnico */
+    .bg-neutral-900\/40 {
+        background-image: radial-gradient(circle at top right, rgba(168, 85, 247, 0.05), transparent);
+    }
+</style>

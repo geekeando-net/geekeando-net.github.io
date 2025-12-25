@@ -6,83 +6,79 @@ import { Icon } from 'astro-icon/components';
 
 const navigation = stringsNavigation;
 const homeUrl = "/";
-const themeSwitcher = true;
 ---
 
-<header class="sticky inset-x-0 top-0 z-50 w-full backdrop-blur-md transition-all duration-300 border-b border-transparent [&.scrolled]:border-neutral-800/50 [&.scrolled]:bg-neutral-900/90">
-    <div id="scroll-progress" class="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-amber-500 to-orange-600 shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-all duration-150 ease-out z-[60]"></div>
+<header class="sticky inset-x-0 top-0 z-50 w-full transition-all duration-300 border-b border-transparent [&.scrolled]:border-neutral-800 [&.scrolled]:bg-neutral-950/90 [&.scrolled]:backdrop-blur-xl">
+    
+    {/* Barra de progreso con efecto neón */}
+    <div id="scroll-progress" class="absolute bottom-0 left-0 h-[1px] w-0 bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.8)] z-[60]"></div>
 
-    <nav class="relative mx-auto flex max-w-[85rem] items-center justify-between px-4 py-3 sm:px-6 lg:px-8" aria-label="Global">
-        <div class="flex items-center">
-            <a href={homeUrl} class="outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg transition-transform hover:scale-[1.02]">
-                <BrandLogo />
-                <span class="sr-only">Geekeando</span>
+    <nav class="relative mx-auto flex max-w-[85rem] items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        
+        {/* Lado Izquierdo: Brand */}
+        <div class="flex items-center gap-4">
+            <a href={homeUrl} class="group outline-none">
+                <div class="flex items-center gap-3">
+                    <BrandLogo />
+                    <div class="hidden lg:block h-8 w-[1px] bg-neutral-800 rotate-12"></div>
+                    <span class="hidden lg:block font-display text-[10px] tracking-[0.3em] text-neutral-500 uppercase mt-1">
+                        Systems_Core
+                    </span>
+                </div>
             </a>
         </div>
 
-        <div class="hidden md:flex md:items-center md:gap-x-8">
-            <div class="flex gap-x-1 rounded-full text-neutral-400 bg-neutral-800/40 p-1 border border-neutral-700/30 backdrop-blur-sm">
+        {/* Centro: Navegación (Menos redondeada, más técnica) */}
+        <div class="hidden md:flex md:items-center md:gap-x-12">
+            <div class="flex gap-x-1 bg-neutral-900/50 p-1 border border-neutral-800 rounded-sm">
                 {navigation.navBarLinks.map((nav) => (
                     <Link
                         url={nav.url}
-                        name={nav.name}
-                        class="px-4 py-2 text-sm font-medium rounded-full transition-all hover:text-amber-400"
-                        activeClass="bg-amber-500/20 text-amber-400"
+                        name={nav.name.toUpperCase()}
+                        class="px-4 py-1.5 text-[11px] font-mono tracking-widest text-neutral-400 transition-all hover:text-amber-500"
+                        activeClass="bg-amber-500/10 text-amber-500 border-b border-amber-500"
                     />
                 ))}
             </div>
 
-            <div class="flex items-center gap-x-3">
-                <a href="/contacto" class="group inline-flex items-center gap-x-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-2 text-sm font-bold text-neutral-900 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all">
-                    Contacto
-                    <Icon name="mdi:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            {/* Lado Derecho: Acciones */}
+            <div class="flex items-center gap-x-4 border-l border-neutral-800 pl-8">
+                <a href="/contacto" class="group relative inline-flex items-center gap-x-2 px-4 py-2 text-[11px] font-mono uppercase tracking-[0.2em] text-amber-500 border border-amber-500/30 hover:bg-amber-500 hover:text-black transition-all">
+                    <span>Uplink_Contact</span>
+                    <Icon name="mdi:transmission-tower" class="h-4 w-4" />
                 </a>
             </div>
         </div>
 
+        {/* Móvil */}
         <div class="flex md:hidden">
-            <button type="button" class="hs-collapse-toggle flex h-10 w-10 items-center justify-center rounded-full text-neutral-400" data-hs-collapse="#navbar-collapse">
-                <Icon name="mdi:menu" class="h-6 w-6 hs-collapse-open:hidden" />
-                <Icon name="mdi:close" class="hidden h-6 w-6 hs-collapse-open:block" />
+            <button type="button" class="hs-collapse-toggle text-amber-500 p-2 border border-neutral-800" data-hs-collapse="#navbar-collapse">
+                <Icon name="mdi:menu-open" class="h-6 w-6" />
             </button>
         </div>
     </nav>
 
-    <div id="navbar-collapse" class="hs-collapse hidden mx-4 mt-2 rounded-2xl border border-neutral-700/40 bg-neutral-900 shadow-2xl md:hidden">
-        <div class="flex flex-col gap-y-2 p-4">
+    {/* Menú Móvil */}
+    <div id="navbar-collapse" class="hidden absolute top-full left-0 w-full bg-neutral-950 border-b border-neutral-800 md:hidden">
+        <div class="flex flex-col p-6 gap-y-4">
             {navigation.navBarLinks.map((nav) => (
-                <Link url={nav.url} name={nav.name} class="px-4 py-3 rounded-xl text-base" activeClass="text-amber-400 border-l-4 border-amber-500" />
+                <Link url={nav.url} name={nav.name} class="text-sm font-mono tracking-widest uppercase text-neutral-400" activeClass="text-amber-500 border-l-2 border-amber-500 pl-4" />
             ))}
         </div>
     </div>
 </header>
 
 <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
+    // Tu lógica de scroll se mantiene perfecta, solo ajustamos el selector si es necesario
+    document.addEventListener('scroll', () => {
         const header = document.querySelector('header');
         const progressBar = document.getElementById('scroll-progress');
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-        const updateUI = () => {
-            const scrollY = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            
-            // 1. Efecto de scroll en header
-            header?.classList.toggle('scrolled', scrollY > 20);
-
-            // 2. Cálculo de la barra de progreso
-            if (docHeight > 0) {
-                const scrollPercent = (scrollY / docHeight) * 100;
-                if (progressBar) progressBar.style.width = scrollPercent + '%';
-            }
-        };
-
-        window.addEventListener('scroll', updateUI);
-        
-        // Lógica de toggle móvil
-        document.querySelectorAll('.hs-collapse-toggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelector(btn.dataset.hsCollapse)?.classList.toggle('hidden');
-            });
-        });
+        header?.classList.toggle('scrolled', scrollY > 20);
+        if (progressBar && docHeight > 0) {
+            progressBar.style.width = (scrollY / docHeight) * 100 + '%';
+        }
     });
 </script>

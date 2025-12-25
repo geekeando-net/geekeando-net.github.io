@@ -2,49 +2,80 @@
 const { title, subTitle, align = "center", accentColor = "amber" } = Astro.props as {
     title: string;
     subTitle?: string;
-    align?: "center" | "left";
-    accentColor?: keyof typeof colorVariants;
+    align?: "left" | "left";
+    accentColor?: "amber" | "purple" | "blue" | "green";
 };
 
-// Paletas de color para el acento (puedes añadir más)
+// Paletas de color optimizadas para fondos oscuros
 const colorVariants = {
-    amber: "from-amber-400 to-amber-600",
-    purple: "from-purple-400 to-pink-600",
-    blue: "from-blue-400 to-cyan-600",
-    green: "from-emerald-400 to-teal-600"
+    amber: {
+        gradient: "from-amber-400 to-orange-600",
+        shadow: "rgba(251, 191, 36, 0.4)",
+        border: "border-amber-500/50"
+    },
+    purple: {
+        gradient: "from-purple-400 to-fuchsia-600",
+        shadow: "rgba(168, 85, 247, 0.4)",
+        border: "border-purple-500/50"
+    },
+    blue: {
+        gradient: "from-blue-400 to-indigo-600",
+        shadow: "rgba(59, 130, 246, 0.4)",
+        border: "border-blue-500/50"
+    },
+    green: {
+        gradient: "from-emerald-400 to-teal-600",
+        shadow: "rgba(16, 185, 129, 0.4)",
+        border: "border-emerald-500/50"
+    }
 };
+
+const currentVariant = colorVariants[accentColor] || colorVariants.amber;
 ---
-<div class={`${align === "center" ? "text-center mx-auto" : "text-left"} max-w-3xl`}>
-    <!-- Título con gradiente dinámico -->
-    <h1 class="text-balance text-3xl font-bold tracking-tight text-neutral-100 sm:text-4xl md:text-5xl md:leading-tight [text-wrap:balance]">
-        <span class={`bg-gradient-to-r ${colorVariants[accentColor]} bg-clip-text text-transparent`}>
+
+<div class={`text-left max-w-4xl group`}>
+    
+    {/* Badge de Sistema (Opcional, da un toque muy geek) */}
+    <div class={`inline-block mb-3 px-2 py-1 border-l-2 ${currentVariant.border} bg-neutral-900/50`}>
+        <span class="text-[10px] font-mono tracking-[0.3em] text-neutral-500 uppercase">
+            System_Header::{accentColor}
+        </span>
+    </div>
+
+    {/* Título con Fuente Display (Orbitron) */}
+    <h1 class="font-display text-balance text-3xl font-black tracking-tighter text-neutral-100 sm:text-5xl md:text-6xl uppercase italic leading-none">
+        <span class={`bg-gradient-to-r ${currentVariant.gradient} bg-clip-text text-transparent drop-shadow-sm`}>
             {title}
         </span>
     </h1>
 
-    <!-- Subtítulo con animación sutil -->
+    {/* Subtítulo con Fuente Sans (Inter) */}
     {subTitle && (
-        <p class={`mt-4 text-pretty text-lg leading-relaxed text-neutral-400 ${align === "center" ? "mx-auto" : ""} md:max-w-[80%]`}>
+        <p class={`mt-4 text-pretty text-sm md:text-base font-light leading-relaxed text-neutral-500 ${align === "center" ? "mx-auto" : ""} max-w-2xl font-mono`}>
+            <span class="text-neutral-700 font-bold mr-2">>></span>
             {subTitle}
         </p>
     )}
 
-    <!-- Decoración opcional (raya decorativa) -->
-    {align === "center" && (
-        <div class={`mt-6 h-1 w-20 mx-auto bg-gradient-to-r ${colorVariants[accentColor]} rounded-full`}></div>
-    )}
+    {/* Decoración: Barra de carga/progreso */}
+    <div class={`mt-8 flex ${align === "center" ? "justify-center" : "justify-start"} items-center gap-2`}>
+        <div class={`h-[2px] w-24 bg-gradient-to-r ${currentVariant.gradient} opacity-50`}></div>
+        <div class={`h-1 w-1 bg-${accentColor}-500 rotate-45`}></div>
+    </div>
 </div>
 
-<style>
-    /* Animación para el subtítulo */
-    p {
-        animation: fadeIn 0.8s ease-out forwards;
-    }
+<style define:vars={{ glowColor: currentVariant.shadow }}>
     h1 {
-        text-shadow: 0 0 8px rgba(251, 191, 36, 0.3);
+        /* Usamos la variable de resplandor dinámica */
+        filter: drop-shadow(0 0 15px var(--glowColor));
     }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    
+    p {
+        animation: scanline 1s ease-out forwards;
+    }
+
+    @keyframes scanline {
+        from { opacity: 0; transform: translateX(-10px); }
+        to { opacity: 1; transform: translateX(0); }
     }
 </style>

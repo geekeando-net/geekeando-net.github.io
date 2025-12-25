@@ -1,36 +1,67 @@
 ---
 const { url, name } = Astro.props;
+// Generamos un ID único basado en la URL, limpiando caracteres especiales
+const navId = url === '/' ? 'nav-home' : `nav-${url.replace(/\//g, '')}`;
 ---
 
 <a
-    id={url === '/' ? 'home' : url.replace('/', '')}
+    id={navId}
     href={url}
     data-astro-prefetch
-    class="rounded-lg text-base font-medium text-neutral-400 outline-none ring-zinc-200 hover:text-neutral-500 focus-visible:ring focus:outline-none md:py-3 md:text-sm 2xl:text-base"
+    class="relative inline-block px-3 py-2 font-mono text-xs font-bold uppercase tracking-widest text-neutral-500 transition-all duration-300 hover:text-neutral-200 focus:outline-none group"
 >
-{name}
+    <span class="absolute -left-1 opacity-0 transition-all group-hover:opacity-100 group-hover:text-amber-500">
+        &gt;
+    </span>
+    
+    {name}
+
+    <span class="nav-indicator absolute bottom-0 left-0 h-[2px] w-0 bg-amber-500 transition-all duration-300"></span>
 </a>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let url = window.location.pathname;
-        let navId;
-        if (url === '/') {
-            navId = 'home';
-        } else {
-            navId = url.replace('/', '');
-        }
-        let nav = document.getElementById(navId);
+<script is:inline define:vars={{ navId }}>
+    // Función para marcar el estado activo
+    const setActiveLink = () => {
+        const currentPath = window.location.pathname;
+        const links = document.querySelectorAll('a[id^="nav-"]');
+        
+        links.forEach(link => {
+            // Limpiamos estados previos
+            link.classList.remove('text-amber-500', 'active-link');
+            link.classList.add('text-neutral-500');
+            const indicator = link.querySelector('.nav-indicator');
+            if(indicator) indicator.style.width = '0';
 
-        if (nav) {
-            nav.classList.remove(
-                'text-neutral-400',
-                'hover:text-neutral-500',
-            );
-            nav.classList.add(
-                'text-orange-400',
-            );
-            nav.setAttribute('aria-current', 'page');
-        }
-    });
+            // Verificamos si es la ruta actual
+            const linkPath = link.getAttribute('href');
+            if (currentPath === linkPath || (linkPath !== '/' && currentPath.startsWith(linkPath))) {
+                link.classList.remove('text-neutral-500');
+                link.classList.add('text-amber-500', 'active-link');
+                link.setAttribute('aria-current', 'page');
+                if(indicator) indicator.style.width = '100%';
+            }
+        });
+    };
+
+    // Ejecutar en carga y tras cambios de navegación (Astro View Transitions)
+    setActiveLink();
+    document.addEventListener('astro:after-swap', setActiveLink);
 </script>
+
+<style>
+    /* Estilo para el link activo sin depender solo de JS para el hover */
+    .active-link {
+        text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+    
+    /* Animación sutil de parpadeo al estar activo */
+    .active-link::before {
+        content: '_';
+        @apply absolute -right-2 animate-pulse text-amber-500;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+</style>

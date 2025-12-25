@@ -1,11 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* 1. IMPORTS PRIMERO */
 @import '@fontsource/orbitron/index.css';
 @import '@fontsource/inter/index.css';
 @import '@fontsource/fira-code/index.css';
 
-h1 {
-	@apply font-display uppercase;
+/* 2. CAPAS DE TAILWIND */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 3. DEFINICIÓN MANUAL PARA @APPLY */
+@layer components {
+  .font-display {
+    font-family: 'Orbitron', sans-serif !important;
+  }
+  .font-mono {
+    font-family: 'Fira Code', monospace !important;
+  }
+}
+
+/* 3. Estilos base usando las capas */
+@layer base {
+  h1 {
+    @apply font-display uppercase tracking-tighter;
+  }
+}
+
+/* 4. Scrollbar (Estilo industrial/geek) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
 }

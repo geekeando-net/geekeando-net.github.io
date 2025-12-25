@@ -1,0 +1,102 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TitleSection from "@/components/ui/TitleSection.astro";
+import LegalSection from "@/components/ui/LegalSection.astro";
+import { Icon } from "astro-icon/components";
+import stringsTerm from "@/utils/stringsTerm";
+
+const title = "PRIVACY_ENCRYPTION_v1.0";
+const lastUpdated = new Date().toLocaleDateString('es-ES', { 
+  year: 'numeric', 
+  month: 'long', 
+  day: 'numeric'
+});
+const stringsPrivacyTerm = stringsTerm.stringPrivacyTerm;
+---
+
+<Layout title="Protocolo de Privacidad | Geekeando">
+  <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
+    
+    <div class="mx-auto max-w-4xl text-center mb-16 relative">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -z-10 text-[120px] font-black text-purple-500/[0.03] select-none">
+        ENCRYPT
+      </div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-purple-500/30 bg-purple-500/5 rounded-sm">
+          <Icon name="mdi:shield-check" class="h-3 w-3 text-purple-400" />
+          <span class="font-mono text-[9px] text-purple-400 tracking-[0.4em] uppercase">Security_Layer_Active</span>
+      </div>
+      <TitleSection 
+        title={title}
+        subTitle={`SYS_TIMESTAMP: ${lastUpdated.toUpperCase()}`}
+        accentColor="purple"
+      />
+    </div>
+
+    <div class="mx-auto max-w-4xl bg-neutral-950 border border-neutral-800 relative shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        
+        {/* Barra de estado superior */}
+        <div class="flex items-center justify-between px-6 py-2 border-b border-neutral-900 bg-neutral-900/30">
+            <div class="flex gap-1">
+                <div class="w-1.5 h-1.5 bg-neutral-800"></div>
+                <div class="w-1.5 h-1.5 bg-neutral-800"></div>
+                <div class="w-1.5 h-1.5 bg-purple-500/40"></div>
+            </div>
+            <span class="text-[9px] font-mono text-neutral-600 uppercase tracking-widest">Protocol: GDPR_Compliant_v2</span>
+        </div>
+
+        <div class="p-8 md:p-12">
+            <div class="space-y-12">
+                {stringsPrivacyTerm.map((item, index) => (
+                    <div class="relative group">
+                        {/* Decoración lateral de línea de código */}
+                        <div class="absolute -left-6 md:-left-10 top-0 bottom-0 w-[1px] bg-neutral-900 group-hover:bg-purple-500/30 transition-colors"></div>
+                        <div class="absolute -left-[27px] md:-left-[43px] top-0 text-[10px] font-mono text-neutral-700">
+                            {(index + 1).toString().padStart(2, '0')}
+                        </div>
+                        
+                        <LegalSection
+                            icon={item.icon}
+                            title={item.title.toUpperCase()}
+                            text={item.text}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-neutral-900">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                    <div class="flex items-center gap-4 group">
+                        <div class="p-3 bg-neutral-900 border border-neutral-800 group-hover:border-purple-500/50 transition-colors">
+                            <Icon name="mdi:connection" class="h-6 w-6 text-purple-500" />
+                        </div>
+                        <p class="text-neutral-500 text-xs font-mono leading-relaxed max-w-xs">
+                            Al navegar en <span class="text-neutral-300">GEEKEANDO.NET</span>, usted inicializa el protocolo de aceptación de estos términos.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <a href="/terminos-servicio" class="flex items-center gap-2 border border-neutral-800 px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest text-neutral-400 hover:text-purple-400 hover:border-purple-500/50 transition-all">
+                            <Icon name="mdi:file-code" class="h-4 w-4" />
+                            Terms_of_Service
+                        </a>
+                        <a href="/" class="flex items-center gap-2 bg-purple-600/90 hover:bg-purple-600 px-5 py-2.5 text-[10px] font-mono font-bold uppercase tracking-widest text-white transition-all shadow-[0_0_15px_rgba(147,51,234,0.2)]">
+                            <Icon name="mdi:home-variant" class="h-4 w-4" />
+                            Return_to_Core
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+    /* Ajuste para que LegalSection use tipografías técnicas */
+    .legal-section-title {
+        @apply font-mono text-sm tracking-tighter text-white mb-4 !important;
+    }
+    .legal-section-text {
+        @apply font-sans text-sm text-neutral-400 leading-relaxed !important;
+    }
+</style>

@@ -4,123 +4,103 @@ import TitleSection from "@/components/ui/TitleSection.astro";
 import Accordion from "@/components/ui/Accordion.astro";
 import { Icon } from "astro-icon/components";
 import { stringsFAQ } from "@/utils/stringsCards";
-const title = "Preguntas Frecuentes";
-const subTitle = "Encuentra respuestas a las dudas más comunes sobre Geekeando";
 
-// Datos de las FAQs organizadas por categorías
+const title = "KNOWLEDGE_BASE";
+const subTitle = "// Guía de diagnóstico y resolución de consultas";
 const faqCategories = stringsFAQ.categories;
 ---
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-    <!-- Encabezado -->
-        <div class="mx-auto max-w-3xl text-center mb-12">
-            <TitleSection
-                title={title}
-                subTitle={subTitle}
-                accentColor="purple"
-            />
+
+<Layout title="FAQ | Geekeando Labs">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8">
+        
+        {/* Encabezado Estilo Panel de Control */}
+        <div class="mx-auto max-w-3xl text-center mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-purple-500/30 bg-purple-500/5 rounded-sm">
+                <div class="h-2 w-2 rounded-full bg-purple-500 animate-pulse"></div>
+                <span class="font-mono text-[10px] text-purple-400 tracking-[0.3em] uppercase">Status: Database_Online</span>
+            </div>
+            <TitleSection title={title} subTitle={subTitle} accentColor="purple" />
         </div>
 
-        <!-- Barra de búsqueda -->
-        <div class="mx-auto mb-12 max-w-2xl">
-        <div class="relative">
-            <input
-            type="text"
-            placeholder="Buscar en preguntas frecuentes..."
-            class="block w-full rounded-xl border border-neutral-700 bg-neutral-800/50 px-5 py-3 pl-12 text-neutral-200 placeholder-neutral-500 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
-            id="faq-search"
-            />
-            <Icon name="mdi:magnify" class="absolute left-4 top-3.5 h-5 w-5 text-neutral-500" />
-        </div>
-        </div>
-
-        <!-- Navegación por categorías -->
-        <div class="mb-12 flex flex-wrap justify-center gap-3">
-        {faqCategories.map((category) => (
-            <a
-            href={`#${category.id}`}
-            class="flex items-center gap-2 rounded-full border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 transition-all hover:border-purple-500 hover:bg-purple-500/10 hover:text-purple-400"
-            >
-            <Icon name={category.icon} class="h-4 w-4" />
-            {category.name}
-            </a>
-        ))}
-        </div>
-
-        <!-- FAQs por categoría -->
-        <div class="mx-auto max-w-3xl space-y-12">
-        {faqCategories.map((category) => (
-            <div id={category.id} class="scroll-mt-20">
-            <h2 class="mb-6 flex items-center gap-3 text-xl font-bold text-neutral-200">
-                <Icon name={category.icon} class="h-6 w-6 text-purple-400" />
-                {category.name}
-            </h2>
-
-            <div class="space-y-4">
-                {category.questions.map((item, index) => (
-                <Accordion
-                    key={`${category.id}-${index}`}
-                    question={item.question}
-                    answer={item.answer}
-                    modeDisplay={true}
+        {/* Barra de búsqueda Estilo Terminal */}
+        <div class="mx-auto mb-16 max-w-2xl relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-purple-500/20 to-transparent blur opacity-25 group-focus-within:opacity-100 transition duration-1000"></div>
+            <div class="relative">
+                <input
+                    type="text"
+                    placeholder="QUERY_SEARCH: escribe tu duda aquí..."
+                    class="block w-full border border-neutral-800 bg-neutral-950 px-5 py-4 pl-12 font-mono text-sm text-neutral-200 placeholder-neutral-700 focus:border-purple-500 focus:outline-none transition-all"
+                    id="faq-search"
                 />
+                <Icon name="mdi:magnify" class="absolute left-4 top-4.5 h-5 w-5 text-purple-500/50" />
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            
+            {/* Sidebar de Navegación (Categorías) */}
+            <aside class="lg:col-span-1 space-y-2">
+                <p class="text-[10px] font-mono text-neutral-600 uppercase tracking-widest mb-4">Index_Filter</p>
+                {faqCategories.map((category) => (
+                    <a
+                        href={`#${category.id}`}
+                        class="flex items-center gap-3 border border-neutral-900 bg-neutral-900/30 px-4 py-3 text-xs font-mono text-neutral-400 transition-all hover:border-purple-500/50 hover:text-purple-400 group"
+                    >
+                        <Icon name={category.icon} class="h-4 w-4 opacity-50 group-hover:opacity-100" />
+                        {category.name.toUpperCase()}
+                    </a>
+                ))}
+            </aside>
+
+            {/* Contenido de FAQs */}
+            <div class="lg:col-span-3 space-y-16">
+                {faqCategories.map((category) => (
+                    <div id={category.id} class="scroll-mt-28">
+                        <div class="flex items-center gap-4 mb-8 border-b border-neutral-900 pb-4">
+                            <div class="p-2 bg-purple-500/10 border border-purple-500/20">
+                                <Icon name={category.icon} class="h-5 w-5 text-purple-400" />
+                            </div>
+                            <h2 class="text-lg font-bold text-white tracking-tighter uppercase italic">
+                                Sector_{category.name}
+                            </h2>
+                        </div>
+
+                        <div class="space-y-4">
+                            {category.questions.map((item, index) => (
+                                <div class="accordion-item border border-neutral-800 bg-neutral-950/50 hover:border-neutral-700 transition-colors">
+                                    <Accordion
+                                        key={`${category.id}-${index}`}
+                                        question={item.question}
+                                        answer={item.answer}
+                                        modeDisplay={true}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 ))}
             </div>
-            </div>
-        ))}
         </div>
 
-        <!-- CTA para contacto adicional -->
-        <div class="mt-16 text-center">
-        <div class="inline-block rounded-xl border border-purple-500/30 bg-gradient-to-r from-purple-900/30 to-neutral-900/50 p-1 shadow-lg shadow-purple-500/10">
-            <div class="rounded-lg bg-neutral-900/80 p-8 backdrop-blur-sm">
-            <h3 class="text-xl font-bold text-neutral-200 mb-3">
-                ¿No encontraste lo que buscabas?
-            </h3>
-            <p class="mb-5 text-neutral-400">
-                Nuestro equipo está listo para ayudarte con cualquier consulta.
-            </p>
-            <a
-                href="/contacto"
-                class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all"
-            >
-                Contactar al equipo
-                <Icon name="mdi:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        {/* CTA Estilo Warning / Error Recovery */}
+        <div class="mt-24 max-w-4xl mx-auto border-2 border-dashed border-neutral-800 p-8 text-center bg-purple-500/[0.02]">
+            <h3 class="text-lg font-bold text-white uppercase italic mb-2 tracking-tighter">¿Consulta no resuelta?</h3>
+            <p class="text-sm text-neutral-500 mb-8 font-mono">Inicia un protocolo de soporte directo con nuestros ingenieros.</p>
+            
+            <a href="/contacto" class="inline-flex items-center gap-3 bg-purple-600 px-8 py-3 text-xs font-black uppercase tracking-widest text-white hover:bg-purple-500 transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)]">
+                OPEN_SUPPORT_TICKET
+                <Icon name="mdi:ticket-confirmation-outline" class="h-4 w-4" />
             </a>
-            </div>
-        </div>
         </div>
     </section>
 </Layout>
 
-<!-- Script para funcionalidad de búsqueda y acordeones -->
-<script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Funcionalidad de búsqueda
-        const searchInput = document.getElementById('faq-search');
-        const accordions = document.querySelectorAll('.accordion-item');
-
-        if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-
-            accordions.forEach(accordion => {
-            const question = accordion.querySelector('.accordion-question').textContent.toLowerCase();
-            const answer = accordion.querySelector('.accordion-answer').textContent.toLowerCase();
-
-            if (question.includes(searchTerm) || answer.includes(searchTerm)) {
-                accordion.style.display = 'block';
-                // Resaltar coincidencias
-                const regex = new RegExp(searchTerm, 'gi');
-                accordion.innerHTML = accordion.innerHTML.replace(
-                regex,
-                match => `<span class="bg-yellow-400/30 text-yellow-300">${match}</span>`
-                );
-            } else {
-                accordion.style.display = 'none';
-            }
-            });
-        });
-        }
-    });
-</script>
+<style is:global>
+    /* Estilo para los acordeones dentro de la FAQ geek */
+    .accordion-question {
+        @apply font-mono text-sm text-neutral-300 uppercase tracking-tight py-4 px-6 !important;
+    }
+    .accordion-answer {
+        @apply font-sans text-neutral-400 text-sm leading-relaxed pb-6 px-6 !important;
+    }
+</style>

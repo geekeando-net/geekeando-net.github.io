@@ -6,27 +6,33 @@ import stringsNavigation from "@utils/stringsNavigation";
 const navigation = stringsNavigation;
 ---
 
-<footer class="w-full border-t border-neutral-800 bg-gradient-to-b from-neutral-900 to-neutral-950 overflow-hidden">
-    <div class="mx-auto w-full max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div class="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+<footer class="w-full border-t border-neutral-900 bg-neutral-950 overflow-hidden relative">
+    <div class="absolute inset-0 bg-[radial-gradient(#1a1a1a_1px,transparent_1px)] [background-size:20px_20px] opacity-20 pointer-events-none"></div>
+
+    <div class="mx-auto w-full max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 relative z-10">
+        <div class="grid grid-cols-2 gap-12 md:grid-cols-4 lg:grid-cols-5">
+            
             <div class="col-span-full lg:col-span-1">
-                <div class="flex flex-col items-start gap-6">
+                <div class="flex flex-col items-start gap-8">
                     <BrandLogo />
                     
-                    <p class="text-sm text-neutral-400 leading-relaxed">
-                        Tu portal definitivo sobre tecnología, gaming y cultura geek.
-                    </p>
+                    <div class="space-y-4">
+                        <p class="text-[10px] font-mono text-neutral-500 leading-relaxed uppercase tracking-tight">
+                            <span class="text-amber-500/50">#</span> Laboratorio de experimentación: <br/> 
+                            <span class="text-neutral-300">Arduino_Dev // 3D_Printing // Papercraft_Engineer // Audio_FX</span>
+                        </p>
+                    </div>
                     
                     <div class="flex gap-3">
                         {navigation.socialLinks.map((social) => (
                             <a
                                 href={social.url}
-                                class="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-800/50 text-neutral-400 transition-all duration-300 hover:bg-amber-500 hover:text-neutral-900 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:-translate-y-1"
+                                class="flex h-8 w-8 items-center justify-center border border-neutral-800 bg-neutral-900/50 text-neutral-500 transition-all duration-300 hover:border-amber-500 hover:text-amber-500 group"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label={`Síguenos en ${social.name}`}
+                                title={social.name}
                             >
-                                <Icon name={social.name} class="h-5 w-5" />
+                                <Icon name={social.name} class="h-4 w-4 group-hover:scale-110 transition-transform" />
                             </a>
                         ))}
                     </div>
@@ -35,25 +41,16 @@ const navigation = stringsNavigation;
 
             {navigation.footerLinks.map((section) => (
                 <div class="col-span-1">
-                    <h3 class="text-sm font-bold uppercase tracking-widest text-neutral-200 mb-6 flex items-center gap-2">
-                        {section.icon && <Icon name={section.icon} class="h-4 w-4 text-amber-500" />}
+                    <h3 class="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-neutral-400 mb-8 flex items-center gap-2">
+                        <span class="h-1 w-1 bg-amber-500"></span>
                         {section.section}
                     </h3>
                     <ul class="space-y-4">
                         {section.links.map((link) => (
                             <li>
-                                <a
-                                    href={link.url}
-                                    class="group inline-flex items-center gap-x-2 text-sm text-neutral-400 transition-all hover:text-amber-400"
-                                >
-                                    {link.icon && <Icon name={link.icon} class="h-4 w-4 opacity-70 group-hover:opacity-100 transition-opacity" />}
-                                    <span class="relative">
-                                        {link.name}
-                                        <span class="absolute -bottom-1 left-0 h-px w-0 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
-                                    </span>
-                                    {link.external && (
-                                        <Icon name="mdi:arrow-top-right" class="h-3 w-3 opacity-0 group-hover:opacity-70 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                    )}
+                                <a href={link.url} class="group flex items-center gap-x-2 text-[11px] font-mono text-neutral-600 transition-all hover:text-amber-400">
+                                    <span class="text-amber-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">>></span>
+                                    {link.name.toUpperCase()}
                                 </a>
                             </li>
                         ))}
@@ -62,68 +59,76 @@ const navigation = stringsNavigation;
             ))}
 
             <div class="col-span-full lg:col-span-2">
-                <div class="relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6 backdrop-blur-sm shadow-2xl">
-                    <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-amber-500/10 blur-3xl"></div>
+                <div class="border border-neutral-800 bg-black/40 p-8 relative">
+                    <div class="absolute top-0 right-6 px-2 bg-neutral-950 border-x border-b border-neutral-800 text-[8px] font-mono text-neutral-600">SYS_PUSH_NOTIFICATIONS</div>
                     
-                    <h3 class="text-lg font-bold text-neutral-100 mb-2 font-display uppercase tracking-tight">
-                        <span class="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">Newsletter Geek</span>
+                    <h3 class="text-xs font-bold text-white mb-4 uppercase tracking-[0.2em] italic">
+                        UPLINK_SUBSCRIBE
                     </h3>
-                    <p class="text-sm text-neutral-400 mb-6 leading-relaxed">
-                        Suscríbete para recibir contenido exclusivo, ofertas especiales y las últimas novedades del mundo geek.
+                    <p class="text-[10px] font-mono text-neutral-500 mb-8 leading-relaxed">
+                        Suscríbete para recibir <span class="text-amber-500/80">patch_notes</span>, esquemas de circuitos y blueprints exclusivos de la comunidad.
                     </p>
-                    <form class="flex flex-col sm:flex-row gap-3">
-                        <div class="flex-grow">
-                            <label for="footer-email" class="sr-only">Email</label>
+                    
+                    <form class="flex flex-col gap-3">
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-mono text-amber-500/40">IN:</span>
                             <input
                                 type="email"
-                                id="footer-email"
-                                placeholder="tucorreo@ejemplo.com"
-                                class="w-full rounded-xl border border-neutral-700 bg-neutral-800/80 px-4 py-3 text-sm text-neutral-200 placeholder-neutral-500 transition-all focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 outline-none"
+                                placeholder="USER@DOMAIN.NET"
+                                class="w-full border border-neutral-800 bg-neutral-900/30 py-3 pl-12 pr-4 text-[10px] font-mono text-neutral-200 focus:border-amber-500/50 outline-none transition-all"
                                 required
                             />
                         </div>
                         <button
                             type="submit"
-                            class="group inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 text-sm font-bold text-neutral-900 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all active:scale-95"
+                            class="w-full bg-neutral-800 hover:bg-amber-500 py-3 text-[10px] font-mono font-black uppercase tracking-widest text-neutral-400 hover:text-black transition-all duration-500 border border-neutral-700 hover:border-amber-400"
                         >
-                            <span>Suscribirse</span>
-                            <Icon name="mdi:send" class="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            EXECUTE_CONNECTION
                         </button>
                     </form>
-                    <p class="mt-4 text-[10px] text-neutral-500 flex items-center gap-1">
-                        <Icon name="mdi:shield-check-outline" class="h-3 w-3" />
-                        Privacidad garantizada. Sin spam, solo contenido épico.
-                    </p>
                 </div>
             </div>
         </div>
 
-        <div class="my-12 h-px w-full bg-gradient-to-r from-transparent via-neutral-800 to-transparent"></div>
+        <div class="my-16 flex items-center gap-4">
+            <div class="h-px flex-grow bg-neutral-900"></div>
+            <div class="flex gap-2">
+                <div class="h-1 w-1 rounded-full bg-neutral-800"></div>
+                <div class="h-1 w-1 rounded-full bg-neutral-800"></div>
+                <div class="h-1 w-1 rounded-full bg-amber-500/20"></div>
+            </div>
+            <div class="h-px w-12 bg-neutral-900"></div>
+        </div>
 
-        <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div class="flex items-center gap-2">
-                 <p class="text-xs text-neutral-500 font-mono">
-                    &copy; {new Date().getFullYear()} <span class="text-neutral-400">GEEKEANDO</span>.root<span class="animate-cursor inline-block w-1 h-[1px] bg-amber-500 ml-1"></span>
+        <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
+            <div class="flex items-center gap-4">
+                <div class="p-2 border border-neutral-800 text-amber-500">
+                    <Icon name="mdi:chip" class="h-4 w-4" />
+                </div>
+                <p class="text-[9px] text-neutral-600 font-mono uppercase tracking-[0.2em]">
+                    &copy; {new Date().getFullYear()} GEEKEANDO.LABS // INFRASTRUCTURE_READY
+                    <span class="inline-block w-2 h-4 bg-amber-500 ml-2 align-middle animate-blink"></span>
                 </p>
             </div>
             
-            <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
-                {['Privacidad', 'Términos', 'Cookies', 'FAQ'].map((item) => (
-                    <a href={`/${item.toLowerCase()}`} class="text-xs font-medium text-neutral-500 hover:text-amber-500 transition-colors uppercase tracking-widest">
+            <nav class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+                {['Privacidad', 'Cookies', 'FAQ'].map((item) => (
+                    <a href={`/${item.toLowerCase()}`} class="group text-[9px] font-mono text-neutral-600 hover:text-amber-500 transition-colors uppercase tracking-[0.3em] relative">
+                        <span class="text-amber-500/0 group-hover:text-amber-500 transition-colors absolute -left-4">./</span>
                         {item}
                     </a>
                 ))}
-            </div>
+            </nav>
         </div>
     </div>
 </footer>
-<style>
+
+<style is:global>
     @keyframes blink {
         0%, 100% { opacity: 1; }
         50% { opacity: 0; }
     }
-    .animate-cursor {
+    .animate-blink {
         animation: blink 1s step-end infinite;
-        vertical-align: middle;
     }
 </style>

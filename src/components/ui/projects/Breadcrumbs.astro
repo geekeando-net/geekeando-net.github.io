@@ -1,0 +1,32 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  category: string;
+  title: string;
+}
+
+const { category, title } = Astro.props;
+
+// Normalizamos la categoría para el enlace
+const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
+---
+
+<nav class="flex items-center space-y-0 text-[10px] font-mono uppercase tracking-widest mb-6 bg-neutral-900/50 p-2 rounded-lg border border-neutral-800 w-fit">
+  <a href="/" class="text-neutral-500 hover:text-amber-500 transition-colors flex items-center gap-1">
+    <Icon name="mdi:home" class="h-3 w-3" />
+    ROOT
+  </a>
+  
+  <span class="mx-2 text-neutral-700">/</span>
+  
+  <a href={`/projects/${categorySlug}`} class="text-neutral-500 hover:text-amber-500 transition-colors">
+    {category}
+  </a>
+  
+  <span class="mx-2 text-neutral-700">/</span>
+  
+  <span class="text-amber-500 truncate max-w-[150px] sm:max-w-none">
+    {title}.md
+  </span>
+</nav>

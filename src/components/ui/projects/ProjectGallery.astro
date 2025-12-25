@@ -1,82 +1,94 @@
 ---
+import { Image } from 'astro:assets';
 const { images } = Astro.props;
 
-const imagesProjects = import.meta.glob('../../../../src/assets/images/projects/*.{jpg,png,webp,avif}');
-const getImageProjectUrl = async (imagePath: string) => {
-    if (!imagePath) return null;
-    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
-    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
-    if (imageKey) {
-        try {
-            const module = await imagesProjects[imageKey]();
-            return (module as { default: any }).default;
-        } catch (e) {
-            console.error(`Error cargando la imagen: ${imageKey}`, e);
-            return null;
-        }
-    }else{
-        try {
-            const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
-            if (imageDefault) {
-                const module = await imagesProjects[imageDefault]();
-                return (module as { default: any }).default;
-            }
-            return null;
-        } catch (e) {
-            console.error(`Error cargando la imagen por defecto`, e);
-            return null;
-        }
-    }
-    return null;
-};
-
-// Precargar todas las URLs de las imágenes de la galería
-const imageGalleryUrls = await Promise.all(images.map((img: { src: string; alt: string }) => getImageProjectUrl(img.src)));
-
+// Validamos que existan imágenes para evitar errores de renderizado
+if (!images || images.length === 0) return null;
 ---
 
-<div class="space-y-4">
-    <!-- Imagen principal -->
-    <div class="rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
-        <img
-            src={imageGalleryUrls[0]?.src}
-            alt={images[0].alt}
-            class="w-full h-auto max-h-[500px] object-cover"
-            id="main-gallery-image"
-            loading="eager"
-            sizes="(max-width: 1024px) 100vw, 33vw"
+<section class="mt-16 space-y-6">
+  <div class="flex items-center justify-between">
+    <h3 class="text-xs font-mono text-amber-500 uppercase tracking-[0.3em] flex items-center gap-2">
+      <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+      Galería de Laboratorio [.view]
+    </h3>
+    <span class="text-[10px] font-mono text-neutral-600">TOTAL_FILES: {images.length}</span>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" id="gallery-grid">
+    {images.map((img:any, index:any) => (
+      <button 
+        class="group relative aspect-square overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 transition-all hover:border-amber-500/50"
+        data-full-src={img.src}
+        aria-label={`Ver imagen ${index + 1}`}
+      >
+        <Image 
+          src={img} 
+          alt={`Thumbnail ${index}`} 
+          width={300} 
+          height={300}
+          class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
         />
-    </div>
-
-    <!-- Miniaturas -->
-    {images.length > 1 && (
-        <div class="grid grid-cols-4 gap-3">
-        {images.map((image: any, index: number) => (
-            <button
-            onclick={`document.getElementById('main-gallery-image').src = '${imageGalleryUrls[index]?.src}'; document.getElementById('main-gallery-image').alt = '${image.alt}';`}
-            class={`aspect-square rounded-lg overflow-hidden border ${index === 0 ? 'border-purple-500/50' : 'border-neutral-800'} hover:border-purple-400 transition-colors`}
-            >
-            <img
-                src={imageGalleryUrls[index]?.src}
-                alt={image.alt}
-                class="h-full w-full object-cover"
-                loading="lazy"
-            />
-            </button>
-        ))}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+            <span class="text-[9px] font-mono text-amber-500">EXPAND_IMAGE.EXE</span>
         </div>
-    )}
+      </button>
+    ))}
+  </div>
 
-    <!-- Indicador de cantidad -->
-    <p class="text-sm text-neutral-500 text-center">
-        {images.length} {images.length === 1 ? 'imagen' : 'imágenes'} disponible{images.length === 1 ? '' : 's'}
-    </p>
-</div>
+  <dialog id="gallery-modal" class="bg-transparent backdrop:bg-neutral-950/90 backdrop:backdrop-blur-sm p-0 m-auto max-w-[90vw] max-h-[90vh] overflow-hidden group">
+    <div class="relative flex flex-col items-center">
+      <button id="close-modal" class="absolute -top-10 right-0 text-white/50 hover:text-amber-500 font-mono text-xs tracking-widest uppercase">
+        [ Cerrar_X ]
+      </button>
+      
+      <img id="modal-img" src="" alt="Full view" class="rounded-lg border border-neutral-800 shadow-2xl max-w-full max-h-[80vh] object-contain" />
+      
+      <div class="mt-4 px-4 py-2 bg-neutral-900/80 border border-neutral-800 rounded-full">
+        <p id="modal-caption" class="font-mono text-[10px] text-amber-500 uppercase tracking-tighter text-center"></p>
+      </div>
+    </div>
+  </dialog>
+</section>
 
-<style is:global>
-    /* Efecto hover para las miniaturas */
-    .grid.grid-cols-4 button:hover img {
-        transform: scale(1.05);
-        transition: transform 0.3s ease;
-    }
+<script>
+  const modal = document.getElementById('gallery-modal') as HTMLDialogElement;
+  const modalImg = document.getElementById('modal-img') as HTMLImageElement;
+  const modalCaption = document.getElementById('modal-caption');
+  const closeBtn = document.getElementById('close-modal');
+  const buttons = document.querySelectorAll('#gallery-grid button');
+
+  buttons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      const src = btn.getAttribute('data-full-src');
+      if (src && modal && modalImg) {
+        modalImg.src = src;
+        if (modalCaption) modalCaption.textContent = `LAB_DATA_CAPTURE_0${index + 1}.PNG`;
+        modal.showModal();
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  const closeModal = () => {
+    modal?.close();
+    document.body.style.overflow = 'auto';
+  };
+
+  closeBtn?.addEventListener('click', closeModal);
+  
+  // Cerrar al hacer clic fuera de la imagen
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+</script>
+
+<style>
+  dialog::backdrop {
+    animation: fadeIn 0.3s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 </style>

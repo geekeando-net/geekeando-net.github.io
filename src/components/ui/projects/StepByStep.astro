@@ -1,61 +1,96 @@
 ---
-const { number, title, content, image, code } = Astro.props;
-const imagesProjects = import.meta.glob('../../../assets/images/projects/*.{jpg,png,webp,avif}');
-const getImageProjectUrl = async (imagePath: string) => {
-    if (!imagePath) return null;
-    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
-    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
-    if (imageKey) {
-        try {
-            const module = await imagesProjects[imageKey]();
-            return (module as { default: any }).default;
-        } catch (e) {
-            console.error(`Error cargando la imagen: ${imageKey}`, e);
-            return null;
-        }
-    }else{
-        try {
-            const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
-            if (imageDefault) {
-                const module = await imagesProjects[imageDefault]();
-                return (module as { default: string }).default;
-            }
-            return null;
-        } catch (e) {
-            console.error(`Error cargando la imagen por defecto`, e);
-            return null;
-        }
-    }
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import type { ImageMetadata } from 'astro';
 
-    return null;
-};
-const imageUrl = await getImageProjectUrl(image);
+// Eliminamos toda la lógica de getImageProjectUrl y import.meta.glob
+
+interface Props {
+  number: number;
+  title: string;
+  content: string;
+  image?: ImageMetadata; // Ahora Astro nos pasa el objeto de imagen directamente
+  code?: string;
+  isLast?: boolean;
+}
+
+const { number, title, content, image, code, isLast } = Astro.props;
 ---
-
-<div class="flex gap-5">
+<div class="flex gap-6 group">
     <div class="flex flex-col items-center">
-        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 font-bold text-lg">
-        {number}
+        <div class="flex items-center justify-center h-10 w-10 shrink-0 rounded-full bg-neutral-900 border-2 border-amber-500/30 text-amber-500 font-mono font-bold text-sm group-hover:border-amber-500 group-hover:shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all duration-500">
+            {number.toString().padStart(2, '0')}
         </div>
-        {number < 3 && <div class="w-0.5 h-full bg-neutral-800 flex-1"></div>}
+        
+        {!isLast && <div class="w-px h-full bg-gradient-to-b from-amber-500/30 via-neutral-800 to-transparent my-2"></div>}
     </div>
     
-    <div class="flex-1 pb-10">
-        <h3 class="text-xl font-bold text-neutral-200 mb-3">{title}</h3>
-        <div class="prose prose-invert max-w-none text-neutral-300">
-        <p>{content}</p>
+    <div class="flex-1 pb-16">
+        <div class="flex items-center gap-3 mb-4">
+            <h3 class="text-lg font-mono font-bold text-neutral-100 uppercase tracking-tighter italic">
+                {title}
+            </h3>
+            <div class="h-px flex-1 bg-neutral-900"></div>
+        </div>
         
-        {image && (
-            <div class="mt-4 rounded-lg overflow-hidden border border-neutral-800">
-            <img src={imageUrl?.src} alt={`Paso ${number}`} class="w-full" />
-            </div>
-        )}
-        
-        {code && (
-            <pre class="mt-4 bg-neutral-900 rounded-lg border border-neutral-800 overflow-x-auto p-4 text-sm">
-            <code class="language-arduino">{code}</code>
-            </pre>
-        )}
+        <div class="space-y-6">
+            <p class="text-sm text-neutral-400 leading-relaxed font-sans max-w-2xl">
+                {content}
+            </p>
+            
+            {image && (
+                <div class="relative group/img max-w-3xl">
+                    <div class="absolute -inset-0.5 bg-amber-500/20 rounded-xl blur opacity-0 group-hover/img:opacity-100 transition duration-1000"></div>
+                    <div class="relative rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                        <Image 
+                            src={image} 
+                            alt={title} 
+                            width={800}
+                            class="w-full grayscale hover:grayscale-0 transition-all duration-700"
+                        />
+                    </div>
+                </div>
+            )}
+            
+            {code && (
+                <div class="relative group/code mt-8 max-w-3xl">
+                    <div class="absolute -top-3 left-4 px-3 py-1 bg-neutral-900 border border-neutral-800 text-[10px] font-mono text-amber-500/70 rounded uppercase z-10 flex items-center gap-2">
+                        <Icon name="mdi:code-braces" class="h-3 w-3" />
+                        src_step_{number}.ino
+                    </div>
+                    
+                    <button 
+                        class="copy-btn absolute top-3 right-3 p-2 bg-neutral-900/80 border border-neutral-800 rounded-lg text-neutral-500 hover:text-amber-500 hover:border-amber-500/50 transition-all z-10 shadow-xl"
+                        data-code={code}
+                        title="Copy Code"
+                    >
+                        <Icon name="mdi:content-copy" class="h-4 w-4" />
+                    </button>
+            
+                    <pre class="bg-[#050505] rounded-xl border border-neutral-800 p-6 pt-8 text-[11px] leading-relaxed text-amber-400/90 font-mono overflow-x-auto whitespace-pre"><code>{code.trim()}</code></pre>
+                </div>
+            )}
         </div>
     </div>
 </div>
+<script>
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const code = btn.getAttribute('data-code');
+            if (code) {
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'COPIED_OK!';
+                    btn.classList.add('bg-green-500/20', 'text-green-500', 'border-green-500/50');
+                    
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.classList.remove('bg-green-500/20', 'text-green-500', 'border-green-500/50');
+                    }, 2000);
+                });
+            }
+        });
+    });
+</script>

@@ -4,49 +4,92 @@ const { question, answer, modeDisplay } = Astro.props;
 ---
 
 {modeDisplay ? (
-    <div class="accordion-item rounded-xl border border-neutral-700 bg-neutral-800/50 overflow-hidden">
+    /* MODO: FAQ / DIAGNÓSTICO */
+    <div class="accordion-item border border-neutral-800 bg-neutral-950 transition-all duration-300 hover:border-purple-500/50">
         <button
-        class="accordion-question flex w-full items-center justify-between px-5 py-4 text-left font-medium text-neutral-200 hover:text-purple-400 transition-colors"
-        aria-expanded="false"
-    >
-        <span>{question}</span>
-        <Icon name="mdi:chevron-down" class="h-5 w-5 transform transition-transform duration-300" />
-    </button>
-    <div class="accordion-answer px-5 pb-4 pt-0 text-neutral-400 hidden">
-        <div class="border-t border-neutral-700 pt-4">
-        {answer}
+            class="accordion-question group flex w-full items-center justify-between px-6 py-4 text-left font-mono text-sm font-bold uppercase tracking-tighter text-neutral-400 transition-all"
+            aria-expanded="false"
+        >
+            <div class="flex items-center gap-3">
+                <span class="text-purple-500 opacity-50 group-hover:opacity-100 transition-opacity">//</span>
+                <span>{question}</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:block text-[9px] text-neutral-600 tracking-widest uppercase">Details</span>
+                <Icon name="mdi:chevron-down" class="h-4 w-4 transform transition-transform duration-500" />
+            </div>
+        </button>
+        
+        <div class="accordion-answer max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-neutral-900/20">
+            <div class="px-6 pb-6 pt-2 text-sm leading-relaxed text-neutral-400 font-sans border-t border-neutral-900/50">
+                <div class="pl-4 border-l-2 border-purple-500/20">
+                    {answer}
+                </div>
+            </div>
         </div>
     </div>
-</div>
 ) : (
-    <div class="border-l-4 border-purple-500 bg-neutral-900/50 p-4 font-mono">
-        <div class="text-purple-400">$ {question}</div>
-        <div class="mt-2 text-neutral-300 pl-4">> {answer}</div>
+    /* MODO: TERMINAL / SNIPPET */
+    <div class="group relative border border-neutral-800 bg-black p-5 font-mono text-xs shadow-lg shadow-purple-500/5">
+        <div class="absolute top-0 right-0 p-1 text-[8px] text-neutral-800 uppercase">Input_Log</div>
+        <div class="flex items-start gap-3">
+            <span class="text-purple-500 font-black animate-pulse">$</span>
+            <div class="space-y-3">
+                <div class="text-neutral-200 font-bold tracking-tight">{question}</div>
+                <div class="text-neutral-500 leading-relaxed bg-neutral-900/50 p-3 border-l border-neutral-700 italic">
+                    <span class="text-purple-400 mr-2">></span>{answer}
+                </div>
+            </div>
+        </div>
     </div>
-)
-}
+)}
 
-    <style is:global>
+<style is:global>
+    /* Lógica de apertura suave mediante max-height */
+    .accordion-item[aria-expanded="true"] .accordion-answer {
+        max-height: 500px; /* Ajustar según contenido esperado */
+    }
+    
     .accordion-item[aria-expanded="true"] .accordion-question {
-        @apply text-purple-400;
+        @apply bg-purple-500/5 text-white;
     }
+    
     .accordion-item[aria-expanded="true"] .accordion-question svg {
-        @apply rotate-180;
+        @apply rotate-180 text-purple-500;
     }
-    </style>
 
-    <script is:inline>
-        document.querySelectorAll('.accordion-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                button.setAttribute('aria-expanded', !isExpanded);
+    /* Animación de cursor parpadeante opcional para el modo terminal */
+    .animate-pulse {
+        animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .3; }
+    }
+</style>
 
-                const answer = button.nextElementSibling;
-                if (isExpanded) {
-                    answer.classList.add('hidden');
-                } else {
-                    answer.classList.remove('hidden');
-                }
+<script>
+    // Usamos una lógica de script más robusta para Astro
+    function setupAccordions() {
+        const buttons = document.querySelectorAll('.accordion-question');
+        
+        buttons.forEach(button => {
+            // Clonamos para evitar múltiples listeners si el script se re-ejecuta
+            const newButton = button.cloneNode(true) as HTMLElement;
+            button.parentNode?.replaceChild(newButton, button);
+
+            newButton.addEventListener('click', () => {
+                const isExpanded = newButton.getAttribute('aria-expanded') === 'true';
+                
+                // Cerrar otros si quieres (opcional)
+                // document.querySelectorAll('.accordion-question').forEach(b => b.setAttribute('aria-expanded', 'false'));
+
+                newButton.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
             });
         });
-    </script>
+    }
+
+    // Ejecutar en carga inicial y en transiciones de página si usas ViewTransitions
+    setupAccordions();
+    document.addEventListener('astro:after-swap', setupAccordions);
+</script>
