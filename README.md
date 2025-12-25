@@ -1,74 +1,146 @@
-# geekeando
-![Vercel Deploy](https://deploy-badge.vercel.app/vercel/geekeando)
+📘 README: Estándar de Proyectos Geekeando
+Para mantener la consistencia en el "Laboratorio", cada proyecto debe seguir esta estructura de Page Bundle. Esto permite que las imágenes y archivos sean autogestionados por Astro.
 
-web creada en astro
-
-## Estructura de los archivos del proyecto
-estructura recommendada para crear un proyecto en geekeando  el cual se sube a la carpeta src/content/projects ara mantener un orden se crea ela carpeta con el nombre de l proyecto y dentro va la galeria las deelproyecto tiene ua imagen por defeccto de cover que debe ir como cover.png el archivo md debe ser index.Para 
-elcaso del avatar del autor si se desea  la foto debe ir en /src/assets/images/authors en caso de no tener una se puede usar default-avatar.png para poder llamar ya sea el default o la personalizada debe llamarse como @authors/nombre-de-avatar.[png/jpg/*]
+1. Estructura de Carpetas
+Crea una carpeta por proyecto en src/content/projects/:
 ```
-src/content/projects/brazo-robotico/
-├── index.md
-├── cover.png
-├── [image].png            <-- imagenes varias descritas en los pasos
-└── downloads/             <-- Carpeta de recursos
-├   ├── planos.pdf
-├   └── arm_all_parts.zip
-└── gallery/               <-- Carpeta de galeria
+src/content/projects/nombre-del-proyecto/
+├── index.md               <-- Contenido y configuración (Frontmatter)
+├── cover.png              <-- Imagen principal (obligatoria)
+├── [step-image].png       <-- Imágenes para los pasos
+├── downloads/             <-- Recursos descargables
+│   ├── esquema.pdf
+│   └── diseño.stl
+└── gallery/               <-- Imágenes adicionales
+    ├── foto-01.jpg
+    └── foto-02.jpg
 ```
+Aquí tienes el README.md actualizado reflejando la estructura final de Page Bundles que hemos consolidado, junto con la plantilla maestra para tus proyectos.
 
-## esquema del index.md
-el fronttmater del index.md completo debajo  dodne deberia ir el contenido se lo esta obviando parapdoer tener un contorlpersonalizado del armado de la pagina del proyecto
+📘 README: Estándar de Proyectos Geekeando
+Para mantener la consistencia en el "Laboratorio", cada proyecto debe seguir esta estructura de Page Bundle. Esto permite que las imágenes y archivos sean autogestionados por Astro.
+
+1. Estructura de Carpetas
+Crea una carpeta por proyecto en src/content/projects/:
+
+Plaintext
+
+src/content/projects/nombre-del-proyecto/
+├── index.md               <-- Contenido y configuración (Frontmatter)
+├── cover.png              <-- Imagen principal (obligatoria)
+├── [step-image].png       <-- Imágenes para los pasos
+├── downloads/             <-- Recursos descargables
+│   ├── esquema.pdf
+│   └── diseño.stl
+└── gallery/               <-- Imágenes adicionales
+    ├── foto-01.jpg
+    └── foto-02.jpg
+2. Gestión de Avatares
+Las fotos de los autores deben estar en src/assets/images/authors/.
+
+Referencia: En el MD usa @authors/nombre-archivo.jpg.
+
+Default: Si no hay foto, usa @authors/default-avatar.png.
+---
+🛠️ Plantilla Maestra: index.md
+Copia y pega este bloque cada vez que inicies un nuevo proyecto. He limpiado los errores de espacios y optimizado los campos.
 ```
 ---
-title: "Brazo Robotico"
-description: "Diseño de brazo robotico para pruebas  y enseñanza de articulaciones."
-category: "arduino"
-difficulty: "Intermedio"
-pubDate: 2025-12-23
+title: "NOMBRE_DEL_PROYECTO"
+description: "Breve descripción técnica del proyecto (máx. 160 caracteres)."
+category: "arduino" # opciones: arduino, papercraft, 3d-print, music
+difficulty: "Intermedio" # Principiante, Intermedio, Avanzado
+pubDate: 2025-12-25
+featured: true
 image: "./cover.png"
-tags: ["Arduino", "Automatización", "Mecanica"]
+tags: ["Tag1", "Tag2"]
 author:
-  name: "Pedro Carranza"
+  name: "Tu Nombre"
   avatar: "@authors/default-avatar.png"
-  role: "Maker & Developer"
+  role: "Maker"
 verified: true
 materials:
-  - { name: "Arduino Uno R3", quantity: 1, link: "#" }
-  - { name: "Servomotor", quantity: 3, link: "#" }
-  - { name: "ProtoBoard", quantity: 1, link: "#" }
-  - { name: "Soporte Impreso", quantity: 1, link: "#"}
-codeRepo: "https://github.com/geekeando-net/brazo-robotico"
-stlLink: "https://printables.com/geekeando/brazo-robotico"
+  - { name: "Componente 1", quantity: 1, link: "#" }
+  - { name: "Componente 2", quantity: 2, link: "#" }
+codeRepo: "https://github.com/geekeando-net/..."
+stlLink: ""
 downloadFiles:
-  - name: "DISEÑO_COMPLETO"
-    file: "./downloads/brazo-robotico.zip"
-    type: "ZIP "
-  - name: "INDICACIONES_COMPLETAS"
-    file: "./downloads/indicaciones.pdf"
+  - name: "PLANOS_TECNICOS"
+    file: "./downloads/archivo.pdf"
     type: "PDF"
+  - name: "PIEZAS_3D"
+    file: "./downloads/modelo.zip"
+    type: "ZIP"
 gallery:
-  - "./gallery/brazo-1.png"
-  - "./gallery/brazo-2.png"
-  - "./gallery/brazo-3.png"
+  - "./gallery/imagen1.jpg"
+  - "./gallery/imagen2.jpg"
 steps:
   - number: 1
-    title: "Preparación de Componentes"
-    content: "Reunir todos los materiales y verificar su funcionamiento. Es recomendable probar cada motor por separado antes del ensamblaje final."
-    image: "./pruebas-funcionamiento-1.png"
+    title: "NOMBRE_DEL_PASO"
+    content: "Explicación detallada de lo que se debe hacer en esta etapa."
+    image: "./paso-1.png"
   - number: 2
-    title: "Conexión del circuito"
-    content: "Conectar los motores al Arduino según el diagrama proporcionado. "
-    image: "./conexiones-1.png"
-  - number: 3
-    title: "Programación básica"
-    content: "Cargar el firmware inicial para verificar las lecturas de los sensores. Ajustar los valores umbral según el tipo de planta."
-    code: "void setup() { Serial.begin(9600); }"
+    title: "PROGRAMACION_Y_CODIGO"
+    content: "Breve descripción del software."
+    code: |
+      void setup() {
+        // Tu código aquí
+      }
 tips:
   - type: "warning"
-    message: "No alimentes los motores con mas de 9v por mucho tiempo o se corroerá por electrólisis."
+    message: "Mensaje de advertencia técnica."
   - type: "tip"
-    message: "Si imprimes el chasis en 3D, usa una altura de capa de 0.2mm para mayor resistencia estructural."
+    message: "Consejo para mejorar el acabado o funcionamiento."
 ---
 
+Escribe aquí la introducción detallada del proyecto. Este contenido se renderizará 
+debajo de la galería y antes de los pasos de construcción. Puedes usar **Markdown** estándar para dar formato.
+```
+---🚀 Script de Automatización (Opcional)
+Si usas VS Code, puedes crear un User Snippet para que al escribir geekproject se genere todo el código anterior automáticamente.
+
+Ve a File > Preferences > Configure User Snippets.
+
+Busca markdown.
+
+Pega esto dentro de las llaves:
+```
+"Geekeando Project Template": {
+	"prefix": "geekproject",
+	"body": [
+		"---",
+		"title: \"${1:Titulo del Proyecto}\"",
+		"description: \"${2:Descripcion corta}\"",
+		"category: \"${3|arduino,papercraft,3d-print,music|}\"",
+		"difficulty: \"${4|Principiante,Intermedio,Avanzado|}\"",
+		"pubDate: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+		"featured: false",
+		"image: \"./cover.png\"",
+		"tags: [\"${5:Tag1}\"]",
+		"author:",
+		"  name: \"Pedro Carranza\"",
+		"  avatar: \"@authors/default-avatar.png\"",
+		"  role: \"Maker & Developer\"",
+		"verified: true",
+		"materials:",
+		"  - { name: \"${6:Material}\", quantity: 1, link: \"#\" }",
+		"downloadFiles:",
+		"  - name: \"DOCUMENTACION\"",
+		"    file: \"./downloads/file.pdf\"",
+		"    type: \"PDF\"",
+		"gallery: []",
+		"steps:",
+		"  - number: 1",
+		"    title: \"Iniciando el ensamble\"",
+		"    content: \"Paso 1...\"",
+		"    image: \"./step1.png\"",
+		"tips:",
+		"  - type: \"tip\"",
+		"    message: \"Usa herramientas adecuadas.\"",
+		"---",
+		"",
+		"${0:Escribe la intro aquí...}"
+	],
+	"description": "Crea el frontmatter estándar para Geekeando"
+}
 ```
