@@ -1,50 +1,18 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets'; // Importante usar el componente nativo
+
 const {
     title,
     category,
     difficulty,
     date,
     author,
-    stats,
+    stats = { views: 0, likes: 0, downloads: 0 }, // Valores por defecto
     coverImage,
     description,
-    tags
-    } = Astro.props;
-const imagesProjects = import.meta.glob('../../../assets/images/projects/*.{jpg,png,webp,avif}');
-const imagesAuthors = import.meta.glob('../../../assets/images/authors/*.{jpg,png,webp,avif}');
-const getImageProjectUrl = async (imagePath: string) => {
-    if (!imagePath) return null;
-    const imageFileName = imagePath.split('/').pop() ?? '';
-    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
-    if (imageKey) {
-        try {
-            const module = await imagesProjects[imageKey]();
-            return (module as { default: any }).default;
-        } catch (e) {
-            console.error(`Error cargando la imagen: ${imageKey}`, e);
-            return null;
-        }
-    }
-    return null;
-};
-const getImageAuthorUrl = async (imagePath: string) => {
-    if (!imagePath) return null;
-    const imageFileName = imagePath.split('/').pop() ?? '';
-    const imageKey = Object.keys(imagesAuthors).find((key) => key.endsWith(imageFileName));
-    if (imageKey) {
-        try {
-            const module = await imagesAuthors[imageKey]();
-            return (module as { default: any }).default;
-        } catch (e) {
-            console.error(`Error cargando la imagen: ${imageKey}`, e);
-            return null;
-        }
-    }
-    return null;
-};
-const imageHeaderUrl = await getImageProjectUrl(coverImage);
-const imageAuthorUrl = await getImageAuthorUrl(author.avatar);
+    tags = []
+} = Astro.props;
 
 const difficultyColors = {
     Principiante: "bg-green-900/50 text-green-400 border-green-800",
@@ -54,83 +22,86 @@ const difficultyColors = {
 ---
 
 <div class="relative rounded-xl overflow-hidden border border-neutral-800">
-    <!-- Imagen de portada -->
     <div class="aspect-[16/7] w-full bg-neutral-900">
-        <img
-                src={imageHeaderUrl?.src}
+        {coverImage && (
+            <Image 
+                src={coverImage} 
                 alt={title}
-                class="w-full lg:h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="eager"
-                sizes="(max-width: 1024px) 100vw, 33vw"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/10 to-transparent"></div>
+        )}
+        <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/20 to-transparent"></div>
     </div>
 
-    <!-- Contenido del encabezado -->
     <div class="relative px-6 pb-8 sm:px-8 sm:pb-10 -mt-16">
-        <div class="rounded-xl border border-neutral-800 bg-neutral-900 p-6 shadow-lg shadow-neutral-950/50">
+        <div class="rounded-xl border border-neutral-800 bg-neutral-900/90 backdrop-blur-md p-6 shadow-2xl shadow-black">
         <div class="flex flex-col sm:flex-row sm:items-start gap-6">
-            <!-- Metadatos -->
             <div class="flex-1 space-y-4">
             <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-1 text-sm text-purple-400">
-                <Icon name="mdi:folder" class="h-4 w-4" />
-                {category}
+                <span class="inline-flex items-center gap-1 text-sm text-amber-500 font-mono">
+                <Icon name="mdi:folder-open" class="h-4 w-4" />
+                {category.toUpperCase()}
                 </span>
-                <span class={`text-xs px-2 py-1 rounded-full border ${difficultyColors[difficulty as keyof typeof difficultyColors] || difficultyColors.Intermedio}`}>
+                <span class={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded border font-bold ${difficultyColors[difficulty as keyof typeof difficultyColors] || difficultyColors.Intermedio}`}>
                 {difficulty}
                 </span>
-                <span class="text-sm text-neutral-500">
-                {new Date(date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                <span class="text-xs text-neutral-500 font-mono">
+                {new Date(date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}
                 </span>
             </div>
 
-            <h1 class="text-3xl font-bold text-neutral-100">{title}</h1>
-            <p class="text-lg text-neutral-300">{description}</p>
+            <h1 class="text-3xl font-display font-black text-white uppercase tracking-tighter leading-none">{title}</h1>
+            <p class="text-base text-neutral-400 font-light max-w-2xl">{description}</p>
 
             <div class="flex flex-wrap gap-2">
                 {tags.map((tag: string) => (
-                <span class="inline-block px-3 py-1 rounded-full text-xs bg-neutral-800 text-neutral-400 border border-neutral-700">
-                    {tag}
+                <span class="inline-block px-2 py-0.5 rounded bg-neutral-800 text-neutral-500 text-[10px] font-mono border border-neutral-700 uppercase">
+                    #{tag}
                 </span>
                 ))}
             </div>
             </div>
 
-            <!-- Autor y stats -->
-            <div class="space-y-5 sm:w-48 flex-shrink-0">
-            <div class="flex items-center gap-3">
-                <img
-                    src={imageAuthorUrl?.src}
-                    alt={author.name}
-                    class="h-10 w-10 rounded-full"
-                    loading="eager"
-                    sizes="(max-width: 1024px) 100vw, 33vw"
-                />
-                <div>
-                <p class="text-sm font-medium text-neutral-200">{author.name}</p>
-                <p class="text-xs text-neutral-500">{author.role}</p>
+            <div class="space-y-5 sm:w-48 flex-shrink-0 border-l border-neutral-800 pl-6 block">
+                <div class="flex items-center gap-3 p-2 rounded-lg bg-neutral-950/30 border border-neutral-800/50">
+                    {author?.avatar ? (
+                        <Image
+                            src={author.avatar}
+                            alt={`Avatar de ${author.name}`}
+                            width={40}
+                            height={40}
+                            class="h-10 w-10 rounded-full border border-amber-500/20 grayscale hover:grayscale-0 transition-all duration-300"
+                        />
+                    ) : (
+                        /* Fallback por si no hay imagen */
+                        <div class="h-10 w-10 rounded-full bg-neutral-800 flex items-center justify-center border border-neutral-700">
+                            <Icon name="mdi:account" class="h-6 w-6 text-neutral-500" />
+                        </div>
+                    )}
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-neutral-200 leading-none">{author?.name || "Admin"}</span>
+                        <span class="text-[10px] text-amber-500/60 font-mono mt-1 tracking-tighter uppercase">{author?.role || "Maker"}</span>
+                    </div>
+                </div>
+
+            <div class="flex justify-between text-[10px] font-mono border-t border-neutral-800 pt-3">
+                <div class="text-center">
+                <p class="font-bold text-amber-500">{stats.views}</p>
+                <p class="text-neutral-600">VISTAS</p>
+                </div>
+                <div class="text-center border-x border-neutral-800 px-2">
+                <p class="font-bold text-amber-500">{stats.likes}</p>
+                <p class="text-neutral-600">LIKES</p>
+                </div>
+                <div class="text-center">
+                <p class="font-bold text-amber-500">{stats.downloads}</p>
+                <p class="text-neutral-600">STLS</p>
                 </div>
             </div>
 
-            <div class="flex justify-between text-sm border-t border-neutral-800 pt-3">
-                <div class="text-center">
-                <p class="font-medium text-neutral-200">{stats.views}</p>
-                <p class="text-xs text-neutral-500">Vistas</p>
-                </div>
-                <div class="text-center">
-                <p class="font-medium text-neutral-200">{stats.likes}</p>
-                <p class="text-xs text-neutral-500">Likes</p>
-                </div>
-                <div class="text-center">
-                <p class="font-medium text-neutral-200">{stats.downloads}</p>
-                <p class="text-xs text-neutral-500">Descargas</p>
-                </div>
-            </div>
-
-            <button class="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-sm font-medium text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all">
-                <Icon name="mdi:heart" class="h-4 w-4" />
-                Guardar proyecto
+            <button class="w-full flex items-center justify-center gap-2 rounded bg-amber-500 py-2 text-[10px] font-black text-neutral-950 hover:bg-white transition-all uppercase tracking-widest">
+                <Icon name="mdi:heart-outline" class="h-3 w-3" />
+                Guardar
             </button>
             </div>
         </div>

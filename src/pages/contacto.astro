@@ -1,16 +1,20 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
-import ContactForm from "@/components/ui/ContactForm.astro"; // Componente especializado
+import ContactForm from "@/components/ui/ContactForm.astro";
 import { Icon } from 'astro-icon/components';
-const title = "Contacto Prioritario";
-const subTitle = "¿Necesitas ayuda urgente o tienes un proyecto especial? Nuestro equipo te responderá en menos de 12 horas.";
+
+const title = "PRIORITY_UPLINK";
+const subTitle = "Acceso directo al núcleo del sistema. Tiempo de respuesta garantizado < 12h.";
 ---
 
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <!-- Hero Section -->
-        <div class="mx-auto max-w-3xl text-center mb-12">
+<Layout title="Urgente | Geekeando Labs">
+    <section class="relative mx-auto max-w-[85rem] px-4 py-16 sm:px-6 lg:px-8 overflow-hidden">
+        
+        {/* Decoración de Fondo: Grid de ingeniería */}
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+
+        <div class="mx-auto max-w-3xl text-center mb-16">
             <TitleSection
                 title={title}
                 subTitle={subTitle}
@@ -18,34 +22,58 @@ const subTitle = "¿Necesitas ayuda urgente o tienes un proyecto especial? Nuest
             />
         </div>
 
-        <!-- Formulario Destacado -->
-        <div class="mx-auto max-w-2xl">
-            <div class="relative rounded-xl border-2 border-amber-500/30 bg-gradient-to-br from-neutral-900 to-neutral-950 p-1 shadow-lg shadow-amber-500/10">
-                <div class="rounded-lg bg-neutral-900/80 p-8 backdrop-blur-sm">
-                    <div class="mb-6 flex items-center gap-3">
-                        <Icon name="mdi:star-circle" class="h-8 w-8 text-amber-400" />
-                        <h3 class="text-xl font-bold text-amber-400">Atención Prioritara</h3>
+        <div class="mx-auto max-w-2xl relative">
+            {/* Efecto de resplandor detrás del formulario */}
+            <div class="absolute -inset-4 bg-amber-500/10 blur-3xl rounded-full opacity-50"></div>
+
+            <div class="relative rounded-lg border border-amber-500 bg-neutral-950 p-1 shadow-[0_0_30px_rgba(245,158,11,0.1)]">
+                
+                {/* Cabecera de la Terminal */}
+                <div class="flex items-center justify-between border-b border-amber-500/30 px-6 py-3 bg-amber-500/5">
+                    <div class="flex items-center gap-2">
+                        <div class="h-2 w-2 rounded-full bg-red-500 animate-pulse"></div>
+                        <span class="font-mono text-[10px] text-amber-500 uppercase tracking-widest">Priority_Transmission_Active</span>
                     </div>
+                    <Icon name="mdi:shield-check-outline" class="h-4 w-4 text-amber-500/50" />
+                </div>
+
+                <div class="p-8">
+                    <div class="mb-8 flex items-center gap-4">
+                        <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded">
+                             <Icon name="mdi:lightning-bolt" class="h-6 w-6 text-amber-500" />
+                        </div>
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white uppercase tracking-tighter italic">Overdrive_Mode</h3>
+                            <p class="text-xs font-mono text-neutral-500">Filtrando protocolo de alta prioridad...</p>
+                        </div>
+                    </div>
+
                     <ContactForm
                         variant="priority"
-                        fields={['name', 'email', 'phone', 'project_type', 'urgency']}
+                        fields={['name', 'email', 'phone', 'project_type', 'message']}
                     />
                 </div>
-                <!-- Badge de garantía -->
-                <div class="absolute -top-3 -right-3">
-                    <span class="inline-flex items-center gap-x-1.5 rounded-full bg-amber-900 px-3 py-1 text-xs font-medium text-amber-300">
-                        <Icon name="mdi:clock-fast" class="h-4 w-4" />
-                        Respuesta en ≤12h
-                    </span>
+            </div>
+
+            {/* Floating Badge (Estilo Industrial) */}
+            <div class="absolute -top-4 -right-4 rotate-12">
+                <div class="bg-amber-500 text-black px-4 py-1 font-black text-[10px] uppercase tracking-tighter border-2 border-black shadow-xl">
+                    Fast_Track_Enabled
                 </div>
             </div>
         </div>
 
-        <!-- Soporte 24/7 (opcional) -->
-        <div class="mt-16 text-center">
-            <div class="inline-flex items-center gap-x-3 rounded-full border border-purple-500/30 bg-purple-900/20 px-6 py-3 text-purple-300">
-                <Icon name="mdi:headset" class="h-6 w-6" />
-                <span class="font-medium text-neutral-400">Soporte VIP: <a href="tel:+123456789" class="text-amber-400 hover:underline">+591 (234) 567-89</a></span>
+        {/* Soporte Directo */}
+        <div class="mt-20 text-center">
+            <p class="text-[10px] font-mono text-neutral-600 uppercase tracking-[0.4em] mb-4">Direct_Voice_Comm_Link</p>
+            <div class="inline-flex items-center gap-x-4 border border-neutral-800 bg-neutral-900/50 px-8 py-4 rounded-sm backdrop-blur-md">
+                <div class="h-10 w-10 flex items-center justify-center bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    <Icon name="mdi:headset-dock" class="h-6 w-6" />
+                </div>
+                <div class="text-left">
+                    <span class="block text-[10px] font-mono text-neutral-500 uppercase">Support_Hotline</span>
+                    <a href="tel:+59123456789" class="font-display text-lg text-amber-500 hover:text-white transition-colors tracking-tighter">+591 (234) 567-89</a>
+                </div>
             </div>
         </div>
     </section>

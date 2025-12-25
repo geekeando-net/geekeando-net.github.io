@@ -1,124 +1,99 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Icon from "@/components/ui/IconPart.astro";
+import { Icon } from 'astro-icon/components';
 
 const urlPath = "/";
 ---
 
-<Layout>
-    <section class="grid min-h-svh place-content-center bg-gradient-to-br from-neutral-950 to-neutral-900 px-4 py-8">
-        <div class="mx-auto max-w-2xl text-center">
-            <!-- Efecto de glitch en el 404 -->
-            <div class="relative mb-6">
-                <h1 class="glitch-effect text-8xl font-bold text-amber-400 md:text-9xl">
+<Layout title="ERR_404: SYSTEM_HALTED">
+    <section class="relative grid min-h-svh place-content-center bg-neutral-950 px-4 py-8 overflow-hidden font-mono">
+        
+        {/* Decoración de fondo: Grid de ingeniería */}
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+
+        <div class="mx-auto max-w-2xl text-center relative z-10">
+            <div class="mb-2 text-amber-500/50 text-[10px] tracking-[0.5em] uppercase">Critical_System_Failure</div>
+            
+            <div class="relative mb-6 inline-block">
+                <h1 class="glitch-effect text-8xl font-black text-white md:text-9xl tracking-tighter italic">
                     404
                 </h1>
-                <div class="glitch-layers" aria-hidden="true">
-                    <span class="glitch-layer">404</span>
-                    <span class="glitch-layer">404</span>
-                    <span class="glitch-layer">404</span>
+                <div class="absolute -top-4 -right-8 bg-red-600 text-white text-[10px] px-2 py-1 rotate-12 font-bold animate-pulse">
+                    SEGMENT_FAULT
                 </div>
             </div>
 
-            <!-- Mensaje principal -->
-            <p class="mb-6 text-balance text-3xl font-bold tracking-tight text-neutral-200 md:text-4xl">
-                ¡UPS! Página no encontrada
-            </p>
+            <h2 class="mb-6 text-balance text-xl font-bold text-neutral-200 uppercase tracking-tighter">
+                > ERROR: Route_Not_Found_In_Core
+            </h2>
 
-            <!-- Mensaje secundario con estilo terminal -->
-            <div class="mx-auto mb-8 max-w-md rounded-lg border border-neutral-800 bg-neutral-900/50 p-4 text-left font-mono text-sm text-neutral-400">
-                <span class="block text-amber-400">$ <span class="blink">_</span></span>
-                <span class="block">Error: Ruta no reconocida</span>
-                <span class="block">Status: 404 Not Found</span>
-                <span class="block mt-2">Sugerencia: Verifica la URL o navega al inicio</span>
+            <div class="mx-auto mb-10 max-w-lg rounded-sm border border-neutral-800 bg-black/80 p-6 text-left shadow-2xl">
+                <div class="flex gap-1.5 mb-4 border-b border-neutral-900 pb-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                    <div class="w-2 h-2 rounded-full bg-amber-500/50"></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                </div>
+                
+                <div class="space-y-1 text-xs md:text-sm">
+                    <p class="text-neutral-500">Initializing diagnostic scan...</p>
+                    <p class="text-neutral-200 leading-relaxed">
+                        <span class="text-amber-500">[WARN]</span> Resource at <span class="text-red-400 font-bold">"{Astro.url.pathname}"</span> not found.
+                    </p>
+                    <p class="text-neutral-200 italic">
+                        <span class="text-green-500">[INFO]</span> Memory address 0x00404 leaked.
+                    </p>
+                    <p class="text-neutral-500 mt-4 animate-pulse">
+                        $ <span class="text-amber-500">sudo reboot --to-home</span><span class="blink">_</span>
+                    </p>
+                </div>
             </div>
 
-            <!-- Botón con efecto neón -->
-            <button
-                onclick={`window.location.href='${urlPath}'`}
-                class="group relative inline-flex items-center justify-center gap-x-2 overflow-hidden rounded-lg px-6 py-3 text-lg font-bold text-neutral-900 transition-all duration-300 hover:shadow-lg"
-                style="background: linear-gradient(to right, #f59e0b, #f97316);"
+            <a
+                href={urlPath}
+                class="group relative inline-flex items-center justify-center gap-x-3 border border-amber-500 px-8 py-4 text-xs font-black uppercase tracking-[0.3em] text-amber-500 transition-all hover:bg-amber-500 hover:text-black overflow-hidden"
             >
-                <span class="relative z-10">Volver al inicio</span>
-                <Icon name="arrowRight" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                <span class="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-            </button>
-
-            <!-- Efecto de partículas opcional (puedes usar una librería como particles.js) -->
-            <div class="absolute inset-0 -z-10 opacity-20" id="particles-js"></div>
+                <span class="relative z-10 flex items-center gap-2">
+                    <Icon name="mdi:restart" class="h-4 w-4" />
+                    Reiniciar_Sistema
+                </span>
+                <div class="absolute inset-0 h-full w-0 bg-amber-500 group-hover:w-full transition-all duration-300"></div>
+            </a>
         </div>
+
+        {/* Partículas de "Polvo Digital" */}
+        <div class="absolute inset-0 -z-10 opacity-30" id="particles-js"></div>
     </section>
 
     <style is:global>
-        /* Efecto glitch para el 404 */
         .glitch-effect {
-            position: relative;
-            z-index: 1;
-        }
-        .glitch-layers {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            text-align: center;
-        }
-        .glitch-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            color: #f59e0b;
-            animation: glitch-anim 2s infinite linear alternate-reverse;
-        }
-        .glitch-layer:nth-child(1) {
-            animation-delay: -1s;
-            clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%);
-        }
-        .glitch-layer:nth-child(2) {
-            animation-delay: -0.5s;
-            clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%);
-        }
-        @keyframes glitch-anim {
-            0% { transform: translate(-2px, 2px); }
-            20% { transform: translate(-2px, -2px); }
-            40% { transform: translate(2px, 2px); }
-            60% { transform: translate(2px, -2px); }
-            80% { transform: translate(-2px, 2px); }
-            100% { transform: translate(2px, -2px); }
+            text-shadow: 2px 0 #ff0000, -2px 0 #00ff00;
+            animation: glitch-skew 1s infinite linear alternate-reverse;
         }
 
-        /* Efecto cursor parpadeante */
-        .blink {
-            animation: blink-anim 1s infinite;
-        }
-        @keyframes blink-anim {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        @keyframes glitch-skew {
+            0% { text-shadow: 2px 0 #ff0000, -2px 0 #00ff00; transform: skew(1deg); }
+            20% { text-shadow: -2px 0 #ff0000, 2px 0 #00ff00; transform: skew(-2deg); }
+            100% { text-shadow: 1px 0 #ff0000, -1px 0 #00ff00; transform: skew(0deg); }
         }
 
-        /* Efecto neón para el botón */
-        button:hover {
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-        }
+        .blink { animation: blink-anim 1s infinite; }
+        @keyframes blink-anim { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
+
     <script is:inline src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#f59e0b" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.3, "random": true },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#f59e0b", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
-            },
-            "interactivity": {
-                "events": { "onhover": { "enable": true, "mode": "grab" } }
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#f59e0b" },
+                    "shape": { "type": "square" }, // Cuadrados para parecer pixeles
+                    "opacity": { "value": 0.2 },
+                    "size": { "value": 1.5 },
+                    "line_linked": { "enable": false },
+                    "move": { "enable": true, "speed": 1, "direction": "top", "random": true }
+                }
+            });
         });
-    });
     </script>
 </Layout>

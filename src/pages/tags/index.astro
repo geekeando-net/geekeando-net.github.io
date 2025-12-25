@@ -8,37 +8,38 @@ interface Frontmatter {
     pubDate?: string;
     description?: string;
     author?: string;
-    image?: {
-        url?: string;
-        alt?: string;
-    };
     tags?: string[];
 }
 
 const allPosts = Object.values(import.meta.glob<MarkdownInstance<Frontmatter>>('@posts/*.md', { eager: true }));
-const allTags = allPosts.map((post: MarkdownInstance<Frontmatter>) => post.frontmatter.tags || []).flat();
+const allTags = allPosts.map((post) => post.frontmatter.tags || []).flat();
 const tagCounts = allTags.reduce((acc: Record<string, number>, tag) => {
     acc[tag] = (acc[tag] || 0) + 1;
     return acc;
 }, {} as Record<string, number>);
 const tags = Object.keys(tagCounts);
-const title: string = "Nube de Etiquetas";
-const subTitle: string = "";
+
+const title = "DATABASE_TAG_CLOUD";
+const subTitle = "// Clasificación de registros por frecuencia de uso en el sistema";
 ---
 
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-        <div class="mx-auto max-w-2xl lg:max-w-5xl">
-            <TitleSection
-                title={ title }
-                subTitle={ subTitle }
-            />
-            <div class="divide-y divide-neutral-300 dark:divide-neutral-700">
-                <ul class="cloud" role="navigation" aria-label="Webdev tag cloud">
+<Layout title="Etiquetas | Geekeando">
+    <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-5xl">
+            <TitleSection title={title} subTitle={subTitle} />
+            
+            <div class="mt-12 border border-neutral-800 bg-neutral-900/20 p-8 rounded-xl backdrop-blur-sm">
+                <ul class="tag-cloud" role="navigation">
                     {tags.map((tag) => (
                         <li>
-                            {/* <a data-weight="4" href="/tags/http">HTTP</a> */}
-                            <a data-weight={tagCounts[tag]} href={`/tags/${tag}`} >{tag}</a>
+                            <a 
+                                href={`/tags/${tag}`} 
+                                data-weight={tagCounts[tag]}
+                                class="tag-link"
+                            >
+                                <span class="hash text-amber-500/30">#</span>{tag.toUpperCase()}
+                                <span class="count">[{tagCounts[tag]}]</span>
+                            </a>
                         </li>
                     ))}
                 </ul>
@@ -46,70 +47,44 @@ const subTitle: string = "";
         </div>
     </section>
 </Layout>
-<style>
-    .cloud {
-        list-style: none;
-        padding-left: 0;
-        display: flex;
-        flex-wrap: wrap;
-        /* align-items: center; */
-        justify-content: center;
-        /* line-height: 2.5rem; */
+<style is:global>
+    .tag-cloud {
+        @apply list-none p-0 flex flex-wrap justify-center items-center gap-4;
+        font-family: 'Fira Code', monospace;
     }
 
-    .cloud li {
-        margin: 0 0.5rem;
+    .tag-link {
+        @apply relative no-underline transition-all duration-300 flex items-center gap-1;
+        --base-color: 245, 158, 11; /* Amber 500 */
     }
 
-    .cloud a {
-        --size: 4;
-        --color: #f39c12;
-        color: var(--color);
-        font-size: calc(var(--size) * 1rem);
-        display: block;
-        padding: 0.125rem 0.25rem;
-        text-decoration: none;
-        position: relative;
-        opacity: calc((15 - (9 - var(--size))) / 15);
+    /* Escala de importancia basada en peso */
+    .tag-link[data-weight="1"] { font-size: 0.75rem; opacity: 0.4; }
+    .tag-link[data-weight="2"] { font-size: 1rem; opacity: 0.6; }
+    .tag-link[data-weight="3"] { font-size: 1.25rem; opacity: 0.8; }
+    .tag-link[data-weight="4"], 
+    .tag-link[data-weight="5"] { font-size: 1.5rem; opacity: 0.9; color: rgb(var(--base-color)); }
+    .tag-link[data-weight="6"],
+    .tag-link[data-weight="7"] { font-size: 2rem; opacity: 1; color: rgb(var(--base-color)); font-weight: 700; }
+    .tag-link[data-weight="8"],
+    .tag-link[data-weight="9"] { font-size: 2.5rem; opacity: 1; color: rgb(var(--base-color)); font-weight: 900; text-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+
+    .tag-link .count {
+        @apply text-[10px] text-neutral-600 ml-1 font-normal;
     }
 
-    .cloud[data-show-value] a::after {
-        content: " (" attr(data-weight) ")";
-        font-size: 1rem;
-    }
-    .cloud a:focus {
-        outline: 1px dashed;
-    }
-    .cloud a[data-weight="1"] { --size: 1; }
-    .cloud a[data-weight="2"] { --size: 2; }
-    .cloud a[data-weight="3"] { --size: 3; }
-    .cloud a[data-weight="4"] { --size: 4; }
-    .cloud a[data-weight="5"] { --size: 5; }
-    .cloud a[data-weight="6"] { --size: 6; }
-    .cloud a[data-weight="7"] { --size: 7; }
-    .cloud a[data-weight="8"] { --size: 8; }
-    .cloud a[data-weight="9"] { --size: 9; }
-
-    .cloud li:nth-child(2n+1) a { --color: #2ecc71; }
-    .cloud li:nth-child(3n+1) a { --color: #2980b9; }
-    .cloud li:nth-child(4n+1) a { --color: #9b59b6; }
-    .cloud li:nth-child(5n+1) a { --color: #e74c3c; }
-
-    .cloud a::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 0;
-        height: 100%;
-        background: var(--color);
-        transform: translate(-50%, 0);
-        opacity: 0.15;
-        transition: width 0.25s;
+    .tag-link:hover {
+        @apply text-white;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
     }
 
-    .cloud a:focus::before,
-    .cloud a:hover::before {
-    width: 100%;
+    .tag-link::after {
+        content: '';
+        @apply absolute -bottom-1 left-0 w-0 h-[1px] bg-amber-500 transition-all duration-300;
+    }
+
+    .tag-link:hover::after {
+        @apply w-full;
     }
 </style>

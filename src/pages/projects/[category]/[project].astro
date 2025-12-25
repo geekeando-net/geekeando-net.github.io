@@ -1,308 +1,195 @@
 ---
-// src/pages/proyectos/[category]/[project].astro
-
+export const prerender = true;
+import { getCollection } from 'astro:content';
 import Layout from "@layouts/Layout.astro";
 import ProjectHeader from "@/components/ui/projects/ProjectHeader.astro";
 import MaterialsList from "@/components/ui/projects/MaterialsList.astro";
 import StepByStep from "@/components/ui/projects/StepByStep.astro";
 import ProjectGallery from "@/components/ui/projects/ProjectGallery.astro";
 import RelatedProjects from "@/components/ui/projects/RelatedProjects.astro";
+import Breadcrumbs from "@/components/ui/projects/Breadcrumbs.astro";
+import DownloadsSection from "@/components/ui/projects/DownloadsSection.astro";
+import ProjectsTips from '@/components/ui/projects/ProjectsTips.astro';
 import { Icon } from 'astro-icon/components';
-const { category, project } = Astro.params;
-//const projectData = await getProjectData(category, project); // Función ficticia
-// Datos de ejemplo (en un proyecto real estos vendrían de una API o CMS)
-const projectData = {
-    id: "arduino-irrigation",
-    title: "Sistema de Riego Automático con Arduino",
-    category: "Arduino",
-    difficulty: "Intermedio",
-    date: "2023-10-15",
-    author: {
-        name: "Ana Torres",
-        avatar: "authors/ana-torres.png",
-        role: "Ingeniera IoT"
-    },
-    stats: {
-        views: 1248,
-        likes: 86,
-        downloads: 215
-    },
-    coverImage: "projects/arduino-irrigation-cover.png",
-    description: "Sistema autónomo que monitorea la humedad del suelo y riega plantas según sus necesidades, con control remoto vía app móvil.",
-    tags: ["IoT", "Automatización", "Jardinería", "Bricolaje"],
-    materials: [
-        {
-        name: "Arduino Uno",
-        quantity: 1,
-        link: "#"
-        },
-        {
-        name: "Sensor de humedad del suelo",
-        quantity: 2,
-        link: "#"
-        },
-        {
-        name: "Módulo WiFi ESP8266",
-        quantity: 1,
-        link: "#"
-        }
-    ],
-    gallery: [
-        {
-        src: "/images/projects/irrigation-1.png",
-        alt: "Diagrama del circuito"
-        },
-        {
-        src: "/images/projects/irrigation-2.jpg",
-        alt: "Instalación en macetas"
-        },
-        {
-        src: "/images/projects/irrigation-3.jpg",
-        alt: "Interfaz de la app móvil"
-        }
-    ],
-    steps: [
-        {
-        title: "Preparación de componentes",
-        content: "Reunir todos los materiales y verificar su funcionamiento. Es recomendable probar cada sensor por separado antes del ensamblaje final.",
-        image: "/projects/step-1.jpg"
-        },
-        {
-        title: "Conexión del circuito",
-        content: "Conectar los sensores al Arduino según el diagrama proporcionado. Usar resistencias de 10kΩ para los sensores de humedad.",
-        code: `
-    // Ejemplo de lectura del sensor
-    const int sensorPin = A0;
-    int moistureLevel = 0;
 
-    void setup() {
-    Serial.begin(9600);
-    }
+// 1. Generar rutas dinámicas desde la carpeta src/content/projects/
+export async function getStaticPaths() {
+    const projectEntries = await getCollection('projects');
+    return projectEntries.map((entry) => {
+        // Limpiamos la categoría para evitar errores de formato
+        const catParam = entry.data.category.toLowerCase().trim();
+        return {
+            params: { 
+                category: catParam, 
+                project: entry.slug 
+            },
+            props: { entry },
+        };
+    });
+}
 
-    void loop() {
-    moistureLevel = analogRead(sensorPin);
-    Serial.print("Humedad: ");
-    Serial.println(moistureLevel);
-    delay(1000);
-    }`
-        },
-        {
-        title: "Programación básica",
-        content: "Cargar el firmware inicial para verificar las lecturas de los sensores. Ajustar los valores umbral según el tipo de planta."
-        }
-    ],
-    downloads: [
-        {
-        name: "Esquemático completo",
-        type: "PDF",
-        size: "2.4 MB",
-        link: "#"
-        },
-        {
-        name: "Código fuente",
-        type: "ZIP",
-        size: "1.1 MB",
-        link: "#"
-        },
-        {
-        name: "Modelos 3D (opcional)",
-        type: "STL",
-        size: "3.7 MB",
-        link: "#"
-        }
-    ],
-    relatedProjects: [
-        {
-        title: "Invernadero Automatizado",
-        category: "Arduino",
-        image: "/projects/greenhouse.jpg",
-        slug: "invernadero-automatizado"
-        },
-        {
-        title: "Controlador de Luces WiFi",
-        category: "Arduino",
-        image: "/projects/smart-lights.jpg",
-        slug: "controlador-de-luces-wifi"
-        }
-    ]
+const { entry } = Astro.props;
+const { title, author, image } = entry.data;
+// CONTROL DE SEGURIDAD: Si no hay entry, redirigir o mostrar error
+if (!entry) {
+    return Astro.redirect('/404');
+}
+const { Content } = await entry.render();
+const projectData = entry.data;
+const { stlLink, codeRepo } = projectData;
+const { gallery } = entry.data;
+const { category } = entry.data;
+const { steps } = entry.data;
+// Obtener todos los proyectos de la misma categoría
+const allProjects = await getCollection('projects');
+const relatedProjects = allProjects
+  .filter(p => p.data.category === category && p.slug !== entry.slug)
+  .slice(0, 3); // Solo mostramos los 3 más recientes
+// Mapeo de colores por dificultad (Estilo Geek)
+const diffColors = {
+    Principiante: "text-emerald-400 border-emerald-800 bg-emerald-950/30",
+    Intermedio: "text-amber-400 border-amber-800 bg-amber-950/30",
+    Avanzado: "text-red-400 border-red-800 bg-red-950/30"
 };
+
+// Mapeamos los links individuales a la estructura de lista
+const downloadFiles = [
+  stlLink && { name: "DISEÑO_3D_CHASIS", type: "STL", link: stlLink, size: "2.4MB" },
+  codeRepo && { name: "CONTROL_SISTEMA_INO", type: "INO", link: codeRepo }
+].filter(Boolean);
 
 ---
 
-<Layout>
-    <article class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <!-- Encabezado del proyecto -->
+<Layout title={`${projectData.title} | Geekeando`}>
+    <article class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16 bg-neutral-950">
+        <Breadcrumbs 
+        category={projectData.category} 
+        title={projectData.title} 
+        />
         <ProjectHeader
-        title={projectData.title}
-        category={projectData.category}
-        difficulty={projectData.difficulty}
-        date={projectData.date}
-        author={projectData.author}
-        stats={projectData.stats}
-        coverImage={projectData.coverImage}
-        description={projectData.description}
-        tags={projectData.tags}
+            title={projectData.title}
+            category={projectData.category}
+            difficulty={projectData.difficulty}
+            date={projectData.pubDate.toDateString()}
+            description={projectData.description}
+            coverImage={projectData.image}
+            tags={projectData.tags}
+            author={projectData.author}
         />
 
         <div class="lg:grid lg:grid-cols-12 lg:gap-8 mt-12">
-        <!-- Contenido principal -->
-        <div class="lg:col-span-8 space-y-12">
-            <!-- Galería -->
-            <ProjectGallery images={projectData.gallery} />
-
-            <!-- Paso a paso -->
-            <section>
-            <h2 class="text-2xl font-bold text-neutral-200 mb-6 flex items-center gap-2">
-                <Icon name="mdi:step-forward" class="h-6 w-6 text-purple-400" />
-                Construcción paso a paso
-            </h2>
-            <div class="space-y-10">
-                {projectData.steps.map((step, index) => (
-                <StepByStep
-                    number={index + 1}
-                    title={step.title}
-                    content={step.content}
-                    image={step.image}
-                    code={step.code}
-                />
-                ))}
-            </div>
-            </section>
-
-            <!-- Notas finales -->
-            <section class="rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/50 to-neutral-900 p-6">
-            <h3 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-2">
-                <Icon name="mdi:lightbulb-on" class="h-5 w-5 text-amber-400" />
-                Consejos y recomendaciones
-            </h3>
-            <ul class="space-y-3 text-neutral-300">
-                <li class="flex items-start gap-2">
-                <Icon name="mdi:check-circle" class="h-5 w-5 flex-shrink-0 text-green-400 mt-0.5" />
-                <span>Calibrar los sensores con muestras de suelo seco y húmedo para obtener valores precisos</span>
-                </li>
-                <li class="flex items-start gap-2">
-                <Icon name="mdi:check-circle" class="h-5 w-5 flex-shrink-0 text-green-400 mt-0.5" />
-                <span>Usar una fuente de alimentación estable si el sistema estará funcionando continuamente</span>
-                </li>
-                <li class="flex items-start gap-2">
-                <Icon name="mdi:check-circle" class="h-5 w-5 flex-shrink-0 text-green-400 mt-0.5" />
-                <span>Considerar añadir un módulo RTC para programar riegos en horarios específicos</span>
-                </li>
-            </ul>
-            </section>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="lg:col-span-4 mt-8 lg:mt-0 space-y-8">
-            <!-- Lista de materiales -->
-            <MaterialsList
-            items={projectData.materials}
-            category={projectData.category}
-            />
-
-            <!-- Descargas -->
-            <section class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
-            <h3 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-2">
-                <Icon name="mdi:download" class="h-5 w-5 text-purple-400" />
-                Archivos para descargar
-            </h3>
-            <div class="space-y-3">
-                {projectData.downloads.map((file) => (
-                <a href={file.link} class="group flex items-center justify-between rounded-lg border border-neutral-800 px-4 py-3 hover:border-purple-500/50 hover:bg-purple-500/10 transition-colors">
-                    <div>
-                    <p class="font-medium text-neutral-200 group-hover:text-purple-400 transition-colors">{file.name}</p>
-                    <p class="text-xs text-neutral-500">{file.type} • {file.size}</p>
+            <div class="lg:col-span-8 space-y-12">
+                {projectData.verified && (
+                <div class="flex items-center gap-4 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 group hover:border-amber-500/40 transition-colors">
+                    <div class="relative">
+                        <img src="/geekeando.svg" class="h-10 w-10 grayscale group-hover:grayscale-0 transition-all relative z-10" alt="Bitsa Core" />
+                        <div class="absolute inset-0 bg-amber-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
-                    <Icon name="mdi:download" class="h-5 w-5 text-neutral-500 group-hover:text-purple-400 transition-colors" />
-                </a>
-                ))}
+                    <div>
+                        <p class="text-xs font-mono text-amber-500 font-bold uppercase tracking-widest">BitsaBots Verified Core</p>
+                        <p class="text-[11px] text-neutral-400 leading-tight">Este proyecto ha sido testeado en nuestro laboratorio físico.</p>
+                    </div>
+                </div>
+                )}
+                <div class="mt-8">
+                    {gallery.length > 0 && <ProjectGallery images={gallery} />}
+                    {steps && steps.length > 0 && (
+                        <section class="mt-20 max-w-4xl">
+                            <h2 class="text-xs font-mono text-amber-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-3">
+                                <Icon name="mdi:hammer-wrench" class="h-4 w-4" />
+                                Guía de Ensamblaje [.build]
+                            </h2>
+                            <div class="flex flex-col">
+                                {steps.map((step, index) => (
+                                    <StepByStep 
+                                        {...step} 
+                                        isLast={index === steps.length - 1} 
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                    <ProjectsTips tips={projectData.tips} />
+                    {relatedProjects.length > 0 && (
+                        <section class="mt-20 border-t border-neutral-800 pt-10">
+                          <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-xs font-mono text-amber-500 uppercase tracking-[0.3em] flex items-center gap-2">
+                              <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+                              Proyectos Similares [.rel]
+                            </h3>
+                            <a href={`/projects/${category.toLowerCase()}`} class="text-[10px] font-mono text-neutral-500 hover:text-amber-500 transition-colors">
+                              VER_TODO_{category.toUpperCase()} ->
+                            </a>
+                          </div>
+                          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {relatedProjects.map((project) => (
+                              <RelatedProjects 
+                                projects={relatedProjects}
+                                currentCategory={category}
+                              />
+                            ))}
+                          </div>
+                        </section>
+                      )}
+                </div>
             </div>
-            </section>
+            
+            <aside class="lg:col-span-4 space-y-8">
+                
+                <div class="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6 backdrop-blur-sm">
+                    <h3 class="font-display text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <Icon name="mdi:format-list-bulleted-type" class="h-5 w-5 text-amber-500" />
+                        LISTA DE MATERIALES
+                    </h3>
+                    <MaterialsList items={projectData.materials || []} />
+                    
+                </div>
 
-            <!-- Compartir proyecto -->
-            <section class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
-            <h3 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-2">
-                <Icon name="mdi:share-variant" class="h-5 w-5 text-pink-400" />
-                Compartir proyecto
-            </h3>
-            <div class="flex gap-3 flex-col">
-                <a href="#" class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-blue-600/20 border border-blue-600/30 px-4 py-2 text-blue-400 hover:bg-blue-600/30 transition-colors">
-                <Icon name="mdi:twitter" class="h-5 w-5" />
-                Twitter
-                </a>
-                <a href="#" class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-purple-600/20 border border-purple-600/30 px-4 py-2 text-purple-400 hover:bg-purple-600/30 transition-colors">
-                <Icon name="mdi:facebook" class="h-5 w-5" />
-                Facebook
-                </a>
-                <a href="#" class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-2 text-neutral-400 hover:bg-neutral-700 transition-colors">
-                <Icon name="mdi:link" class="h-5 w-5" />
-                Copiar
-                </a>
-            </div>
-            </section>
+                <section class="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 text-amber-500 font-mono text-xs uppercase tracking-tighter">
+                            <Icon name="mdi:folder-download" class="h-4 w-4" />
+                            Recursos [.root]
+                        </div>
+                    
+                        <div class="grid gap-2">
+                            {downloadFiles.length > 0 && <DownloadsSection files={downloadFiles} />}
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rounded-2xl border border-neutral-800 bg-amber-500/5 p-6">
+                    <p class="text-xs font-mono text-amber-500 mb-4 uppercase tracking-widest text-center">Difundir Conocimiento</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-neutral-400 hover:text-white transition-colors">
+                            <Icon name="mdi:twitter" class="h-4 w-4" /> Twitter
+                        </button>
+                        <button class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-neutral-400 hover:text-white transition-colors">
+                            <Icon name="mdi:content-copy" class="h-4 w-4" /> Enlace
+                        </button>
+                    </div>
+                </section>
+            </aside>
         </div>
-        </div>
-
-        <!-- Proyectos relacionados -->
-        <RelatedProjects
-        projects={projectData.relatedProjects}
-        currentCategory={category}
-        />
-
-        <!-- Comentarios -->
-        <section class="mt-16">
-        <h2 class="text-2xl font-bold text-neutral-200 mb-6 flex items-center gap-2">
-            <Icon name="mdi:comment-multiple" class="h-6 w-6 text-purple-400" />
-            Comentarios y preguntas
-        </h2>
-
-        <div class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
-            <div class="flex items-start gap-4 mb-8">
-            <img src="../../../src/assets/images/authors/default-avatar.png" alt="Usuario" class="h-10 w-10 rounded-full" />
-            <div class="flex-1">
-                <textarea
-                class="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 text-neutral-200 placeholder-neutral-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 outline-none"
-                rows="3"
-                placeholder="¿Has probado este proyecto? ¡Comparte tus experiencias o haz preguntas!"
-                ></textarea>
-                <div class="flex justify-between items-center mt-2">
-                <div class="flex gap-2">
-                    <button type="button" class="p-1 text-neutral-500 hover:text-neutral-300">
-                    <Icon name="mdi:image" class="h-5 w-5" />
-                    </button>
-                    <button type="button" class="p-1 text-neutral-500 hover:text-neutral-300">
-                    <Icon name="mdi:code-tags" class="h-5 w-5" />
-                    </button>
-                </div>
-                <button class="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 text-sm font-medium text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all">
-                    Publicar comentario
-                </button>
-                </div>
-            </div>
-            </div>
-
-            <!-- Lista de comentarios (ejemplo) -->
-            <div class="space-y-6">
-            <div class="flex gap-4">
-                <img src="../../../src/assets/images/authors/user-1.png" alt="Usuario" class="h-10 w-10 rounded-full flex-shrink-0" />
-                <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="font-medium text-neutral-200">Carlos M.</span>
-                    <span class="text-xs text-neutral-500">Hace 3 días</span>
-                </div>
-                <p class="text-neutral-300">¡Excelente proyecto! Lo adapté para mi huerto y funciona perfecto. ¿Alguien ha probado con sensores de pH también?</p>
-                <div class="flex gap-4 mt-2">
-                    <button class="text-xs text-neutral-500 hover:text-purple-400 flex items-center gap-1">
-                    <Icon name="mdi:thumb-up" class="h-4 w-4" /> 5
-                    </button>
-                    <button class="text-xs text-neutral-500 hover:text-purple-400">
-                    Responder
-                    </button>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        </section>
     </article>
 </Layout>
+
+<style is:global>
+    /* Estilo para que el contenido Markdown se vea Geek */
+    .prose pre {
+        background-color: #0a0a0a !important;
+        border: 1px solid #262626;
+        border-radius: 12px;
+    }
+    .prose h2, .prose h3 {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: -0.05em;
+    }
+    .prose blockquote {
+    border-left: 4px solid #f59e0b; /* Amber 500 */
+    background: rgba(245, 158, 11, 0.05);
+    padding: 1rem;
+    font-style: italic;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+</style>

@@ -1,22 +1,52 @@
 ---
 import { Icon } from "astro-icon/components";
 const { icon, iconColor = "amber", title, class: className = "" , text} = Astro.props;
+
+// Mapeo de colores para mantener consistencia con Tailwind
+const colors = {
+    amber: "text-amber-400 border-amber-500/30",
+    purple: "text-purple-400 border-purple-500/30",
+    blue: "text-blue-400 border-blue-500/30",
+};
 ---
 
-<div class={`legal-section ${className}`}>
-    <h2 class="text-xl md:text-2xl font-bold text-neutral-200 mb-4 flex items-center gap-3">
-        <Icon name={icon} class={`h-5 w-5 md:h-6 md:w-6 text-${iconColor}-400`} />
-        {title}
-    </h2>
-    <div class="legal-content" >
-        <Fragment
-            set:html = { text }
-        />
+<div class={`legal-section group relative mb-12 ${className}`}>
+    <div class="flex items-center gap-3 mb-4">
+        <div class={`flex h-8 w-8 items-center justify-center border bg-neutral-900 transition-transform group-hover:rotate-6 ${colors[iconColor as keyof typeof colors]}`}>
+            <Icon name={icon} class="h-4 w-4" />
+        </div>
+        
+        <h2 class="font-mono text-sm md:text-base font-bold tracking-tighter uppercase text-neutral-200">
+            <span class="text-neutral-600 mr-2">#</span>{title}
+        </h2>
+        
+        <div class="hidden md:block h-[1px] flex-grow bg-neutral-800 group-hover:bg-neutral-700 transition-colors"></div>
+    </div>
+
+    <div class="legal-content pl-4 md:pl-11 border-l border-neutral-900 group-hover:border-neutral-800 transition-colors">
+        <div class="prose prose-sm prose-neutral max-w-none text-neutral-400 leading-relaxed font-sans">
+            <Fragment set:html={text} />
+        </div>
     </div>
 </div>
 
-<style>
+<style is:global>
+    /* Estilos para los enlaces dentro del contenido legal */
     .legal-content a {
-        @apply text-amber-400 hover:text-amber-300 underline transition-colors;
+        @apply font-mono text-xs font-bold text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4 transition-all;
+    }
+
+    /* Estilo para los párrafos dentro del fragmento */
+    .legal-content p {
+        @apply mb-4;
+    }
+
+    /* Estilo para listas si existen en el texto legal */
+    .legal-content ul {
+        @apply list-disc pl-5 space-y-2 mb-4 border-l border-neutral-800 ml-2;
+    }
+
+    .legal-content strong {
+        @apply text-neutral-200 font-bold;
     }
 </style>

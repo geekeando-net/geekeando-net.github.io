@@ -1,73 +1,94 @@
 ---
 const cookiesTable = [
     {
+        id: "0x01",
         name: "cookie_consent",
         type: "Esencial",
         duration: "1 año",
-        purpose: "Recordar sus preferencias de cookies"
+        purpose: "Memory: User preference persistence"
     },
     {
+        id: "0x02",
         name: "session_id",
         type: "Esencial",
         duration: "Sesión",
-        purpose: "Mantener su sesión activa"
+        purpose: "Auth: Active session maintenance"
     },
     {
+        id: "0x03",
         name: "_ga",
         type: "Analítica",
         duration: "2 años",
-        purpose: "Distinguir usuarios (Google Analytics)"
+        purpose: "Track: Analytics user identification"
     },
     {
+        id: "0x04",
         name: "_gid",
         type: "Analítica",
         duration: "24 horas",
-        purpose: "Distinguir usuarios (Google Analytics)"
+        purpose: "Track: Analytics user identification"
     },
     {
+        id: "0x05",
         name: "_gat",
         type: "Analítica",
         duration: "1 minuto",
-        purpose: "Limitar solicitudes (Google Analytics)"
+        purpose: "Rate: Request throttling"
     },
     {
+        id: "0x06",
         name: "NID",
         type: "Funcionalidad",
         duration: "6 meses",
-        purpose: "Preferencias de Google Maps"
+        purpose: "Map: Google Maps preferences"
     }
 ];
+
+const typeStyles = {
+    Esencial: "text-amber-500 border-amber-500/30 bg-amber-500/5",
+    Analítica: "text-purple-500 border-purple-500/30 bg-purple-500/5",
+    Funcionalidad: "text-blue-500 border-blue-500/30 bg-blue-500/5"
+};
 ---
 
-<div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-neutral-700">
-        <thead class="bg-neutral-800/50">
-        <tr>
-            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Nombre</th>
-            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Tipo</th>
-            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Duración</th>
-            <th class="px-4 py-3 text-left text-xs font-medium text-neutral-300 uppercase tracking-wider">Propósito</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-neutral-800">
-        {cookiesTable.map((cookie) => (
+<div class="overflow-x-auto border border-neutral-800 bg-black/20">
+    <table class="min-w-full border-collapse font-mono">
+        <thead class="bg-neutral-900/80 border-b border-neutral-800">
             <tr>
-            <td class="px-4 py-3 text-sm text-neutral-300 font-mono">{cookie.name}</td>
-            <td class="px-4 py-3 text-sm text-neutral-400">
-                <span class={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                cookie.type === "Esencial"
-                    ? "bg-amber-900 text-amber-300"
-                    : cookie.type === "Analítica"
-                    ? "bg-purple-900 text-purple-300"
-                    : "bg-blue-900 text-blue-300"
-                }`}>
-                {cookie.type}
-                </span>
-            </td>
-            <td class="px-4 py-3 text-sm text-neutral-400">{cookie.duration}</td>
-            <td class="px-4 py-3 text-sm text-neutral-400">{cookie.purpose}</td>
+                <th class="px-4 py-3 text-left text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em]">ID</th>
+                <th class="px-4 py-3 text-left text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em]">Package_Name</th>
+                <th class="px-4 py-3 text-left text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em]">Type_Status</th>
+                <th class="px-4 py-3 text-left text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em]">TTL_Duration</th>
+                <th class="px-4 py-3 text-left text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em]">Function_Log</th>
             </tr>
-        ))}
+        </thead>
+        <tbody class="divide-y divide-neutral-900">
+            {cookiesTable.map((cookie) => (
+                <tr class="group hover:bg-neutral-800/30 transition-colors">
+                    <td class="px-4 py-3 text-[10px] text-neutral-700">{cookie.id}</td>
+                    <td class="px-4 py-3 text-xs text-neutral-300 font-bold tracking-tighter">
+                        <span class="text-neutral-600 mr-1">$</span>{cookie.name}
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class={`text-[9px] uppercase px-2 py-0.5 border font-black tracking-widest ${typeStyles[cookie.type as keyof typeof typeStyles]}`}>
+                            {cookie.type}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-[11px] text-neutral-500 uppercase italic">
+                        {cookie.duration}
+                    </td>
+                    <td class="px-4 py-3 text-[11px] text-neutral-400">
+                        <span class="opacity-30 mr-2">>></span>{cookie.purpose}
+                    </td>
+                </tr>
+            ))}
         </tbody>
     </table>
 </div>
+
+<style>
+    /* Estilo "Zebra" sutil para mejorar la lectura técnica */
+    tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.01);
+    }
+</style>

@@ -60,5 +60,10 @@ export default defineConfig({
         }
       }
     }
-  }
+  },
+  markdown: {
+    shikiConfig: {
+      theme: 'one-dark-pro', // O el tema que prefieras para que combine con BitsaBots
+    },
+  },
 });

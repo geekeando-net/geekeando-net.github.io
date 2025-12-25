@@ -1,0 +1,80 @@
+---
+import { Icon } from 'astro-icon/components';
+const { tips } = Astro.props;
+
+const icons = {
+  info: { icon: "mdi:information", color: "text-blue-400", border: "border-blue-500/20" },
+  warning: { icon: "mdi:alert", color: "text-red-400", border: "border-red-500/20" },
+  tip: { icon: "mdi:lightbulb", color: "text-amber-500", border: "border-amber-500/20" }
+};
+---
+
+<section class="mt-20 mb-20">
+  <div class="mb-10 h-8"> 
+    <h3 
+        id="typing-title" 
+        class="text-xs font-mono text-amber-500 uppercase tracking-[0.4em] flex items-center gap-2 after:content-['_'] after:animate-pulse after:ml-1"
+        data-text="NOTAS_DE_LABORATORIO_LOGS.EXE"
+    >
+      </h3>
+  </div>
+
+  <div class="space-y-6">
+    {tips.map((tip:any, index:any) => {
+      const style = icons[tip.type as keyof typeof icons] || icons.tip;
+      return (
+        <div 
+          class={`tip-card opacity-0 translate-y-4 flex gap-5 p-5 rounded-2xl border ${style.border} bg-neutral-900/40 backdrop-blur-sm transition-all duration-700`}
+          style={`transition-delay: ${index * 200}ms`}
+        >
+          <div class={`${style.color} mt-1 animate-pulse`}>
+            <Icon name={style.icon} class="h-6 w-6" />
+          </div>
+          <div>
+            <p class="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest mb-2">
+              Status: {tip.type}_detected
+            </p>
+            <p class="text-sm text-neutral-300 leading-relaxed italic font-serif">
+              "{tip.message}"
+            </p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+<script>
+  function startTypingEffect() {
+    const titleElement = document.getElementById('typing-title');
+    if (!titleElement) return;
+
+    const text = titleElement.getAttribute('data-text') || '';
+    let i = 0;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Iniciar escritura
+          const interval = setInterval(() => {
+            titleElement.textContent += text.charAt(i);
+            i++;
+            if (i >= text.length) clearInterval(interval);
+          }, 50);
+
+          // Animar las tarjetas de consejos
+          document.querySelectorAll('.tip-card').forEach(card => {
+            card.classList.remove('opacity-0', 'translate-y-4');
+          });
+
+          observer.unobserve(titleElement);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(titleElement);
+  }
+
+  // Ejecutar al cargar la página
+  startTypingEffect();
+</script>

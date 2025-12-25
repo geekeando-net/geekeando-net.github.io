@@ -1,13 +1,23 @@
 ---
+// TitlePost.astro
 const { title, subTitle } = Astro.props;
-
 ---
 
-<div>
-    <h1 class="text-center text-balance text-2xl font-bold tracking-tight text-neutral-200 md:text-4xl md:leading-tight">
+<div class="relative mb-10 group">
+    <div class="absolute -left-4 top-0 h-full w-1 bg-amber-500/20 group-hover:bg-amber-500 transition-colors duration-500"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <h1 class="font-display text-3xl font-black tracking-tighter text-white md:text-5xl lg:text-6xl uppercase leading-none italic">
         { title }
     </h1>
-    <p class="text-justify mt-1 text-pretty text-neutral-400 py-3">
+    
+    <div class="mt-4 flex items-center gap-4">
+        <div class="h-[1px] w-12 bg-amber-500/50"></div>
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-amber-500/60">
+            System_Update_Entry
+        </p>
+    </div>
+
+    <p class="mt-6 text-pretty font-light leading-relaxed text-neutral-400 md:text-lg border-l border-neutral-800 pl-6 italic">
         { subTitle }
     </p>
 </div>

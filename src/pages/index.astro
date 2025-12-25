@@ -1,306 +1,300 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from '@layouts/Layout.astro';
 import HeroSection from '@/components/Hero.astro';
-import CategoryPill from '@/components/ui/CategoryPill.astro';
-import BlogPostCard from '@/components/ui/BlogPostCard.astro';
 import { Icon } from 'astro-icon/components';
-// Datos de ejemplo (deberían venir de tu CMS/API)
-const featuredProjects = [
-	{
-		category: "Arduino",
-		title: "Sistema de Riego Inteligente",
-		image: "/projects/arduino-irrigation.png",
-		description: "Control automático de riego con IoT y sensores de humedad",
-		slug: "riego-inteligente",
-		tags: ["IoT", "Automatización"],
-		difficulty: "Intermedio"
-	},
-  // ... 2-3 proyectos más
-];
-const allPostsFile = import.meta.glob('@posts/*.md', { eager: true });
-const allPosts = Object.entries(allPostsFile).map(([filePath, post]) => {
-    const flatPost = Object.assign({}, post) as { frontmatter: { pubDate?: string } };
-    const slug = filePath.replace('/src/pages/posts/', '').replace('.md', '');
-    return {
-        ...flatPost,
-        url: `/posts/${slug}`,
-        pubDate: new Date(flatPost.frontmatter?.pubDate || 0),
-    };
-});
-const featuredPosts = allPosts.sort((a, b) =>
-    (b?.pubDate?.getTime() || 0) - (a?.pubDate?.getTime() || 0)
-);
-// Datos de ejemplo para el blog (deberían venir de tu CMS)
 
-const projectCategories = [
-	{
-	id: "arduino",
-	name: "Arduino",
-	icon: "mdi:chip",
-	description: "Proyectos de electrónica y automatización con Arduino",
-	projects: [
-		{
-		title: "Sistema de Riego Automático",
-		slug: "riego-automatico",
-		image: "/images/projects/arduino-irrigation.jpg",
-		tags: ["IoT", "Automatización", "Jardinería"],
-		date: "2023-10-15",
-		difficulty: "Intermedio",
-		components: ["Arduino Uno", "Sensor humedad"],
-		featured: true
+const imagesProjects = import.meta.glob('../assets/images/projects/*.{jpg,png,webp,avif}');
+// 1. Cargamos todos los archivos Markdown del blog
+const allPostsFile = import.meta.glob('../pages/posts/*.md', { eager: true });
+
+// 2. Procesamos y ordenamos por fecha (del más reciente al más antiguo)
+const latestPosts = Object.entries(allPostsFile)
+    .map(([filePath, post]: any) => {
+        const slug = filePath.split('/').pop()?.replace('.md', '');
+        
+        // FORZAMOS LA CONVERSIÓN A FECHA AQUÍ
+        const dateValue = post.frontmatter.pubDate 
+            ? new Date(post.frontmatter.pubDate) 
+            : new Date();
+
+        return {
+            ...post.frontmatter,
+            url: `/posts/${slug}`,
+            // Guardamos el objeto Date real
+            pubDate: dateValue 
+        };
+    })
+    // Ordenamos usando el tiempo en milisegundos
+    .sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime())
+    .slice(0, 3); // <--- Aquí limitamos a los últimos 3
+// Datos de ejemplo para el blog (deberían venir de tu CMS)
+// 1. Obtenemos todos los proyectos dinámicos de la colección
+const allProjects = await getCollection("projects");
+// 2. Definir los destacados (puedes filtrar por los que tengan featured: true en el MD)
+// Si aún no tienes ese campo, simplemente toma los últimos 3
+const featuredProjects = allProjects
+    .filter(project => project.data.featured === true) 
+    .slice(0, 3);
+
+// 3. Si no hay ninguno marcado como featured, tomamos los 3 más recientes como respaldo
+const displayProjects = featuredProjects.length > 0 
+    ? featuredProjects 
+    : allProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
+	
+	// 4. Procesar las imágenes (usando displayProjects que es el que vamos a renderizar)
+	const getImageProjectUrl = async (imagePath: any) => {
+		if (!imagePath) return null;
+		if (typeof imagePath === 'object' && imagePath.src) {
+        return imagePath;
+    }
+		const imageFileName = imagePath.split('/').pop() ?? 'default.png';
+		const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
+		if (imageKey) {
+			try {
+				const module = await imagesProjects[imageKey]();
+				return (module as { default: any }).default;
+			} catch (e) {
+				console.error(`Error cargando la imagen: ${imageKey}`, e);
+				return null;
+			}
+		}else{
+			try {
+				const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
+				if (imageDefault) {
+					const module = await imagesProjects[imageDefault]();
+					return (module as { default: any }).default;
+				}
+				return null;
+			} catch (e) {
+				console.error(`Error cargando la imagen por defecto`, e);
+				return null;
+			}
 		}
-	]
-	},
-	{
-	id: "paper-craft",
-	name: "Paper Craft",
-	icon: "mdi:paper-cut-vertical",
-	description: "Creaciones artísticas en papel y cartón",
-	projects: [
-		{
-		title: "Maqueta de Ciudad Futurista",
-		slug: "ciudad-futurista",
-		image: "/images/projects/paper-city.jpg",
-		tags: ["Escala 1:100", "Arquitectura"],
-		date: "2023-11-05",
-		difficulty: "Principiante",
-		materials: ["Cartulina", "Pegamento"]
-		}
-	]
-	},
-	{
-	id: "3d-print",
-	name: "3D Print",
-	icon: "mdi:printer-3d",
-	description: "Diseño e impresión 3D de objetos y prototipos",
-	projects: [
-		{
-		title: "Brazo Robótico Modular",
-		slug: "brazo-robotico",
-		image: "/images/projects/robotic-arm.jpg",
-		tags: ["Robótica", "Open Source"],
-		date: "2023-09-18",
-		difficulty: "Intermedio",
-		stlFiles: ["/downloads/arm.stl"]
-		}
-	]
-	},
-	{
-	id: "music",
-	name: "Music",
-	icon: "mdi:music",
-	description: "Proyectos musicales y de audio tecnología",
-	projects: [
-		{
-		title: "Sintetizador DIY",
-		slug: "sintetizador-diy",
-		image: "/images/projects/diy-synth.jpg",
-		tags: ["Electrónica", "Música"],
-		date: "2023-07-30",
-		difficulty: "Avanzado",
-		schematics: "/downloads/synth-circuit.pdf"
-		}
-	]
-	}
+		return null;
+	};
+	const imageFeaturedProjects = await Promise.all(
+    displayProjects.map((project) => getImageProjectUrl(project.data.image))
+);
+
+// 5. Categorías con contador real (lo que hicimos antes)
+const baseCategories = [
+    { id: "arduino", name: "Arduino", icon: "mdi:chip", description: "Proyectos de electrónica..." },
+    { id: "papercraft", name: "Paper Craft", icon: "mdi:paper-cut-vertical", description: "Ingeniería en papel..." },
+    { id: "3d-print", name: "3D Print", icon: "mdi:printer-3d", description: "Diseño e impresión 3D..." },
+    { id: "music", name: "Music", icon: "mdi:music", description: "Tecnología sonora..." }
 ];
+
+const projectCategories = baseCategories.map(cat => ({
+    ...cat,
+    count: allProjects.filter(p => p.data.category.toLowerCase() === cat.id).length
+}));
+
 const stats = {
-	projects: 124,
-	categories: 8,
+	projects: allProjects.length,
+	categories: projectCategories.length,
 	community: 2300
 };
-const imagesProjects = import.meta.glob('../assets/images/projects/*.{jpg,png,webp,avif}');
-const getImageProjectUrl = async (imagePath: string) => {
-    if (!imagePath) return null;
-    const imageFileName = imagePath.split('/').pop() ?? 'default.png';
-    const imageKey = Object.keys(imagesProjects).find((key) => key.endsWith(imageFileName));
-    if (imageKey) {
-        try {
-            const module = await imagesProjects[imageKey]();
-            return (module as { default: any }).default;
-        } catch (e) {
-            console.error(`Error cargando la imagen: ${imageKey}`, e);
-            return null;
-        }
-    }else{
-        try {
-            const imageDefault = Object.keys(imagesProjects).find((key) => key.endsWith('default.png'));
-            if (imageDefault) {
-                const module = await imagesProjects[imageDefault]();
-                return (module as { default: any }).default;
-            }
-            return null;
-        } catch (e) {
-            console.error(`Error cargando la imagen por defecto`, e);
-            return null;
-        }
-    }
-    return null;
-};
 
-const imageFeaturedProjects = await Promise.all(featuredProjects.map((project) => getImageProjectUrl(project.image)))
+
 ---
 
-<Layout title="Welcome to GeekEando">
-	<HeroSection />
-	<!-- Stats -->
-	<section class="py-12 border-b border-neutral-800">
-	<div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-		<div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-neutral-800">
-		<div class="text-center p-6">
-			<p class="text-4xl font-bold text-purple-400">{stats.projects}+</p>
-			<p class="mt-2 text-neutral-400">Proyectos publicados</p>
-		</div>
-		<div class="text-center p-6">
-			<p class="text-4xl font-bold text-pink-400">{stats.categories}</p>
-			<p class="mt-2 text-neutral-400">Categorías diferentes</p>
-		</div>
-		<div class="text-center p-6">
-			<p class="text-4xl font-bold text-blue-400">{stats.community}+</p>
-			<p class="mt-2 text-neutral-400">Miembros activos</p>
-		</div>
-		</div>
-	</div>
-	</section>
-	<!-- Proyectos Destacados -->
-	<section class="py-16">
-		<div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-			<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+<Layout title="Geekeando | Arduino, 3D Print & Papercraft">
+    <HeroSection />
+
+    <section class="py-12 border-b border-neutral-800 bg-neutral-950/50">
+        <div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-neutral-800">
+                <div class="text-center p-6 group">
+                    <p class="glitch-hover text-4xl font-display font-bold text-amber-500 transition-transform group-hover:scale-110">{stats.projects}+</p>
+                    <p class="mt-2 text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-600">Proyectos</p>
+                </div>
+                <div class="text-center p-6 group">
+                    <p class="glitch-hover text-4xl font-display font-bold text-blue-400 transition-transform group-hover:scale-110">{stats.categories}</p>
+                    <p class="mt-2 text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-600">Labs</p>
+                </div>
+                <div class="text-center p-6 group">
+                    <p class="glitch-hover text-4xl font-display font-bold text-emerald-400 transition-transform group-hover:scale-110">{stats.community}+</p>
+                    <p class="mt-2 text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-600">Makers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 relative overflow-hidden bg-neutral-950">
+		<div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 40px 40px;"></div>
+	
+		<div class="relative z-10 mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
+			<div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 border-b border-neutral-900 pb-8">
 				<div>
-				<h2 class="text-2xl font-bold text-neutral-200 sm:text-3xl">Proyectos Destacados</h2>
-				<p class="text-neutral-400 mt-2">Selección de nuestras creaciones más populares</p>
+					<h2 class="text-2xl font-display font-bold text-white uppercase tracking-tighter sm:text-3xl">
+						Proyectos <span class="text-amber-500">_Destacados</span>
+					</h2>
+					<p class="text-neutral-500 mt-2 font-mono text-[10px] uppercase tracking-widest">// status: featured_selection_active</p>
 				</div>
-				<a href="/projects" class="text-purple-400 hover:text-purple-300 flex items-center gap-1">
-				Ver todos los proyectos
-				<Icon name="mdi:arrow-right" class="h-5 w-5" />
+				
+				<a href="/projects" class="group flex items-center gap-2 px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded text-[10px] font-mono text-amber-500 hover:border-amber-500/50 transition-all">
+					<span class="tracking-widest">[ VER_REPOS_FULL ]</span>
+					<Icon name="mdi:chevron-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
 				</a>
 			</div>
+	
 			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{featuredProjects.map((project,index) => (
-				<a href={`/projects/${project.category.toLowerCase()}/${project.slug}`} class="group block hover:no-underline">
-					<div class="relative rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900/50 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
-					<div class="aspect-[4/3] overflow-hidden">
-						<img
-						src={imageFeaturedProjects[index]?.src}
-						alt={project.title}
-						class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-						/>
-					</div>
-					<div class="p-6">
-						<div class="flex justify-between items-start mb-3">
-						<CategoryPill category={project.category} />
-						<span class={`text-xs px-2 py-1 rounded-full border ${
-							project.difficulty === "Principiante" 
-							? "bg-green-900/50 text-green-400 border-green-800" 
-							: project.difficulty === "Intermedio" 
-								? "bg-amber-900/50 text-amber-400 border-amber-800" 
-								: "bg-red-900/50 text-red-400 border-red-800"
-						}`}>
-							{project.difficulty}
-						</span>
-						</div>
-						<h3 class="text-xl font-bold text-neutral-200 mb-2 group-hover:text-purple-400 transition-colors">
-						{project.title}
-						</h3>
-						<p class="text-neutral-400 line-clamp-2">{project.description}</p>
-						<div class="mt-4 flex flex-wrap gap-2">
-						{project.tags.map((tag) => (
-							<span class="text-xs px-2 py-1 rounded-full bg-neutral-800 text-neutral-400">
-							{tag}
+				{displayProjects.map((project, index) => (
+					<a href={`/projects/${project.data.category.toLowerCase()}/${project.slug}`} 
+					   class="group relative flex flex-col h-full rounded-xl border border-neutral-800 bg-neutral-900/40 overflow-hidden hover:border-amber-500/50 transition-all duration-500">
+						
+						{/* Badge Técnico */}
+						<div class="absolute top-4 right-4 z-20">
+							<span class="text-[8px] font-mono font-bold px-2 py-1 rounded bg-neutral-950 border border-amber-500/30 text-amber-500">
+								DATA_ID: {project.data.difficulty?.toUpperCase()}
 							</span>
-						))}
 						</div>
-					</div>
-					</div>
-				</a>
+	
+						<div class="relative aspect-video overflow-hidden border-b border-neutral-800">
+							<img
+								src={imageFeaturedProjects[index]?.src || '/images/default-project.jpg'}
+								alt={project.data.title}
+								class="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+							/>
+						</div>
+	
+						<div class="p-6 flex flex-col flex-grow">
+							<span class="text-[9px] font-mono text-amber-500/50 mb-2">CATEGORY::{project.data.category.toUpperCase()}</span>
+							<h3 class="text-xl font-display font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">
+								{project.data.title}
+							</h3>
+							<p class="text-sm text-neutral-500 font-light line-clamp-2 mb-6">
+								{project.data.description}
+							</p>
+	
+							<div class="mt-auto pt-4 border-t border-neutral-800/50 flex justify-between items-center text-[10px] font-mono text-neutral-600">
+								<span>TIMESTAMP: {project.data.pubDate.toLocaleDateString('es-ES', { year: '2-digit', month: '2-digit' })}</span>
+								<Icon name="mdi:arrow-right" class="h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500" />
+							</div>
+						</div>
+					</a>
 				))}
 			</div>
 		</div>
 	</section>
-	<!-- Categorías -->
-	<section class="py-16 bg-gradient-to-br from-neutral-900/50 to-purple-900/10">
-	<div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-		<div class="text-center mb-12">
-		<h2 class="text-2xl font-bold text-neutral-200 sm:text-3xl">Explora por Categorías</h2>
-		<p class="text-neutral-400 mt-2 max-w-2xl mx-auto">
-			Encuentra proyectos que se ajusten a tus intereses y habilidades
-		</p>
-		</div>
 
-		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-		{projectCategories.map((category) => (
-			<a
-			href={`/proyectos/${category.id}`}
-			class="group relative overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 hover:border-purple-500/30 transition-all duration-300"
-			>
-			<div class="flex items-center gap-4">
-				<div class="flex items-center justify-center rounded-lg bg-purple-500/10 p-3 text-purple-400 group-hover:bg-purple-500/20 transition-colors">
-				<Icon name={category.icon} class="h-6 w-6" />
-				</div>
-				<div>
-				<h3 class="font-bold text-neutral-200 group-hover:text-purple-400 transition-colors">
-					{category.name}
-				</h3>
-				<p class="text-sm text-neutral-500">{category.projects.length} proyectos</p>
-				</div>
-			</div>
-			<p class="mt-4 text-sm text-neutral-400 line-clamp-2">{category.description}</p>
-			</a>
-		))}
-		</div>
-	</div>
-	</section>
-	<!-- CTA Final -->
-	<section class="py-16">
-	<div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-		<div class="rounded-xl bg-[url('src/assets/images/cta-bg.png')] bg-cover bg-center border border-neutral-800 overflow-hidden">
-		<div class="bg-neutral-900/80 backdrop-blur-sm p-12 text-center">
-			<h2 class="text-2xl font-bold text-neutral-200 sm:text-3xl mb-4">¿Listo para compartir tu proyecto?</h2>
-			<p class="text-neutral-400 max-w-2xl mx-auto mb-6">
-			Únete a nuestra comunidad de creadores y muestra al mundo tus inventos
-			</p>
-			<div class="flex flex-wrap justify-center gap-4">
-			<a
-				href="/comunidad/registro"
-				class="inline-flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-neutral-100 hover:shadow-lg hover:shadow-purple-500/20 transition-all"
-			>
-				Crear cuenta gratis
-			</a>
-			<a
-				href="/projetcs/subir"
-				class="inline-flex items-center justify-center gap-x-2 rounded-lg border border-neutral-700 px-6 py-3 font-medium text-neutral-300 hover:bg-neutral-800 transition-colors"
-			>
-				Subir proyecto
-			</a>
-			</div>
-		</div>
-		</div>
-	</div>
-	</section>
-	<section class="py-16 border-t border-neutral-800">
+    <section class="py-16 relative overflow-hidden bg-neutral-950">
+        <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 40px 40px;"></div>
+        
+        <div class="relative z-10 mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-2xl font-display font-bold text-white uppercase tracking-widest sm:text-3xl">Explora los Labs</h2>
+                <div class="mt-2 h-1 w-20 bg-amber-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {projectCategories.map((category) => (
+                    <a href={`/projects/${category.id}`} class="group p-8 rounded-2xl border border-neutral-800 bg-neutral-900/60 backdrop-blur-md hover:border-amber-500/40 transition-all hover:-translate-y-2">
+                        <div class="mb-4 inline-flex items-center justify-center rounded-xl bg-amber-500/10 p-3 text-amber-500 group-hover:bg-amber-500 group-hover:text-neutral-900 transition-all duration-300">
+                            <Icon name={category.icon} class="h-8 w-8" />
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">{category.name}</h3>
+                        <div class="flex items-center gap-2 mb-4">
+							<span class="glitch-hover text-[10px] px-2 py-0.5 rounded bg-neutral-800 text-amber-500 font-mono border border-neutral-700 cursor-default">
+								{(category.count || 0).toString().padStart(2, '0')} UNITS
+							</span>
+							<div class="h-px flex-1 bg-neutral-800"></div>
+						</div>
+                        <p class="text-sm text-neutral-400 line-clamp-2 font-light">{category.description}</p>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </section>
+	<section class="py-20 bg-neutral-950">
 		<div class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-			<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-			<div>
-				<h2 class="text-2xl font-bold text-neutral-200 sm:text-3xl">Artículos Recientes</h2>
-				<p class="text-neutral-400 mt-2">Tutoriales, guías y contenido técnico para makers</p>
+			<div class="flex items-center gap-4 mb-12">
+				<h2 class="text-xl font-display font-bold text-white uppercase tracking-tighter">
+					Últimas Entradas <span class="text-amber-500">.log</span>
+				</h2>
+				<div class="h-px flex-1 bg-neutral-900"></div>
+				<a href="/blog" class="text-[10px] font-mono text-neutral-500 hover:text-amber-500 uppercase tracking-widest transition-colors">
+					Ver todo_el_archivo [++]
+				</a>
 			</div>
-			<a href="/blog" class="text-purple-400 hover:text-purple-300 flex items-center gap-1">
-				Ver todos los artículos
-				<Icon name="mdi:arrow-right" class="h-5 w-5" />
-			</a>
-			</div>
-			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{featuredPosts.map((post) => (
-				<BlogPostCard
-				title = { (post.frontmatter as Frontmatter)?.title || "Sin título"}
-				excerpt= { (post.frontmatter as Frontmatter)?.description }
-				tags = { (post.frontmatter as Frontmatter)?.tags}
-				date = { (post.frontmatter as Frontmatter)?.pubDate }
-				slug = {post.url}
-				image = { (post.frontmatter as Frontmatter)?.image}
-				readingTime = "8 min"
-				/>
-			))}
+	
+			<div class="grid gap-8 lg:grid-cols-3">
+				{latestPosts.map((post) => (
+					<article class="group relative flex flex-col bg-neutral-900/20 border border-neutral-800 rounded-xl p-6 hover:bg-neutral-900/40 transition-all duration-300">
+						<div class="flex justify-between items-start mb-4">
+							<span class="text-[9px] font-mono text-amber-500/60 uppercase tracking-widest">
+								[{post.pubDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}]
+							</span>
+							<Icon name="mdi:text-box-outline" class="h-4 w-4 text-neutral-700 group-hover:text-amber-500 transition-colors" />
+						</div>
+						
+						<h3 class="text-lg font-bold text-neutral-200 group-hover:text-white mb-3 leading-tight">
+							<a href={post.url}>
+								{post.title}
+							</a>
+						</h3>
+						
+						<p class="text-sm text-neutral-500 font-light line-clamp-2 mb-6">
+							{post.description}
+						</p>
+	
+						<div class="mt-auto pt-4 border-t border-neutral-800/50 flex justify-between items-center">
+							<span class="text-[10px] font-mono text-neutral-600 italic">
+								{post.author || 'Pedro Carranza'}
+							</span>
+							<a href={post.url} class="text-[10px] font-mono text-amber-500 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 uppercase">
+								Leer_más >>
+							</a>
+						</div>
+						<div class="buffer-bar"></div>
+					</article>
+				))}
 			</div>
 		</div>
 	</section>
 </Layout>
+<style>
+    /* ... tus estilos anteriores ... */
+	.buffer-bar {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 2px;
+		width: 0;
+		background: #f59e0b;
+		transition: width 0.5s ease;
+		box-shadow: 0 0 10px #f59e0b;
+	}
+
+	article:hover .buffer-bar {
+		width: 100%;
+	}
+    .glitch-hover:hover {
+        animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        text-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+    }
+
+    @keyframes glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+    }
+
+    .font-display { font-family: 'Orbitron', sans-serif; }
+	.line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+    }
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+    }
+</style>

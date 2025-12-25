@@ -5,52 +5,52 @@ const { files } = Astro.props;
 const fileIcons = {
     PDF: "mdi:file-pdf",
     ZIP: "mdi:folder-zip",
-    STL: "mdi:cube",
-    INO: "mdi:code-braces",
-    F3D: "mdi:cube",
-    SVG: "mdi:vector-arrange-below"
+    STL: "mdi:cube-outline",
+    INO: "mdi:file-code-outline",
+    F3D: "mdi:cube-scan",
+    SVG: "mdi:vector-curve"
 };
 ---
 
-<div class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6">
-  <h3 class="text-xl font-bold text-neutral-200 mb-4 flex items-center gap-2">
-    <Icon name="mdi:download" class="h-5 w-5 text-purple-400" />
-    Archivos para descargar
+<div class="rounded-xl border border-neutral-800 bg-neutral-900/30 p-5">
+  <h3 class="text-xs font-mono text-amber-500 mb-6 flex items-center gap-2 uppercase tracking-[0.2em]">
+    <Icon name="mdi:download-network-outline" class="h-4 w-4 animate-bounce" />
+    Recursos [.root]
   </h3>
   
-  <div class="space-y-3">
-    {files.map((file: { link: string, type: string, name: string, size: string }) => (
+  <div class="space-y-2">
+    {files.map((file: { link: string, type: string, name: string, size?: string }) => (
       <a
         href={file.link}
-        download
-        class="group flex items-center justify-between rounded-lg border border-neutral-800 px-4 py-3 hover:border-purple-500/50 hover:bg-purple-500/10 transition-colors"
+        target={file.type === 'INO' ? "_blank" : "_self"}
+        download={file.type !== 'INO'}
+        class="group flex items-center justify-between rounded border border-neutral-800/50 px-4 py-3 hover:border-amber-500/40 hover:bg-amber-500/5 transition-all duration-300"
       >
         <div class="flex items-center gap-3">
-          <div class={`p-2 rounded-lg ${file.type === 'PDF' ? 'bg-red-500/10 text-red-400' : file.type === 'ZIP' ? 'bg-amber-500/10 text-amber-400' : 'bg-purple-500/10 text-purple-400'}`}>
-            <Icon name={fileIcons[file.type as keyof typeof fileIcons] || "mdi:file"} class="h-5 w-5" />
+          <div class="text-neutral-500 group-hover:text-amber-500 transition-colors">
+            <Icon name={fileIcons[file.type as keyof typeof fileIcons] || "mdi:file-outline"} class="h-5 w-5" />
           </div>
           <div>
-            <p class="font-medium text-neutral-200 group-hover:text-purple-400 transition-colors">
+            <p class="text-xs font-mono text-neutral-300 group-hover:text-neutral-100 transition-colors">
               {file.name}
             </p>
-            <p class="text-xs text-neutral-500">
-              {file.type} • {file.size}
+            <p class="text-[9px] font-mono text-neutral-600 uppercase">
+              {file.type} {file.size ? `• ${file.size}` : '• CLOUD_LINK'}
             </p>
           </div>
         </div>
         <Icon 
-          name="mdi:download" 
-          class="h-5 w-5 text-neutral-500 group-hover:text-purple-400 transition-colors" 
+          name="mdi:chevron-right" 
+          class="h-4 w-4 text-neutral-700 group-hover:text-amber-500 transition-transform group-hover:translate-x-1" 
         />
       </a>
     ))}
   </div>
 
-  {/* Licencia */}
-  <div class="mt-4 text-center">
-    <p class="text-xs text-neutral-500">
-      <Icon name="mdi:license" class="h-4 w-4 inline mr-1" />
-      Todos los archivos se comparten bajo licencia Creative Commons BY-NC-SA
+  <div class="mt-6 pt-4 border-t border-neutral-800/50">
+    <p class="text-[9px] font-mono text-neutral-600 flex items-center justify-center gap-2 italic">
+      <Icon name="mdi:shield-check-outline" class="h-3 w-3" />
+      LICENCIA_CC_BY-NC-SA_2025
     </p>
   </div>
 </div>

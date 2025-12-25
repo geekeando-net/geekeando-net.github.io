@@ -4,7 +4,8 @@ import TitleSection from "@/components/ui/TitleSection.astro";
 import LegalSection from "@/components/ui/LegalSection.astro";
 import { Icon } from "astro-icon/components";
 import stringsTerm from "@/utils/stringsTerm";
-const title = "Términos de Servicio";
+
+const title = "SERVICE_PROTOCOL_v4.2";
 const lastUpdated = new Date().toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
@@ -13,44 +14,98 @@ const lastUpdated = new Date().toLocaleDateString('es-ES', {
 const stringsService = stringsTerm.stringsServiceTerm;
 ---
 
-<Layout>
-    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <!-- Header con efecto gradiente -->
-        <div class="mx-auto max-w-4xl text-center mb-12">
-        <TitleSection
-            title={title}
-            subTitle={`Última actualización: ${lastUpdated}`}
-            accentColor="amber"
-        />
+<Layout title="Protocolo de Servicio | Geekeando Labs">
+    <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8 overflow-hidden font-mono">
+        
+        <div class="mx-auto max-w-4xl text-center mb-16 relative">
+            <div class="absolute top-0 left-0 w-full h-full -z-10 opacity-5 pointer-events-none select-none overflow-hidden">
+                <span class="text-[150px] font-black tracking-tighter">PROTOCOL</span>
+            </div>
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-amber-500/30 bg-amber-500/5 rounded-sm">
+                <Icon name="mdi:fountain-pen-tip" class="h-3 w-3 text-amber-500" />
+                <span class="text-[9px] text-amber-500 tracking-[0.4em] uppercase">Terms_Of_Engagement</span>
+            </div>
+
+            <TitleSection
+                title={title}
+                subTitle={`// DEPLOYED_ON: ${lastUpdated.toUpperCase()}`}
+                accentColor="amber"
+            />
         </div>
 
-        <!-- Contenedor principal con efecto vidrio -->
-        <div class="mx-auto max-w-3xl rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 backdrop-blur-sm shadow-lg shadow-neutral-950/50">
-            {stringsService.map((item) => (
-                <LegalSection
-                    icon={item.icon}
-                    title={item.title}
-                    text={item.text}
-                />
-            ))}
-            <!-- Aceptación -->
-            <div class="mt-12 pt-8 border-t border-neutral-800">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p class="text-neutral-400 text-sm sm:text-base">
-                    Al continuar usando Geekeando, usted confirma que ha leído, entendido y aceptado estos Términos de Servicio.
-                </p>
-                <div class="flex gap-3">
-                    <a href="/politica-privacidad" class="inline-flex items-center justify-center gap-x-1 rounded-lg border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-800 transition-colors">
-                    <Icon name="mdi:shield-lock" class="h-4 w-4" />
-                    Política de Privacidad
-                    </a>
-                    <a href="/" class="inline-flex items-center justify-center gap-x-1 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-bold text-neutral-900 hover:shadow-lg hover:shadow-amber-500/20 transition-all">
-                    <Icon name="mdi:home" class="h-4 w-4" />
-                    Volver al Inicio
-                    </a>
+        <div class="mx-auto max-w-4xl bg-black border border-neutral-800 shadow-[0_0_50px_rgba(245,158,11,0.03)] relative">
+            
+            {/* Indicadores de "Leds" laterales */}
+            <div class="absolute -left-[1px] top-20 flex flex-col gap-4">
+                <div class="h-10 w-[2px] bg-amber-500/50"></div>
+                <div class="h-4 w-[2px] bg-amber-500/20"></div>
+            </div>
+
+            {/* Barra superior de terminal */}
+            <div class="flex items-center justify-between px-6 py-3 border-b border-neutral-900 bg-neutral-900/40">
+                <div class="flex items-center gap-4">
+                    <span class="text-[10px] text-neutral-600 uppercase tracking-widest">Type: Legal_Doc</span>
+                    <span class="text-[10px] text-amber-500/50">● SYNC_OK</span>
                 </div>
+                <div class="flex gap-1.5">
+                    <div class="w-2 h-2 rounded-full border border-neutral-800 hover:bg-red-500/50 transition-colors"></div>
+                    <div class="w-2 h-2 rounded-full border border-neutral-800 hover:bg-amber-500/50 transition-colors"></div>
+                    <div class="w-2 h-2 rounded-full border border-neutral-800 hover:bg-green-500/50 transition-colors"></div>
+                </div>
+            </div>
+
+            <div class="p-8 md:p-12">
+                <div class="space-y-12">
+                    {stringsService.map((item, index) => (
+                        <div class="relative group">
+                            {/* Números de línea para el look de código */}
+                            <div class="absolute -left-6 md:-left-10 top-0 text-[10px] text-neutral-800 group-hover:text-amber-500/50 transition-colors">
+                                {(index + 1).toString().padStart(2, '0')}
+                            </div>
+                            
+                            <LegalSection
+                                icon={item.icon}
+                                title={item.title.toUpperCase()}
+                                text={item.text}
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                <div class="mt-16 pt-8 border-t border-neutral-900 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="flex items-start gap-4 p-4 border border-dashed border-neutral-800">
+                        <Icon name="mdi:alert-decagram" class="h-6 w-6 text-amber-500 shrink-0" />
+                        <p class="text-[11px] text-neutral-500 max-w-sm leading-relaxed italic">
+                            AVISO: El acceso continuado a las terminales de <span class="text-neutral-300">GEEKEANDO</span> implica la ejecución automática de este protocolo de servicio.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                        <a href="/privacidad" class="flex items-center justify-center gap-2 border border-neutral-800 px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:border-amber-500 hover:text-amber-500 transition-all">
+                            <Icon name="mdi:shield-lock" class="h-4 w-4" />
+                            Security_Policy
+                        </a>
+                        <a href="/" class="flex items-center justify-center gap-2 bg-amber-500 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-black hover:bg-amber-400 transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+                            <Icon name="mdi:home-variant" class="h-4 w-4" />
+                            Go_To_Root
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 </Layout>
+
+<style is:global>
+    /* Aseguramos que el contenido legal se adapte al estilo Lab */
+    .legal-section-title {
+        @apply font-mono text-xs tracking-widest text-amber-500/90 !important;
+    }
+    .legal-section-text {
+        @apply font-sans text-sm text-neutral-400 leading-relaxed !important;
+    }
+    .legal-section-text strong {
+        @apply text-amber-400 font-bold !important;
+    }
+</style>
