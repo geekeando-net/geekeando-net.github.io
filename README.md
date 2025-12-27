@@ -2,8 +2,9 @@
 Para mantener la consistencia en el "Laboratorio", cada proyecto debe seguir esta estructura de Page Bundle. Esto permite que las imágenes y archivos sean autogestionados por Astro.
 
 1. Estructura de Carpetas
-Crea una carpeta por proyecto en src/content/projects/:
-```
+Crea una carpeta por proyecto en `src/content/projects/`:
+
+```Plaintext
 src/content/projects/nombre-del-proyecto/
 ├── index.md               <-- Contenido y configuración (Frontmatter)
 ├── cover.png              <-- Imagen principal (obligatoria)
@@ -15,36 +16,16 @@ src/content/projects/nombre-del-proyecto/
     ├── foto-01.jpg
     └── foto-02.jpg
 ```
-Aquí tienes el README.md actualizado reflejando la estructura final de Page Bundles que hemos consolidado, junto con la plantilla maestra para tus proyectos.
-
-📘 README: Estándar de Proyectos Geekeando
-Para mantener la consistencia en el "Laboratorio", cada proyecto debe seguir esta estructura de Page Bundle. Esto permite que las imágenes y archivos sean autogestionados por Astro.
-
-1. Estructura de Carpetas
-Crea una carpeta por proyecto en src/content/projects/:
-
-Plaintext
-
-src/content/projects/nombre-del-proyecto/
-├── index.md               <-- Contenido y configuración (Frontmatter)
-├── cover.png              <-- Imagen principal (obligatoria)
-├── [step-image].png       <-- Imágenes para los pasos
-├── downloads/             <-- Recursos descargables
-│   ├── esquema.pdf
-│   └── diseño.stl
-└── gallery/               <-- Imágenes adicionales
-    ├── foto-01.jpg
-    └── foto-02.jpg
 2. Gestión de Avatares
-Las fotos de los autores deben estar en src/assets/images/authors/.
+Las fotos de los autores deben estar en `src/assets/images/authors/`.
 
-Referencia: En el MD usa @authors/nombre-archivo.jpg.
-
-Default: Si no hay foto, usa @authors/default-avatar.png.
+- Referencia: En el MD usa `@authors/nombre-archivo.jpg`.
+- Default: Si no hay foto, usa `@authors/default-avatar.png.`
 ---
-🛠️ Plantilla Maestra: index.md
+🛠️ Plantilla Maestra: `index.md`
 Copia y pega este bloque cada vez que inicies un nuevo proyecto. He limpiado los errores de espacios y optimizado los campos.
-```
+
+```markdown
 ---
 title: "NOMBRE_DEL_PROYECTO"
 description: "Breve descripción técnica del proyecto (máx. 160 caracteres)."
@@ -96,15 +77,17 @@ tips:
 Escribe aquí la introducción detallada del proyecto. Este contenido se renderizará 
 debajo de la galería y antes de los pasos de construcción. Puedes usar **Markdown** estándar para dar formato.
 ```
----🚀 Script de Automatización (Opcional)
-Si usas VS Code, puedes crear un User Snippet para que al escribir geekproject se genere todo el código anterior automáticamente.
+---
+🚀 Script de Automatización (Opcional)
+Si usas VS Code, puedes crear un User Snippet para que al escribir `geekproject` se genere todo el código anterior automáticamente.
 
-Ve a File > Preferences > Configure User Snippets.
+Ve a `File > Preferences > Configure User Snippets`.
 
-Busca markdown.
+Busca `markdown`.
 
 Pega esto dentro de las llaves:
-```
+
+```json
 "Geekeando Project Template": {
 	"prefix": "geekproject",
 	"body": [
