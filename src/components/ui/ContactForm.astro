@@ -2,7 +2,6 @@
 import { Icon } from 'astro-icon/components';
 const { variant = 'standard', fields = ['name', 'email', 'project_type', 'message'] } = Astro.props;
 
-// Opciones de proyecto alineadas a tus temas
 const projectOptions = [
     { value: "arduino", label: "Arduino / Electrónica" },
     { value: "3dprint", label: "Impresión 3D / Modelado" },
@@ -12,11 +11,12 @@ const projectOptions = [
 ];
 ---
 
-<form method="POST" class="space-y-6 font-mono relative">
-    {/* Decoración superior: Status de la consola */}
+<form id="geekeando-core-form" class="space-y-6 font-mono relative">
+    <input type="hidden" name="priority" value={variant === 'priority' ? 'true' : 'false'} />
+
     <div class="flex items-center gap-2 mb-4 opacity-50 text-[10px]">
         <div class="h-2 w-2 rounded-full bg-amber-500 animate-pulse"></div>
-        <span class="tracking-widest uppercase text-amber-500">System_Status: READY</span>
+        <span id="status-terminal" class="tracking-widest uppercase text-amber-500">System_Status: READY</span>
     </div>
 
     {fields.includes('name') && (
@@ -24,23 +24,38 @@ const projectOptions = [
             <label class="mb-1 block text-[11px] font-bold text-neutral-500 group-focus-within:text-amber-500 transition-colors tracking-tighter">
                 [01]::USER_ID_NAME
             </label>
-            <div class="relative">
-                <input 
-                    type="text" 
-                    placeholder="Escribe tu nombre..."
-                    class="w-full border-b border-neutral-800 bg-transparent px-0 py-2 text-sm text-neutral-200 placeholder-neutral-700 outline-none transition-all focus:border-amber-500" 
-                    required
-                >
-            </div>
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="Escribe tu nombre..."
+                class="w-full border-b border-neutral-800 bg-transparent px-0 py-2 text-sm text-neutral-200 placeholder-neutral-700 outline-none transition-all focus:border-amber-500" 
+                required
+            >
+        </div>
+    )}
+
+    {/* Agregué el campo email que faltaba en el HTML pero estaba en las props */}
+    {fields.includes('email') && (
+        <div class="group">
+            <label class="mb-1 block text-[11px] font-bold text-neutral-500 group-focus-within:text-amber-500 transition-colors tracking-tighter">
+                [02]::NET_ADDRESS
+            </label>
+            <input 
+                type="email" 
+                name="email" 
+                placeholder="USER@DOMAIN.COM"
+                class="w-full border-b border-neutral-800 bg-transparent px-0 py-2 text-sm text-neutral-200 placeholder-neutral-700 outline-none transition-all focus:border-amber-500" 
+                required
+            >
         </div>
     )}
     
     {fields.includes('project_type') && (
         <div class="group">
-            <label class="mb-1 block text-[11px] font-bold text-neutral-500 group-focus-within:text-amber-500 transition-colors tracking-tighter">
-                [02]::MODULE_CATEGORY
+            <label class="mb-1 block text-[11px] font-bold text-neutral-500 group-focus-within:text-amber-50:hover transition-colors tracking-tighter">
+                [03]::MODULE_CATEGORY
             </label>
-            <select class="w-full border-b border-neutral-800 bg-transparent px-0 py-2 text-sm text-neutral-200 outline-none transition-all focus:border-amber-500 appearance-none cursor-pointer">
+            <select name="project_type" class="w-full border-b border-neutral-800 bg-transparent px-0 py-2 text-sm text-neutral-200 outline-none transition-all focus:border-amber-500 appearance-none cursor-pointer">
                 <option value="" class="bg-neutral-900 text-neutral-500">Seleccionar módulo...</option>
                 {projectOptions.map(opt => (
                     <option value={opt.value} class="bg-neutral-900 text-neutral-200">{opt.label}</option>
@@ -52,9 +67,10 @@ const projectOptions = [
     {fields.includes('message') && (
         <div class="group">
             <label class="mb-1 block text-[11px] font-bold text-neutral-500 group-focus-within:text-amber-500 transition-colors tracking-tighter">
-                [03]::DATA_PAYLOAD
+                [04]::DATA_PAYLOAD
             </label>
             <textarea 
+                name="message"
                 rows="4"
                 placeholder="Ingresa los detalles del proyecto o consulta..."
                 class="w-full border border-neutral-800 bg-neutral-900/30 p-3 text-sm text-neutral-200 placeholder-neutral-700 outline-none transition-all focus:border-amber-500/50 rounded-sm"
@@ -65,23 +81,62 @@ const projectOptions = [
     
     <button 
         type="submit" 
+        id="submit-btn"
         class={`group relative w-full py-4 px-4 font-black transition-all overflow-hidden border ${
             variant === 'priority' 
             ? 'border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black' 
             : 'border-neutral-700 text-neutral-400 hover:border-white hover:text-white'
         }`}
     >
-        <div class="flex items-center justify-center gap-3 tracking-[0.2em] uppercase text-xs">
+        <div id="btn-content" class="flex items-center justify-center gap-3 tracking-[0.2em] uppercase text-xs relative z-10">
             <Icon name={variant === 'priority' ? "mdi:transmission-tower" : "mdi:send"} class="h-4 w-4" />
-            {variant === 'priority' ? 'Initialize_Urgent_Upload' : 'Execute_Transmission'}
+            <span id="btn-text">{variant === 'priority' ? 'Initialize_Urgent_Upload' : 'Execute_Transmission'}</span>
         </div>
-        
-        {/* Efecto de escaneo en el botón */}
         <div class="absolute inset-0 w-full h-[1px] bg-white/20 -translate-y-full group-hover:animate-scan"></div>
     </button>
 </form>
 
+<script>
+    const form = document.getElementById('geekeando-core-form') as HTMLFormElement;
+    const btnText = document.getElementById('btn-text');
+    const statusTerminal = document.getElementById('status-terminal');
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // UI Feedback: Iniciando envío
+        if (btnText) btnText.innerText = "UPLOADING_DATA...";
+        if (statusTerminal) {
+            statusTerminal.innerText = "System_Status: BUSY (TRANSMITTING)";
+            statusTerminal.classList.add('text-amber-300');
+        }
+
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                if (statusTerminal) statusTerminal.innerText = "System_Status: SUCCESS_DATA_SENT";
+                alert("TRANSMISIÓN EXITOSA: El laboratorio ha recibido tu señal.");
+                form.reset();
+            } else {
+                throw new Error();
+            }
+        } catch (error) {
+            if (statusTerminal) statusTerminal.innerText = "System_Status: ERROR_LINK_LOST";
+            alert("FALLO EN EL UPLINK: No se pudo conectar con Resend. Verifica tu conexión.");
+        } finally {
+            if (btnText) btnText.innerText = formData.get('priority') === 'true' ? 'Initialize_Urgent_Upload' : 'Execute_Transmission';
+        }
+    });
+</script>
+
 <style>
+    /* Tus estilos de animación y select se mantienen igual */
     @keyframes scan {
         0% { transform: translateY(0); }
         100% { transform: translateY(100px); opacity: 0; }
@@ -89,8 +144,6 @@ const projectOptions = [
     .animate-scan {
         animation: scan 1.5s linear infinite;
     }
-
-    /* Quitar estilos por defecto de select en webkit */
     select {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23444' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
         background-repeat: no-repeat;

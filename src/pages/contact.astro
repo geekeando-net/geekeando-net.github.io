@@ -2,126 +2,48 @@
 import Layout from "@layouts/Layout.astro";
 import TitleSection from "@/components/ui/TitleSection.astro";
 import ContactCard from "@/components/ui/ContactCard.astro";
+import ContactForm from "@/components/ui/ContactForm.astro";
 import stringsCards from "@/utils/stringsCards";
 import { Icon } from 'astro-icon/components';
 
 const title = "COMM_UPLINK";
 const subTitle = "// Estableciendo canal de comunicación con el laboratorio";
 const stringsContact = stringsCards.stringsContact;
-
-// Lógica de validación (Se mantiene igual)
-const errors = { name: "", email: "", message: "" };
-let formSuccess = false;
-
-if (Astro.request.method === 'POST') {
-    const data = await Astro.request.formData();
-    // ... tu lógica de validación aquí ...
-    formSuccess = true; 
-}
 ---
-
 <Layout title="Contacto | Geekeando">
     <section class="mx-auto max-w-[85rem] px-4 py-12 sm:px-6 lg:px-8">
         <TitleSection title={title} subTitle={subTitle} />
 
         <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
             <div class="lg:col-span-2 relative group flex flex-col">
-                <div class="bg-neutral-900/40 border border-neutral-800 p-8 backdrop-blur-sm flex-grow">
+                <div class="bg-neutral-900/40 border border-neutral-800 p-8 backdrop-blur-sm flex-grow relative overflow-hidden">
+                    
+                    <div id="success-screen" class="hidden absolute inset-0 z-50 bg-neutral-950 flex flex-col items-center justify-center font-mono text-amber-500 p-8 text-center">
+                        <p class="animate-pulse text-xl font-bold mb-4">> TRANSFERENCIA_EXITOSA</p>
+                        <p class="text-[10px] opacity-70 mb-8 max-w-xs">Los datos han sido persistidos en el núcleo del sistema y un técnico revisará la señal pronto.</p>
+                        <button onclick="window.location.reload()" class="border border-amber-500 px-6 py-2 text-[10px] hover:bg-amber-500 hover:text-black transition-all">
+                            INICIAR_NUEVA_SESIÓN
+                        </button>
+                    </div>
+
                     <h2 class="text-lg font-bold text-amber-500 mb-6 flex items-center gap-3 tracking-tighter uppercase italic">
                         <Icon name="mdi:console-line" class="h-5 w-5 text-amber-500" />
                         Iniciar_Transmisión
                     </h2>
-                </div>
-                {/* Decoración de esquina técnica */}
-                <div class="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-amber-500/50"></div>
-                
-                <div class="bg-neutral-900/40 border border-neutral-800 p-8 backdrop-blur-sm">
-                    
-                    {formSuccess ? (
-                        <div class="font-mono text-amber-500 space-y-4 py-10 text-center">
-                            <p class="animate-pulse text-xl font-bold">> TRANSFERENCIA_EXITOSA</p>
-                            <p class="text-xs opacity-70">Los datos han sido persistidos en el núcleo del sistema.</p>
-                            <a href="/contacto" class="inline-block mt-4 border border-amber-500 px-4 py-2 text-[10px] hover:bg-amber-500 hover:text-black transition-all">REINICIAR_PROTOCOLO</a>
-                        </div>
-                    ) : (
-                    <form method="POST" class="flex flex-col h-full font-mono">
-    <div class="space-y-8 flex-grow">
-        <div class="relative group/field">
-            <label class="text-[10px] text-neutral-500 uppercase tracking-widest mb-2 block group-focus-within/field:text-amber-500 transition-colors">
-                [01] USER_ID
-            </label>
-            <input type="text" name="name" placeholder="IDENTIFY_YOURSELF" 
-                class="w-full bg-transparent border-b border-neutral-800 py-2 outline-none focus:border-amber-500 text-neutral-200 placeholder:text-neutral-800 transition-all" required />
-        </div>
 
-        <div class="relative group/field">
-            <label class="text-[10px] text-neutral-500 uppercase tracking-widest mb-2 block group-focus-within/field:text-amber-500 transition-colors">
-                [02] NET_ADDRESS
-            </label>
-            <input type="email" name="email" placeholder="USER@DOMAIN.COM" 
-                class="w-full bg-transparent border-b border-neutral-800 py-2 outline-none focus:border-amber-500 text-neutral-200 placeholder:text-neutral-800 transition-all" required />
-        </div>
-
-        <div class="relative group/field">
-            <label class="text-[10px] text-neutral-500 uppercase tracking-widest mb-2 block group-focus-within/field:text-amber-500 transition-colors">
-                [03] DATA_PAYLOAD
-            </label>
-            <textarea name="message" rows="6" placeholder="DESCRIBE_YOUR_PROJECT_HERE..." 
-                class="w-full bg-neutral-950/30 border border-neutral-800 p-4 outline-none focus:border-amber-500/50 text-neutral-200 placeholder:text-neutral-900 transition-all resize-none min-h-[120px]"></textarea>
-        </div>
-
-        {/* BLOQUE DE RELLENO ESTÉTICO: MONITOR DE SISTEMA */}
-        <div class="mt-4 p-4 border border-neutral-800/50 bg-neutral-950/20 rounded-sm">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-[9px] text-amber-500/50 tracking-widest uppercase">Buffer_Status</span>
-                <span class="text-[9px] text-neutral-700 font-mono">ID: 0x{Math.random().toString(16).slice(2,8)}</span>
-            </div>
-            <div class="space-y-1">
-                <div class="h-1 w-full bg-neutral-800 overflow-hidden">
-                    <div class="h-full bg-amber-500/40 w-[65%] animate-[pulse_2s_infinite]"></div>
-                </div>
-                <div class="flex justify-between text-[8px] font-mono text-neutral-600 uppercase">
-                    <span>Uplink_Ready</span>
-                    <span>Enc_Active</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {/* BOTÓN AL FINAL PARA CERRAR EL BLOQUE */}
-    <div class="mt-8">
-        <button type="submit" class="w-full group/btn relative overflow-hidden border border-amber-500 py-4 text-amber-500 font-bold uppercase tracking-[0.3em] text-xs hover:bg-amber-500 hover:text-black transition-all">
-            <span class="relative z-10">EJECUTAR_TRANSMISIÓN</span>
-            <div class="absolute inset-0 h-full w-0 bg-amber-500 group-hover/btn:w-full transition-all duration-300"></div>
-        </button>
-    </div>
-</form>
-                    )}
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                {stringsContact.map((item) => (
-                    <ContactCard
-                        icon={item.icon}
-                        title={item.title}
-                        items={[item.text1, item.text2]}
-                        link={item.link}
+                    <ContactForm 
+                        variant="standard" 
+                        fields={['name', 'email', 'message']} 
                     />
-                ))}
+                </div>
+                <div class="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-amber-500/50"></div>
             </div>
+
+            <aside class="space-y-4">
+                {stringsContact.map((item) => (
+                    <ContactCard icon={item.icon} title={item.title} items={[item.text1, item.text2]} link={item.link} />
+                ))}
+            </aside>
         </div>
     </section>
 </Layout>
-
-<style is:global>
-    /* Eliminamos el efecto ::before anterior que ensuciaba el formulario */
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus {
-        -webkit-text-fill-color: #f59e0b;
-        -webkit-box-shadow: 0 0 0px 1000px #0a0a0a inset;
-        transition: background-color 5000s ease-in-out 0s;
-    }
-</style>
