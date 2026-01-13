@@ -2,9 +2,10 @@ import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
+// Asegúrate de añadir esta variable en Vercel
+const TURNSTILE_SECRET_KEY = import.meta.env.TURNSTILE_SECRET_KEY; 
 
 export const POST: APIRoute = async ({ request }) => {
-    // --- CONFIGURACIÓN DE CORS ---
     const origin = request.headers.get('origin');
     const allowedOrigins = ['https://geekeando.net', 'https://pedrocarranza.com', 'http://localhost:4321'];
     
@@ -21,15 +22,35 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
         const data = await request.formData();
+        const token = data.get('cf-turnstile-response') as string; // Token de Cloudflare
         const name = data.get('name') as string;
         const email = data.get('email') as string;
         const message = data.get('message') as string;
         const isPriority = data.get('priority') === 'true';
 
-        // Detectar si la petición viene de Geekeando
+        // --- VALIDACIÓN DE CLOUDFLARE TURNSTILE ---
+        const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST',
+            body: JSON.stringify({
+                secret: TURNSTILE_SECRET_KEY,
+                response: token,
+            }),
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        const outcome = await verifyResponse.json();
+
+        if (!outcome.success) {
+            return new Response(JSON.stringify({ error: "BOT_DETECTED" }), { 
+                status: 403, 
+                headers 
+            });
+        }
+        // ------------------------------------------
+
         const isFromGeekeando = origin?.includes('geekeando.net') || origin?.includes('localhost');
 
-        // 1. NOTIFICACIÓN PARA TI (Siempre se envía)
+        // 1. NOTIFICACIÓN PARA TI
         const subjectAdmin = isFromGeekeando 
             ? (isPriority ? `⚠️ [PRIORITY] Emergencia: ${name}` : `📩 [BLOG] Mensaje de ${name}`)
             : `💼 [PORTAFOLIO] Contacto de ${name}`;
@@ -53,6 +74,8 @@ export const POST: APIRoute = async ({ request }) => {
                         <h2 style="color: #f59e0b;">HOLA ${name.toUpperCase()}</h2>
                         <p>Tu transmisión ha sido recibida en nuestro núcleo de datos.</p>
                         <p>Pedro revisará la información pronto.</p>
+                        <hr style="border: 1px dashed #f59e0b;">
+                        <p style="font-size: 10px;">ID Transmisión: ${Math.random().toString(36).substring(7).toUpperCase()}</p>
                     </div>
                 `
             });
