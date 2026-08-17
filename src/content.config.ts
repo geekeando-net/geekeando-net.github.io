@@ -1,7 +1,12 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const projects = defineCollection({
-    type: 'content',
+    loader: glob({
+        base: './src/content/projects',
+        pattern: '**/index.md',
+        generateId: ({ entry }) => entry.replace(/\/index\.md$/, ''),
+    }),
     schema: ({ image }) => z.object({
         title: z.string(),
         description: z.string().optional().default("Sin descripción"),

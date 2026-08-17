@@ -2,11 +2,12 @@
 @import '@fontsource/orbitron/index.css';
 @import '@fontsource/inter/index.css';
 @import '@fontsource/fira-code/index.css';
+@import 'tailwindcss';
+@import '../../node_modules/preline/variants.css';
 
-/* 2. CAPAS DE TAILWIND */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config '../../tailwind.config.mjs';
+@source '../**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}';
+@source '../../node_modules/preline/dist/*.js';
 
 /* 3. DEFINICIÓN MANUAL PARA @APPLY */
 @layer components {

@@ -101,7 +101,7 @@ const stats = {
 	
 			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{finalProjects.map((project, index) => (
-					<a href={`/projects/${project.data.category.toLowerCase()}/${project.slug}`} 
+					<a href={`/projects/${project.data.category.toLowerCase()}/${project.id}`}
 					   class="group relative flex flex-col h-full rounded-xl border border-neutral-800 bg-neutral-900/40 overflow-hidden hover:border-amber-500/50 transition-all duration-500">
 
 						{/* Badge Técnico */}

@@ -98,14 +98,16 @@ const stringsService = stringsTerm.stringsServiceTerm;
 </Layout>
 
 <style is:global>
+    @reference '../styles/global.css';
+
     /* Aseguramos que el contenido legal se adapte al estilo Lab */
     .legal-section-title {
-        @apply font-mono text-xs tracking-widest text-amber-500/90 !important;
+        @apply !font-mono !text-xs !tracking-widest !text-amber-500/90;
     }
     .legal-section-text {
-        @apply font-sans text-sm text-neutral-400 leading-relaxed !important;
+        @apply !font-sans !text-sm !text-neutral-400 !leading-relaxed;
     }
     .legal-section-text strong {
-        @apply text-amber-400 font-bold !important;
+        @apply !text-amber-400 !font-bold;
     }
 </style>

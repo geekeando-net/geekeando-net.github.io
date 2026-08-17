@@ -49,6 +49,8 @@ const navId = url === '/' ? 'nav-home' : `nav-${url.replace(/\//g, '')}`;
 </script>
 
 <style>
+    @reference '../../styles/global.css';
+
     /* Estilo para el link activo sin depender solo de JS para el hover */
     .active-link {
         text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);

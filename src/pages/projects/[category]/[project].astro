@@ -17,7 +17,7 @@ export async function getStaticPaths() {
     return projectEntries.map((entry) => ({
         params: { 
             category: entry.data.category.toLowerCase().trim(), 
-            project: entry.slug 
+            project: entry.id
         },
         props: { entry },
     }));
@@ -27,13 +27,12 @@ const { entry } = Astro.props;
 
 if (!entry) return Astro.redirect('/404');
 
-const { Content } = await entry.render();
 const pData = entry.data;
 
 // Obtener proyectos relacionados (misma categoría, distinto slug)
 const allProjects = await getCollection('projects');
 const relatedProjects = allProjects
-  .filter(p => p.data.category === pData.category && p.slug !== entry.slug)
+    .filter(p => p.data.category === pData.category && p.id !== entry.id)
   .slice(0, 3);
 
 // Lógica de descargas dinámica

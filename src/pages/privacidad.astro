@@ -92,11 +92,13 @@ const stringsPrivacyTerm = stringsTerm.stringPrivacyTerm;
 </Layout>
 
 <style is:global>
+    @reference '../styles/global.css';
+
     /* Ajuste para que LegalSection use tipografías técnicas */
     .legal-section-title {
-        @apply font-mono text-sm tracking-tighter text-white mb-4 !important;
+        @apply !font-mono !text-sm !tracking-tighter !text-white !mb-4;
     }
     .legal-section-text {
-        @apply font-sans text-sm text-neutral-400 leading-relaxed !important;
+        @apply !font-sans !text-sm !text-neutral-400 !leading-relaxed;
     }
 </style>
