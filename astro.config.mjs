@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { passthroughImageService } from 'astro/config';
 
@@ -18,7 +18,7 @@ export default defineConfig({
     speedInsights: {
       enabled: true,
     },
-    runtime: 'nodejs20.x',
+    runtime: 'nodejs24.x',
     functionPerRoute: false,
     maxDuration: 60,
     edgeMiddleware: false,
@@ -37,25 +37,29 @@ export default defineConfig({
         mdi: ['*']
       }
     }),
-    tailwind(),
     sitemap()
   ],
   vite: {
+    plugins: [tailwindcss()],
     ssr: {
       noExternal: ['@resvg/resvg-js', 'sharp']
     },
     build: {
       rollupOptions: {
         output: {
-          manualChunks: {
-            'vendor': [
+          manualChunks(id) {
+            const vendorPackages = [
               'astro-icon',
               'nodemailer',
               'particles.js',
               'photoswipe',
               'preline',
               'swiper'
-            ]
+            ];
+
+            return vendorPackages.some((packageName) => id.includes(`/node_modules/${packageName}/`))
+              ? 'vendor'
+              : undefined;
           }
         }
       }
